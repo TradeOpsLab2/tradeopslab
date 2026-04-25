@@ -1439,5 +1439,34 @@
     }
   });
 </script>
+
+<script>
+  // Scroll spy — highlight nav item based on scroll position
+  const sections = [
+    { id: 'what-i-do', link: 'what-i-do' },
+    { id: 'process', link: 'process' },
+    { id: 'about', link: 'about' },
+    { id: 'work', link: 'work' },
+    { id: 'resources', link: 'resources' },
+    { id: 'contact-form', link: 'contact-form' },
+  ];
+
+  function updateActive() {
+    let current = '';
+    sections.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 120) current = id;
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.classList.remove('nav-active');
+      if (a.getAttribute('href') === '#' + current || a.getAttribute('href') === '/#' + current) {
+        if (!a.classList.contains('nav-cta')) a.classList.add('nav-active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+</script>
 </body>
 </html>
