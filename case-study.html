@@ -72,6 +72,7 @@
     --mono: 'DM Mono', monospace;
     --serif: 'Libre Baskerville', Georgia, serif;
     --sans: 'Figtree', sans-serif;
+    --display: 'Bebas Neue', sans-serif;
   }
 
   html { font-size: 16px; }
@@ -104,7 +105,7 @@
 
 
   
-  @media (max-width: 768px) { .nav-links { display: none; } nav { padding: 1rem 1.5rem; } }
+  @media (max-width: 768px) { }
 
   /* HERO */
   .hero {
@@ -599,6 +600,16 @@
     .meta-strip { margin: 0 1.5rem 2rem; }
     #contact-form > div:first-child { grid-template-columns: 1fr !important; }
   }
+  .nav-links a
+  .nav-links .nav-cta
+  @media (max-width: 900px) { }
+
+  .nav-links .nav-active {
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 2px;
+  }
+  @media (max-width: 900px) { .nav-links { display: none; } nav { padding: 1rem 1.5rem; } }
 
   nav {
     position: sticky; top: 0; z-index: 100;
@@ -609,7 +620,7 @@
     border-bottom: 1px solid var(--rule);
   }
   .nav-logo {
-    font-family: var(--display);
+    font-family: 'Bebas Neue', var(--display), sans-serif;
     font-size: 1.4rem;
     letter-spacing: 0.05em;
     color: var(--ink);
@@ -617,9 +628,7 @@
     flex-shrink: 0;
   }
   .nav-logo span { color: var(--accent); }
-  .nav-links {
-    display: flex; align-items: center; gap: 2rem; list-style: none;
-  }
+  .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
   .nav-links a {
     font-family: var(--mono);
     font-size: 0.7rem;
@@ -631,21 +640,9 @@
     white-space: nowrap;
   }
   .nav-links a:hover { color: var(--accent); }
-  .nav-links a.nav-active {
-    color: var(--accent);
-    border-bottom: 2px solid var(--accent);
-    padding-bottom: 2px;
-  }
-  .nav-links .nav-cta {
-    background: var(--ink) !important;
-    color: var(--paper) !important;
-    padding: 0.45rem 1rem;
-    border-radius: 2px;
-    border-bottom: none !important;
-    transition: background 0.15s;
-  }
+  .nav-links a.nav-active { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+  .nav-links .nav-cta { background: var(--ink) !important; color: var(--paper) !important; padding: 0.45rem 1rem; border-radius: 2px; border-bottom: none !important; }
   .nav-links .nav-cta:hover { background: var(--accent) !important; }
-  .nav-links .nav-cta.nav-active { background: var(--accent) !important; border-bottom: none !important; }
   @media (max-width: 900px) { .nav-links { display: none; } nav { padding: 1rem 1.5rem; } }
 </style>
 </head>
@@ -655,10 +652,10 @@
   <a href="/" class="nav-logo">Trade<span>Ops</span>Lab</a>
   <ul class="nav-links">
     <li><a href="/#what-i-do">What I Do</a></li>
-    <li><a href="/jobtread-consulting.html">JobTread</a></li>
     <li><a href="/#process">How It Works</a></li>
     <li><a href="/#about">About</a></li>
     <li><a href="/case-study.html" class="nav-active">Case Study</a></li>
+    <li><a href="/jobtread-consulting.html">JobTread</a></li>
     <li><a href="/#resources">Resources</a></li>
     <li><a href="/#contact-form" class="nav-cta">Get in Touch</a></li>
   </ul>

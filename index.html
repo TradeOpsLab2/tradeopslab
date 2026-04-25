@@ -165,6 +165,7 @@
   }
 
   .nav-links a:hover { color: var(--accent); }
+  .nav-links a.nav-active { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
 
   .nav-cta {
     background: var(--ink) !important;
@@ -1101,10 +1102,10 @@
   <a href="/" class="nav-logo">Trade<span>Ops</span>Lab</a>
   <ul class="nav-links">
     <li><a href="#what-i-do">What I Do</a></li>
-    <li><a href="/jobtread-consulting.html">JobTread</a></li>
     <li><a href="#process">How It Works</a></li>
     <li><a href="#about">About</a></li>
-    <li><a href="#work">Case Study</a></li>
+    <li><a href="/case-study.html">Case Study</a></li>
+    <li><a href="/jobtread-consulting.html">JobTread</a></li>
     <li><a href="#resources">Resources</a></li>
     <li><a href="#contact-form" class="nav-cta">Get in Touch</a></li>
   </ul>
@@ -1413,6 +1414,7 @@
 </footer>
 
 <script>
+  // Contact form
   const form = document.getElementById('contact-form');
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -1438,19 +1440,47 @@
       btn.disabled = false;
     }
   });
-</script>
 
-<script>
-  // Scroll spy — highlight nav item based on scroll position
+  // Scroll-based nav highlighting
   const sections = [
-    { id: 'what-i-do', link: 'what-i-do' },
-    { id: 'process', link: 'process' },
-    { id: 'about', link: 'about' },
-    { id: 'work', link: 'work' },
-    { id: 'resources', link: 'resources' },
-    { id: 'contact-form', link: 'contact-form' },
+    { id: 'what-i-do', href: '#what-i-do' },
+    { id: 'process',   href: '#process' },
+    { id: 'about',     href: '#about' },
+    { id: 'work',      href: '#work' },
+    { id: 'resources', href: '#resources' },
+    { id: 'contact-form', href: '#contact-form' },
   ];
 
+  function updateActiveNav() {
+    const navLinks = document.querySelectorAll('.nav-links a:not(.nav-cta)');
+    let current = '';
+    sections.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 120) current = id;
+    });
+    navLinks.forEach(link => {
+      const href = link.getAttribute('href');
+      const isSection = sections.some(s => href === s.href || href === '/' + s.href);
+      if (isSection) {
+        if (href === '#' + current || href === '/#' + current) {
+          link.classList.add('nav-active');
+        } else {
+          link.classList.remove('nav-active');
+        }
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  updateActiveNav();
+</script>
+
+
+<script>
+  const sections = [
+    { id: 'what-i-do' }, { id: 'process' }, { id: 'about' },
+    { id: 'resources' }, { id: 'contact-form' },
+  ];
   function updateActive() {
     let current = '';
     sections.forEach(({ id }) => {
@@ -1459,12 +1489,12 @@
     });
     document.querySelectorAll('.nav-links a').forEach(a => {
       a.classList.remove('nav-active');
-      if (a.getAttribute('href') === '#' + current || a.getAttribute('href') === '/#' + current) {
+      const href = a.getAttribute('href');
+      if (href === '#' + current || href === '/#' + current) {
         if (!a.classList.contains('nav-cta')) a.classList.add('nav-active');
       }
     });
   }
-
   window.addEventListener('scroll', updateActive, { passive: true });
   updateActive();
 </script>
