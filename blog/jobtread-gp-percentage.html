@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Why Your GP% Is Wrong Until You Fix This in JobTread — TradeOpsLab</title>
+<meta name="description" content="Most contractors checking GP% in JobTread are looking at incomplete numbers without knowing it. Here's the specific setup issue that causes it and how to fix it.">
+<meta name="keywords" content="JobTread GP%, JobTread gross profit, contractor gross margin, JobTread job costing, JobTread setup, specialty contractor profitability">
+<link rel="canonical" href="https://www.tradeopslab.com/blog/jobtread-gp-percentage.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.tradeopslab.com/blog/jobtread-gp-percentage.html">
+<meta property="og:title" content="Why Your GP% Is Wrong Until You Fix This in JobTread">
+<meta property="og:description" content="Most contractors checking GP% in JobTread are looking at incomplete numbers without knowing it. Here's the fix.">
+<meta property="og:site_name" content="TradeOpsLab">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Why Your GP% Is Wrong Until You Fix This in JobTread",
+  "description": "Most contractors checking GP% in JobTread are looking at incomplete numbers. Here's the specific setup issue and how to fix it.",
+  "author": { "@type": "Person", "name": "Andres Bedoya", "url": "https://www.tradeopslab.com" },
+  "publisher": { "@type": "Organization", "name": "TradeOpsLab", "url": "https://www.tradeopslab.com" },
+  "keywords": "JobTread GP%, gross profit contractor, job costing"
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=Figtree:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #1a1814; --ink-mid: #4a4540; --ink-light: #8a8278;
+    --paper: #f5f2ed; --paper-warm: #ede9e2; --accent: #c8440a;
+    --rule: #d8d2c8; --mono: 'DM Mono', monospace;
+    --serif: 'Libre Baskerville', Georgia, serif;
+    --sans: 'Figtree', sans-serif; --display: 'Bebas Neue', sans-serif;
+  }
+  html { font-size: 16px; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; background: rgba(245,242,237,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
+  .nav-logo { font-family: var(--display); font-size: 1.4rem; letter-spacing: 0.05em; color: var(--ink); text-decoration: none; }
+  .nav-logo span { color: var(--accent); }
+  .nav-back { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); text-decoration: none; transition: color 0.15s; }
+  .nav-back:hover { color: var(--accent); }
+  .hero { max-width: 720px; margin: 0 auto; padding: 4rem 2rem 2.5rem; }
+  .eyebrow { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+  .eyebrow::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--accent); }
+  .hero h1 { font-family: var(--serif); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 1.25rem; }
+  .hero-meta { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); padding-bottom: 1.5rem; border-bottom: 1px solid var(--rule); }
+  .content { max-width: 720px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+  .content h2 { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; color: var(--ink); margin: 2.5rem 0 1rem; line-height: 1.3; }
+  .content h3 { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 2rem 0 0.75rem; }
+  .content p { color: var(--ink-mid); font-size: 1rem; margin-bottom: 1.25rem; line-height: 1.75; }
+  .content strong { color: var(--ink); font-weight: 500; }
+  .content ul { margin: 0 0 1.25rem 1.5rem; }
+  .content ul li { color: var(--ink-mid); font-size: 1rem; margin-bottom: 0.5rem; line-height: 1.7; }
+  .callout { background: var(--paper-warm); border-left: 3px solid var(--accent); padding: 1.25rem 1.5rem; margin: 2rem 0; border-radius: 0 4px 4px 0; }
+  .callout p { margin-bottom: 0; font-style: italic; color: var(--ink); }
+  .cta-block { background: var(--ink); border-radius: 6px; padding: 2.5rem; margin-top: 4rem; }
+  .cta-block h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; color: var(--paper); margin-bottom: 0.75rem; }
+  .cta-block p { color: rgba(245,242,237,0.55); font-size: 0.9rem; margin-bottom: 1.25rem; }
+  .cta-btn { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; padding: 0.75rem 1.75rem; border-radius: 3px; font-size: 0.875rem; font-weight: 500; }
+  .cta-btn:hover { background: #a8360a; }
+  hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+  @media (max-width: 600px) { nav { padding: 1rem 1.5rem; } .hero, .content { padding-left: 1.5rem; padding-right: 1.5rem; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Trade<span>Ops</span>Lab</a>
+  <a href="/" class="nav-back">← Back to Home</a>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow">JobTread · Gross Profit · Job Costing</div>
+  <h1>Why Your GP% Is Wrong Until You Fix This in JobTread</h1>
+  <div class="hero-meta">By Andres Bedoya · TradeOpsLab · 5 min read</div>
+</div>
+
+<div class="content">
+
+  <p>If you're checking gross profit percentage in JobTread and feeling good about your margins, there's a chance you're looking at incomplete numbers — and the real GP% is lower than what you're seeing.</p>
+
+  <p>This isn't a JobTread bug. It's a setup and workflow issue that's extremely common among specialty contractors, especially those who've configured the platform themselves without a formal onboarding.</p>
+
+  <h2>The problem: cost capture is incomplete</h2>
+
+  <p>JobTread calculates GP% based on the costs that are actually entered against a job. If costs aren't being captured consistently — or if they're being entered in QuickBooks but not reflected in JobTread — the GP% you see in JobTread is overstated.</p>
+
+  <p>The most common culprits:</p>
+
+  <ul>
+    <li><strong>Labor costs not being logged against jobs.</strong> Time entries exist but aren't tied to specific cost items on the job budget, so they don't show up in job-level cost calculations.</li>
+    <li><strong>Material purchases going into QuickBooks only.</strong> The vendor bill gets entered in QBO but never pushed back to JobTread as an actual cost, so the job looks more profitable than it is.</li>
+    <li><strong>Overhead not being allocated.</strong> Equipment, insurance, vehicle costs — these are real job costs that often get treated as general expenses rather than being distributed across active jobs.</li>
+    <li><strong>Change orders not reflected in the budget.</strong> The contract value goes up but the budget doesn't get updated, so the margin calculation is based on outdated numbers.</li>
+  </ul>
+
+  <div class="callout">
+    <p>A job showing 42% GP% in JobTread can be running at 31% in reality once untracked labor and materials are accounted for. That's the difference between a profitable job and a breakeven one.</p>
+  </div>
+
+  <h2>How to check if this is happening to you</h2>
+
+  <p>The quickest diagnostic: pick a recently completed job and reconcile it manually. Pull the total revenue from the approved customer order in JobTread. Then pull the total actual costs from QuickBooks for that same job — every vendor bill, every payroll allocation, every material purchase. Calculate the GP% yourself.</p>
+
+  <p>Compare that number to what JobTread shows for the same job. If they're different by more than 2-3 percentage points, you have a cost capture gap.</p>
+
+  <h2>The fix</h2>
+
+  <p>There are three things to address:</p>
+
+  <h3>1. Standardize how labor gets entered</h3>
+  <p>Every time entry in JobTread should be linked to both a job and a cost item category. If your crew is logging time but not selecting the job, those hours aren't being counted against job costs. Set up a simple protocol — job selection is required on every time entry, no exceptions.</p>
+
+  <h3>2. Create a workflow for material costs</h3>
+  <p>When a material purchase gets entered in QuickBooks, it needs a corresponding actual cost entry in JobTread. The cleanest way to do this is through JobTread's vendor bill workflow — enter the bill in JobTread first, which syncs to QuickBooks, rather than entering in QBO and trying to reconcile back.</p>
+
+  <h3>3. Build a live reconciliation layer</h3>
+  <p>For contractors running more than 10-15 active jobs, manual reconciliation doesn't scale. The permanent fix is a dashboard that pulls actual costs from both platforms simultaneously and flags jobs where the JobTread GP% and the QuickBooks-calculated GP% diverge by more than a set threshold.</p>
+
+  <p>This is the kind of visibility that turns GP% from a lagging indicator (something you check after the job) into a leading one (something you act on during the job).</p>
+
+  <h2>Why this matters more at scale</h2>
+
+  <p>On a $5,000 residential job, a 5-point GP% discrepancy costs you $250. On a $200,000 commercial job, that same discrepancy costs you $10,000. As your average job size grows, the cost of not having accurate real-time GP% tracking grows with it.</p>
+
+  <p>Most specialty contractors discover this problem after they've grown — when the stakes are high enough that the error is impossible to ignore. The contractors who fix it early are the ones who can price confidently and know which jobs are actually worth taking.</p>
+
+  <hr>
+
+  <div class="cta-block">
+    <h2>Not sure if your GP% numbers are accurate?</h2>
+    <p>I help specialty contractors audit their JobTread and QuickBooks setup and build the dashboards that surface the real numbers. Fixed price, no ongoing retainer.</p>
+    <a href="/#contact-form" class="cta-btn">Start a conversation →</a>
+  </div>
+
+</div>
+</body>
+</html>

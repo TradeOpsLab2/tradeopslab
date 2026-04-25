@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AIA 702/703 Invoicing for Contractors: What It Requires and How to Automate It — TradeOpsLab</title>
+<meta name="description" content="If you're doing GC work, you're dealing with AIA G702/G703 invoicing. Here's what those forms actually require, why they're painful to produce manually, and how specialty contractors are automating them.">
+<meta name="keywords" content="AIA 702 703 invoicing contractors, AIA G702 template, AIA invoicing automation, contractor schedule of values, GC subcontractor invoicing, AIA invoice generator">
+<link rel="canonical" href="https://www.tradeopslab.com/blog/aia-invoicing-contractors.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.tradeopslab.com/blog/aia-invoicing-contractors.html">
+<meta property="og:title" content="AIA 702/703 Invoicing: What It Requires and How to Automate It">
+<meta property="og:description" content="What AIA G702/G703 forms actually require, why they're painful to produce manually, and how specialty contractors are automating them.">
+<meta property="og:site_name" content="TradeOpsLab">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "AIA 702/703 Invoicing for Contractors: What It Requires and How to Automate It",
+  "description": "What AIA G702/G703 forms actually require, why they're painful to produce manually, and how specialty contractors are automating them.",
+  "author": { "@type": "Person", "name": "Andres Bedoya", "url": "https://www.tradeopslab.com" },
+  "publisher": { "@type": "Organization", "name": "TradeOpsLab", "url": "https://www.tradeopslab.com" },
+  "keywords": "AIA 702 703, AIA invoicing, contractor invoicing, schedule of values"
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=Figtree:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --ink: #1a1814; --ink-mid: #4a4540; --ink-light: #8a8278; --paper: #f5f2ed; --paper-warm: #ede9e2; --accent: #c8440a; --rule: #d8d2c8; --mono: 'DM Mono', monospace; --serif: 'Libre Baskerville', Georgia, serif; --sans: 'Figtree', sans-serif; --display: 'Bebas Neue', sans-serif; }
+  html { font-size: 16px; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; background: rgba(245,242,237,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
+  .nav-logo { font-family: var(--display); font-size: 1.4rem; letter-spacing: 0.05em; color: var(--ink); text-decoration: none; }
+  .nav-logo span { color: var(--accent); }
+  .nav-back { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); text-decoration: none; transition: color 0.15s; }
+  .nav-back:hover { color: var(--accent); }
+  .hero { max-width: 720px; margin: 0 auto; padding: 4rem 2rem 2.5rem; }
+  .eyebrow { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+  .eyebrow::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--accent); }
+  .hero h1 { font-family: var(--serif); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 1.25rem; }
+  .hero-meta { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); padding-bottom: 1.5rem; border-bottom: 1px solid var(--rule); }
+  .content { max-width: 720px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+  .content h2 { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; color: var(--ink); margin: 2.5rem 0 1rem; line-height: 1.3; }
+  .content h3 { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 2rem 0 0.75rem; }
+  .content p { color: var(--ink-mid); font-size: 1rem; margin-bottom: 1.25rem; line-height: 1.75; }
+  .content strong { color: var(--ink); font-weight: 500; }
+  .content ul { margin: 0 0 1.25rem 1.5rem; }
+  .content ul li { color: var(--ink-mid); font-size: 1rem; margin-bottom: 0.5rem; line-height: 1.7; }
+  .callout { background: var(--paper-warm); border-left: 3px solid var(--accent); padding: 1.25rem 1.5rem; margin: 2rem 0; border-radius: 0 4px 4px 0; }
+  .callout p { margin-bottom: 0; font-style: italic; color: var(--ink); }
+  .cta-block { background: var(--ink); border-radius: 6px; padding: 2.5rem; margin-top: 4rem; }
+  .cta-block h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; color: var(--paper); margin-bottom: 0.75rem; }
+  .cta-block p { color: rgba(245,242,237,0.55); font-size: 0.9rem; margin-bottom: 1.25rem; }
+  .cta-btn { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; padding: 0.75rem 1.75rem; border-radius: 3px; font-size: 0.875rem; font-weight: 500; }
+  .cta-btn:hover { background: #a8360a; }
+  hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+  @media (max-width: 600px) { nav { padding: 1rem 1.5rem; } .hero, .content { padding-left: 1.5rem; padding-right: 1.5rem; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Trade<span>Ops</span>Lab</a>
+  <a href="/" class="nav-back">← Back to Home</a>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow">AIA Invoicing · GC Work · Billing</div>
+  <h1>AIA 702/703 Invoicing: What It Actually Requires and How to Automate It</h1>
+  <div class="hero-meta">By Andres Bedoya · TradeOpsLab · 7 min read</div>
+</div>
+
+<div class="content">
+
+  <p>If you're doing work for general contractors, you've dealt with AIA invoicing. The G702 Application for Payment and G703 Continuation Sheet are the standard billing forms used on commercial construction projects — and if you're not submitting them correctly, you're either delaying your own payments or creating administrative headaches every billing cycle.</p>
+
+  <p>This post covers what these forms actually require, where specialty contractors typically get tripped up, and how to automate the process so invoicing a GC job takes minutes instead of hours.</p>
+
+  <h2>What G702 and G703 actually are</h2>
+
+  <p>The <strong>G702</strong> is the cover sheet — it summarizes the total contract value, work completed to date, materials stored on site, retainage being held, and the amount of the current payment application. It requires a notarized signature in many cases, which adds a step.</p>
+
+  <p>The <strong>G703</strong> is the schedule of values continuation sheet — it breaks down the work by line item, showing the original value of each line, what percentage is complete, how much has been billed previously, how much you're billing this period, and what's remaining. Every line needs to reconcile back to the G702 totals.</p>
+
+  <div class="callout">
+    <p>The G703 is where most errors happen. One miscalculated line item cascades into a G702 that doesn't balance, which means a rejected pay app and a delayed payment.</p>
+  </div>
+
+  <h2>Why it's painful to produce manually</h2>
+
+  <p>The math itself isn't complicated — it's the data gathering that takes time. To fill out a G703 accurately for a billing period, you need:</p>
+
+  <ul>
+    <li>The original schedule of values from the contract</li>
+    <li>What was billed in all previous periods (cumulative)</li>
+    <li>What work was actually completed this period, by line item</li>
+    <li>Any materials stored on site that haven't been installed yet</li>
+    <li>The retainage rate (usually 10%, sometimes released after substantial completion)</li>
+  </ul>
+
+  <p>For a contractor doing 5-10 GC jobs at a time, each with its own schedule of values and billing history, this is a significant administrative burden every month. The typical workflow — pulling numbers from JobTread, cross-referencing with QuickBooks, manually entering them into an Excel template — takes 2-3 hours per job per billing cycle.</p>
+
+  <h2>The automation approach</h2>
+
+  <p>The data needed to fill out a G702/G703 already exists in JobTread. The contract value is in the approved customer order. The schedule of values maps to the job's cost item structure. Previous billing amounts are in the invoice history. Stored materials can be tracked as a cost item category.</p>
+
+  <p>An automated AIA generator pulls all of this data from JobTread via API, pre-populates the G702 and G703 fields, calculates all the running totals and retainage automatically, and produces a properly formatted document ready for submission — or review before submission.</p>
+
+  <p>The workflow becomes: open the tool, select the job and billing period, review the pre-populated numbers, make any adjustments, generate the PDF. Instead of 2-3 hours, it takes 15 minutes.</p>
+
+  <h2>What to get right in the setup</h2>
+
+  <p>For the automation to work accurately, your JobTread setup needs to be consistent:</p>
+
+  <ul>
+    <li><strong>Schedule of values needs to match the contract.</strong> The line items in your JobTread budget should mirror the schedule of values in the contract with the GC. If they don't, the G703 won't reflect what the GC expects to see.</li>
+    <li><strong>Invoice history needs to be complete in JobTread.</strong> Every previous pay application needs to be recorded as an invoice in JobTread, not just in QuickBooks. This is what the "billed previously" column in the G703 pulls from.</li>
+    <li><strong>Completion percentages need to be updated.</strong> Someone needs to enter actual percent complete by line item after each site visit. This is the one piece that can't be fully automated — it requires a judgment call in the field.</li>
+  </ul>
+
+  <h2>Retainage: the piece most contractors handle wrong</h2>
+
+  <p>Retainage — the percentage the GC withholds from each payment until substantial completion — needs to be tracked separately in both JobTread and QuickBooks. Many contractors track it in one but not the other, which creates a reconciliation problem at job close when the retainage is finally released.</p>
+
+  <p>The correct setup: retainage is tracked as a separate line item in JobTread invoices and as a separate account in QuickBooks, so the balance is visible in both systems and reconciles automatically.</p>
+
+  <hr>
+
+  <div class="cta-block">
+    <h2>Spending hours on AIA invoicing every month?</h2>
+    <p>I build AIA invoice generators for specialty contractors — pulling directly from JobTread data, producing properly formatted G702/G703 documents in minutes. Fixed price, no ongoing retainer.</p>
+    <a href="/#contact-form" class="cta-btn">Start a conversation →</a>
+  </div>
+
+</div>
+</body>
+</html>
