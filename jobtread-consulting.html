@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>JobTread Consultant for Specialty Contractors — TradeOpsLab</title>
+<meta name="description" content="Independent JobTread consultant helping specialty contractors build live dashboards, AI estimating tools, job costing systems, and AIA invoicing on top of their JobTread and QuickBooks setup. Fixed price, delivered in weeks.">
+<meta name="keywords" content="JobTread consultant, JobTread consulting, JobTread setup, JobTread QuickBooks integration, JobTread dashboard, JobTread painting contractor, JobTread roofing contractor, JobTread specialist, JobTread implementation">
+<link rel="canonical" href="https://www.tradeopslab.com/jobtread-consulting.html">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.tradeopslab.com/jobtread-consulting.html">
+<meta property="og:title" content="JobTread Consultant for Specialty Contractors — TradeOpsLab">
+<meta property="og:description" content="Independent JobTread consultant helping specialty contractors build live dashboards, AI estimating, job costing, and AIA invoicing on top of their existing JobTread stack.">
+<meta property="og:site_name" content="TradeOpsLab">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "TradeOpsLab — JobTread Consulting",
+  "url": "https://www.tradeopslab.com/jobtread-consulting.html",
+  "description": "Independent JobTread consultant for specialty contractors. Live dashboards, AI estimating, job costing, and AIA invoicing built on top of JobTread and QuickBooks.",
+  "author": {
+    "@type": "Person",
+    "name": "Andres Bedoya",
+    "url": "https://www.tradeopslab.com"
+  },
+  "serviceType": [
+    "JobTread Consulting",
+    "JobTread Dashboard Setup",
+    "JobTread QuickBooks Integration",
+    "JobTread Implementation",
+    "Contractor Financial Dashboard"
+  ],
+  "areaServed": "United States"
+}
+</script>
+
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #1a1814; --ink-mid: #4a4540; --ink-light: #8a8278;
+    --paper: #f5f2ed; --paper-warm: #ede9e2; --accent: #c8440a;
+    --rule: #d8d2c8; --mono: 'DM Mono', monospace;
+    --serif: 'Libre Baskerville', Georgia, serif;
+    --sans: 'Figtree', sans-serif; --display: 'Bebas Neue', sans-serif;
+  }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  /* NAV */
+  nav { position: sticky; top: 0; z-index: 100; padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; background: rgba(245,242,237,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
+  .nav-logo { font-family: var(--display); font-size: 1.4rem; letter-spacing: 0.05em; color: var(--ink); text-decoration: none; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+  .nav-links a { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mid); text-decoration: none; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta { background: var(--ink) !important; color: var(--paper) !important; padding: 0.45rem 1rem !important; border-radius: 2px; }
+  .nav-cta:hover { background: var(--accent) !important; }
+
+  /* HERO */
+  .hero { background: var(--ink); padding: 6rem 2rem 5rem; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 40px 40px; }
+  .hero::after { content: ''; position: absolute; bottom: -100px; right: -100px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(200,68,10,0.12) 0%, transparent 70%); }
+  .hero-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 2; }
+  .eyebrow { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+  .eyebrow::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--accent); }
+  .hero h1 { font-family: var(--display); font-size: clamp(2.8rem, 6vw, 5rem); line-height: 0.95; letter-spacing: 0.02em; color: #fff; margin-bottom: 1.5rem; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero-sub { font-size: 1.05rem; color: rgba(255,255,255,0.55); max-width: 560px; margin-bottom: 2.5rem; font-weight: 400; line-height: 1.7; }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+  .btn-primary { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; padding: 0.875rem 2rem; border-radius: 2px; font-size: 0.875rem; font-weight: 500; transition: background 0.15s; }
+  .btn-primary:hover { background: #a8360a; }
+  .btn-secondary { display: inline-block; color: rgba(255,255,255,0.5); text-decoration: none; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 2px; transition: color 0.15s; }
+  .btn-secondary:hover { color: #fff; }
+
+  /* DISCLAIMER */
+  .disclaimer { background: var(--paper-warm); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 0.75rem 2rem; text-align: center; }
+  .disclaimer p { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.08em; color: var(--ink-light); }
+
+  /* STATS STRIP */
+  .stats-strip { background: var(--accent); padding: 1.5rem 2rem; }
+  .stats-inner { max-width: 860px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+  .stat { text-align: center; }
+  .stat-num { font-family: var(--display); font-size: 2.2rem; color: #fff; line-height: 1; }
+  .stat-label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-top: 0.25rem; }
+
+  /* SECTIONS */
+  .section { max-width: 860px; margin: 0 auto; padding: 5rem 2rem; }
+  .section-label { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--rule); display: inline-block; }
+  .section h2 { font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 700; color: var(--ink); margin-bottom: 1.25rem; line-height: 1.25; margin-top: 0.75rem; }
+  .section p { color: var(--ink-mid); font-size: 1rem; margin-bottom: 1.25rem; line-height: 1.75; }
+  .section strong { color: var(--ink); font-weight: 500; }
+
+  /* WHAT I DO GRID */
+  .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-top: 2rem; }
+  .service-card { border: 1px solid var(--rule); border-radius: 4px; padding: 1.75rem; background: #fff; }
+  .service-num { font-family: var(--display); font-size: 2.5rem; color: var(--rule); line-height: 1; margin-bottom: 0.5rem; }
+  .service-title { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 0.75rem; }
+  .service-desc { font-size: 0.875rem; color: var(--ink-mid); line-height: 1.6; }
+  .service-tag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; display: block; }
+
+  /* WHY NOT JOBTREAD DIRECTLY */
+  .callout { background: var(--paper-warm); border-left: 3px solid var(--accent); padding: 1.5rem 2rem; border-radius: 0 4px 4px 0; margin: 2rem 0; }
+  .callout p { margin-bottom: 0; font-style: italic; color: var(--ink); }
+
+  /* PAIN POINTS */
+  .pain-list { list-style: none; margin: 1.5rem 0; }
+  .pain-list li { display: flex; align-items: flex-start; gap: 1rem; padding: 0.875rem 0; border-bottom: 1px solid var(--rule); font-size: 0.95rem; color: var(--ink-mid); }
+  .pain-list li:last-child { border-bottom: none; }
+  .pain-icon { width: 22px; height: 22px; background: var(--accent); border-radius: 50%; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: white; font-weight: 700; }
+
+  /* PROCESS */
+  .process-strip { background: var(--ink); padding: 5rem 2rem; }
+  .process-inner { max-width: 860px; margin: 0 auto; }
+  .process-strip .section-label { color: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.08); }
+  .process-strip h2 { font-family: var(--display); font-size: clamp(2rem, 4vw, 3.5rem); color: #fff; margin-bottom: 2.5rem; line-height: 1; letter-spacing: 0.02em; margin-top: 0.75rem; }
+  .process-strip h2 em { font-style: normal; color: var(--accent); }
+  .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid rgba(255,255,255,0.07); border-radius: 4px; overflow: hidden; }
+  .step { padding: 1.75rem; border-right: 1px solid rgba(255,255,255,0.07); }
+  .step:last-child { border-right: none; }
+  .step-num { font-family: var(--display); font-size: 3rem; color: rgba(255,255,255,0.06); line-height: 1; margin-bottom: 0.75rem; }
+  .step-title { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+  .step-desc { font-size: 0.825rem; color: rgba(255,255,255,0.4); line-height: 1.6; }
+  .step-time { margin-top: 1rem; font-family: var(--mono); font-size: 0.6rem; color: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* CASE STUDY TEASER */
+  .case-strip { background: var(--paper-warm); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 5rem 2rem; }
+  .case-inner { max-width: 860px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .case-inner h2 { font-family: var(--serif); font-size: 1.75rem; font-weight: 700; color: var(--ink); margin-bottom: 1rem; line-height: 1.3; margin-top: 0.75rem; }
+  .case-inner p { color: var(--ink-mid); font-size: 0.95rem; margin-bottom: 1rem; }
+  .case-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 0.875rem; }
+  .case-metric { background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; padding: 1rem; }
+  .case-metric-num { font-family: var(--serif); font-size: 1.6rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 0.25rem; }
+  .case-metric-label { font-size: 0.75rem; color: var(--ink-light); }
+
+  /* FAQ */
+  .faq-list { margin-top: 1.5rem; }
+  .faq-item { border-bottom: 1px solid var(--rule); padding: 1.5rem 0; }
+  .faq-q { font-family: var(--serif); font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.75rem; }
+  .faq-a { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.7; }
+
+  /* CTA */
+  .cta-strip { background: var(--ink); padding: 5rem 2rem; }
+  .cta-inner { max-width: 860px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .cta-strip h2 { font-family: var(--display); font-size: clamp(2.5rem, 5vw, 4rem); color: #fff; line-height: 0.95; letter-spacing: 0.02em; }
+  .cta-strip h2 em { font-style: normal; color: var(--accent); }
+  .cta-right p { color: rgba(245,242,237,0.5); margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.7; }
+
+  /* FORM */
+  .contact-form { margin-top: 0; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.75rem; }
+  .form-row .form-group { margin-bottom: 0; }
+  .form-group label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+  .form-group input, .form-group textarea, .form-group select { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 2px; padding: 0.75rem 1rem; font-family: var(--sans); font-size: 0.875rem; color: rgba(255,255,255,0.8); outline: none; width: 100%; font-weight: 300; transition: border-color 0.15s; }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.2); }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--accent); }
+  .form-group textarea { resize: none; }
+  .form-group select option { background: #1a1814; color: #fff; }
+  .form-submit { width: 100%; background: var(--accent); color: #fff; border: none; padding: 0.875rem 2rem; border-radius: 2px; font-family: var(--sans); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: background 0.15s; margin-top: 0.25rem; }
+  .form-submit:hover { background: #a8360a; }
+  .form-success { display: none; margin-top: 1rem; padding: 0.875rem 1rem; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); border-radius: 2px; font-family: var(--mono); font-size: 0.75rem; color: #4ade80; }
+  .form-note { margin-top: 0.875rem; font-family: var(--mono); font-size: 0.6rem; color: rgba(255,255,255,0.2); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* FOOTER */
+  footer { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.06); padding: 2rem 4rem; display: flex; align-items: center; justify-content: space-between; }
+  .footer-logo { font-family: var(--display); font-size: 1.2rem; color: rgba(255,255,255,0.3); letter-spacing: 0.05em; }
+  .footer-logo span { color: var(--accent); }
+  .footer-right { font-family: var(--mono); font-size: 0.65rem; color: rgba(255,255,255,0.2); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 4rem 1.5rem 3rem; }
+    .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    .section { padding: 3.5rem 1.5rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .process-strip { padding: 3.5rem 1.5rem; }
+    .process-steps { grid-template-columns: 1fr 1fr; }
+    .case-strip { padding: 3.5rem 1.5rem; }
+    .case-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .cta-strip { padding: 3.5rem 1.5rem; }
+    .cta-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    .hero-actions { flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 500px) {
+    .process-steps { grid-template-columns: 1fr; }
+    .case-metrics { grid-template-columns: 1fr 1fr; }
+    .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Trade<span>Ops</span>Lab</a>
+  <ul class="nav-links">
+    <li><a href="/#what-i-do">What I Do</a></li>
+    <li><a href="/#process">How It Works</a></li>
+    <li><a href="/case-study.html">Case Study</a></li>
+    <li><a href="/#resources">Resources</a></li>
+    <li><a href="#contact-form" class="nav-cta">Get in Touch</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Independent JobTread Consultant</div>
+    <h1>Get more out of<br><em>JobTread.</em></h1>
+    <p class="hero-sub">Most specialty contractors using JobTread are getting 20% of what the platform can do. I build the dashboards, automations, and integrations that unlock the other 80% — connected to your real data, delivered in weeks.</p>
+    <div class="hero-actions">
+      <a href="#contact-form" class="btn-primary">Start a conversation</a>
+      <a href="/case-study.html" class="btn-secondary">See what I built →</a>
+    </div>
+  </div>
+</div>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  <p>TradeOpsLab is an independent consulting practice and is not affiliated with, endorsed by, or a partner of JobTread Software. JobTread is a trademark of JobTread Software, Inc.</p>
+</div>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat">
+      <div class="stat-num">140+</div>
+      <div class="stat-label">Jobs tracked for one client</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">8 wk</div>
+      <div class="stat-label">From zero to full platform</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Tools built on JobTread stack</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">$0</div>
+      <div class="stat-label">New software required</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT I DO -->
+<div class="section" id="services">
+  <div class="section-label">What I Build</div>
+  <h2>The JobTread integrations and tools your platform is missing</h2>
+  <p>JobTread is a powerful platform. But out of the box it doesn't give you live GP% tracking, AI-powered estimating, automated AIA invoicing, or a financial dashboard that connects to QuickBooks in real time. I build those things — on top of your existing JobTread account, without replacing what's already working.</p>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-tag">Most Popular</span>
+      <div class="service-num">01</div>
+      <div class="service-title">Live Financial Dashboard</div>
+      <div class="service-desc">Pipeline value, GP% by job, revenue vs. goal, AR outstanding — all pulling live from JobTread and QuickBooks. No exports, no manual updates. Delivered in 2 weeks.</div>
+    </div>
+    <div class="service-card">
+      <span class="service-tag">Save Hours Per Bid</span>
+      <div class="service-num">02</div>
+      <div class="service-title">AI Estimating Tool</div>
+      <div class="service-desc">Describe a job scope by voice or text. The tool generates a structured budget and pushes it directly into JobTread as a draft — ready to review in minutes, not hours.</div>
+    </div>
+    <div class="service-card">
+      <span class="service-tag">Catch Problems Early</span>
+      <div class="service-num">03</div>
+      <div class="service-title">Job Scorecard</div>
+      <div class="service-desc">Per-job cost burn vs. budget, invoicing status, and AR — updated daily from JobTread and QuickBooks. See which jobs are on track and which aren't before it's too late.</div>
+    </div>
+    <div class="service-card">
+      <span class="service-tag">GC Work</span>
+      <div class="service-num">04</div>
+      <div class="service-title">AIA Invoice Generator</div>
+      <div class="service-desc">Auto-generate AIA G702/G703 forms from your JobTread job data. No more building pay applications from scratch — pull the data, review, submit.</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHO IT'S FOR -->
+<div style="background: var(--paper-warm); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);">
+  <div class="section">
+    <div class="section-label">Who This Is For</div>
+    <h2>Specialty contractors who are paying for JobTread but not getting full value</h2>
+    <p>If any of these sound familiar, we should talk:</p>
+    <ul class="pain-list">
+      <li><div class="pain-icon">✗</div><span>You're on JobTread but still doing estimating in spreadsheets — every bid starts from scratch</span></li>
+      <li><div class="pain-icon">✗</div><span>You have no live view of GP% — you find out if a job was profitable after it closes</span></li>
+      <li><div class="pain-icon">✗</div><span>JobTread and QuickBooks aren't connected in any useful way — reconciling them is manual work</span></li>
+      <li><div class="pain-icon">✗</div><span>You're doing GC work and building AIA forms from scratch every billing cycle</span></li>
+      <li><div class="pain-icon">✗</div><span>You have no single dashboard showing pipeline, cash position, and job health at once</span></li>
+    </ul>
+
+    <div class="callout">
+      <p>"The data is already in JobTread. It's just not surfaced anywhere useful. That's the gap I build."</p>
+    </div>
+
+    <p>I work with painting, roofing, flooring, and drywall contractors — typically 10 to 50 employees, $1M–$10M revenue, already on JobTread and QuickBooks.</p>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<div class="process-strip">
+  <div class="process-inner">
+    <div class="section-label">How It Works</div>
+    <h2>Scoped. Fixed price.<br><em>No surprises.</em></h2>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-title">Discovery</div>
+        <div class="step-desc">One call to understand your JobTread setup, your pain points, and what you actually need.</div>
+        <div class="step-time">30–60 min</div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-title">Proposal</div>
+        <div class="step-desc">A scoped, fixed-price proposal within 48 hours. No hourly billing, no open-ended engagements.</div>
+        <div class="step-time">48 hours</div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-title">Build</div>
+        <div class="step-desc">I connect to your JobTread and QuickBooks APIs and build. You get updates throughout.</div>
+        <div class="step-time">1–4 weeks</div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-title">Handoff</div>
+        <div class="step-desc">Live walkthrough, full documentation, and 30 days of support. You own everything.</div>
+        <div class="step-time">30-day support</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CASE STUDY -->
+<div class="case-strip">
+  <div class="case-inner">
+    <div>
+      <div class="section-label">Case Study</div>
+      <h2>Full JobTread ops platform for a commercial painting contractor — 8 weeks</h2>
+      <p>AI estimating, live GP% dashboard, job scorecard, AIA invoicing, and a role-based internal hub. All built on top of their existing JobTread and QuickBooks stack in Georgia.</p>
+      <p>140+ active jobs. Zero new software subscriptions.</p>
+      <a href="/case-study.html" class="btn-primary" style="margin-top: 1rem; display: inline-block;">Read the full case study →</a>
+    </div>
+    <div class="case-metrics">
+      <div class="case-metric">
+        <div class="case-metric-num">8 wk</div>
+        <div class="case-metric-label">Kickoff to deployed platform</div>
+      </div>
+      <div class="case-metric">
+        <div class="case-metric-num">5</div>
+        <div class="case-metric-label">Tools built on JobTread stack</div>
+      </div>
+      <div class="case-metric">
+        <div class="case-metric-num">Live</div>
+        <div class="case-metric-label">Real-time GP%, pipeline, AR</div>
+      </div>
+      <div class="case-metric">
+        <div class="case-metric-num">$0</div>
+        <div class="case-metric-label">New software subscriptions</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="section">
+  <div class="section-label">FAQ</div>
+  <h2>Common questions</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">Do I need to be on JobTread to work with you?</div>
+      <div class="faq-a">JobTread is where I specialize, but I can work with contractors on Buildertrend or other platforms too. If you're not on any platform yet, I can help you evaluate and implement the right one as part of the engagement.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What access do you need to my JobTread account?</div>
+      <div class="faq-a">I connect via JobTread's API — you generate an API key in your settings and share it with me. I never need your login credentials. You can revoke access at any time from your JobTread settings.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How long does a typical project take?</div>
+      <div class="faq-a">The Contractor Clarity Dashboard takes 2 weeks from kickoff to handoff. A full platform build — estimating tool, job scorecard, AIA invoicing — takes 6–8 weeks. Everything is scoped and priced upfront.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What happens after the project is delivered?</div>
+      <div class="faq-a">Every engagement includes 30 days of support. After that, you own everything — the code, the data connections, all of it. There's no ongoing retainer unless you want one.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Are you a JobTread partner or employee?</div>
+      <div class="faq-a">No — TradeOpsLab is an independent consulting practice. I'm not affiliated with, endorsed by, or employed by JobTread Software. I just build on top of their platform because it's the best option for specialty contractors.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <div class="cta-inner">
+    <h2>On JobTread and not getting<br><em>full value?</em></h2>
+    <div class="cta-right">
+      <p>One conversation — no pitch, no pressure. Tell me what you're dealing with and I'll tell you honestly if I can help.</p>
+      <form id="contact-form" class="contact-form" action="https://formspree.io/f/xqewnjeg" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" name="name" placeholder="Ryan Smith" required>
+          </div>
+          <div class="form-group">
+            <label>Company</label>
+            <input type="text" name="company" placeholder="Smith Painting Co.">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="ryan@smithpainting.com" required>
+        </div>
+        <div class="form-group">
+          <label>What are you trying to fix?</label>
+          <textarea name="message" rows="3" placeholder="e.g. We're on JobTread but have no visibility into GP% or job costing..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send Message →</button>
+        <div class="form-success">Got it — I'll be in touch within 24 hours.</div>
+      </form>
+      <div class="form-note">Or email: andres@tradeopslab.com</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Trade<span>Ops</span>Lab</div>
+  <div class="footer-right">Independent JobTread Consultant · tradeopslab.com</div>
+</footer>
+
+<script>
+  const form = document.getElementById('contact-form');
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = form.querySelector('.form-submit');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        form.reset();
+        form.querySelector('.form-success').style.display = 'block';
+        btn.style.display = 'none';
+      } else {
+        btn.textContent = 'Something went wrong — email andres@tradeopslab.com';
+        btn.disabled = false;
+      }
+    } catch {
+      btn.textContent = 'Something went wrong — email andres@tradeopslab.com';
+      btn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>
