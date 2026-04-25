@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>How to Connect JobTread and QuickBooks for Live Job Costing — TradeOpsLab</title>
+<meta name="description" content="Most contractors use JobTread and QuickBooks separately. Here's how to connect them for real-time job costing, GP% tracking, and financial visibility — without exporting spreadsheets.">
+<meta name="keywords" content="JobTread QuickBooks integration, JobTread job costing, QuickBooks contractor, live job costing, contractor financial dashboard, JobTread consultant">
+<link rel="canonical" href="https://www.tradeopslab.com/blog/jobtread-quickbooks-integration.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.tradeopslab.com/blog/jobtread-quickbooks-integration.html">
+<meta property="og:title" content="How to Connect JobTread and QuickBooks for Live Job Costing">
+<meta property="og:description" content="Most contractors use JobTread and QuickBooks separately. Here's how to connect them for real-time job costing and GP% tracking.">
+<meta property="og:site_name" content="TradeOpsLab">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Connect JobTread and QuickBooks for Live Job Costing",
+  "description": "Most contractors use JobTread and QuickBooks separately. Here's how to connect them for real-time job costing, GP% tracking, and financial visibility.",
+  "author": {
+    "@type": "Person",
+    "name": "Andres Bedoya",
+    "url": "https://www.tradeopslab.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "TradeOpsLab",
+    "url": "https://www.tradeopslab.com"
+  },
+  "keywords": "JobTread QuickBooks integration, job costing, contractor dashboard"
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=Figtree:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #1a1814; --ink-mid: #4a4540; --ink-light: #8a8278;
+    --paper: #f5f2ed; --paper-warm: #ede9e2; --accent: #c8440a;
+    --rule: #d8d2c8; --mono: 'DM Mono', monospace;
+    --serif: 'Libre Baskerville', Georgia, serif;
+    --sans: 'Figtree', sans-serif; --display: 'Bebas Neue', sans-serif;
+  }
+  html { font-size: 16px; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between;
+    background: rgba(245,242,237,0.95); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-logo { font-family: var(--display); font-size: 1.4rem; letter-spacing: 0.05em; color: var(--ink); text-decoration: none; }
+  .nav-logo span { color: var(--accent); }
+  .nav-back { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); text-decoration: none; transition: color 0.15s; }
+  .nav-back:hover { color: var(--accent); }
+
+  .hero { max-width: 720px; margin: 0 auto; padding: 4rem 2rem 2.5rem; }
+  .eyebrow { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+  .eyebrow::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--accent); }
+  .hero h1 { font-family: var(--serif); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 1.25rem; }
+  .hero-meta { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); padding-bottom: 1.5rem; border-bottom: 1px solid var(--rule); }
+
+  .content { max-width: 720px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+  .content h2 { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; color: var(--ink); margin: 2.5rem 0 1rem; line-height: 1.3; }
+  .content h3 { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 2rem 0 0.75rem; }
+  .content p { color: var(--ink-mid); font-size: 1rem; margin-bottom: 1.25rem; line-height: 1.75; }
+  .content strong { color: var(--ink); font-weight: 500; }
+  .content ul { margin: 0 0 1.25rem 1.5rem; }
+  .content ul li { color: var(--ink-mid); font-size: 1rem; margin-bottom: 0.5rem; line-height: 1.7; }
+
+  .callout { background: var(--paper-warm); border-left: 3px solid var(--accent); padding: 1.25rem 1.5rem; margin: 2rem 0; border-radius: 0 4px 4px 0; }
+  .callout p { margin-bottom: 0; font-style: italic; color: var(--ink); }
+
+  .cta-block { background: var(--ink); border-radius: 6px; padding: 2.5rem; margin-top: 4rem; }
+  .cta-block h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; color: var(--paper); margin-bottom: 0.75rem; }
+  .cta-block p { color: rgba(245,242,237,0.55); font-size: 0.9rem; margin-bottom: 1.25rem; }
+  .cta-btn { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; padding: 0.75rem 1.75rem; border-radius: 3px; font-size: 0.875rem; font-weight: 500; }
+  .cta-btn:hover { background: #a8360a; }
+
+  hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.5rem; }
+    .hero, .content { padding-left: 1.5rem; padding-right: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Trade<span>Ops</span>Lab</a>
+  <a href="/" class="nav-back">← Back to Home</a>
+</nav>
+
+<div class="hero">
+  <div class="eyebrow">JobTread · QuickBooks · Job Costing</div>
+  <h1>How to Connect JobTread and QuickBooks for Live Job Costing</h1>
+  <div class="hero-meta">By Andres Bedoya · TradeOpsLab · 6 min read</div>
+</div>
+
+<div class="content">
+
+  <p>Most specialty contractors are running two platforms — JobTread for project management and QuickBooks for accounting — and getting almost nothing out of the connection between them. Job costs live in one place, invoices in another, and the owner is manually reconciling both at the end of the month, or worse, at the end of the job.</p>
+
+  <p>This is a solvable problem. Here's what's actually happening and how to fix it.</p>
+
+  <h2>Why the native sync isn't enough</h2>
+
+  <p>JobTread and QuickBooks do have a built-in sync. It pushes invoices from JobTread into QuickBooks and pulls payment status back. For basic bookkeeping, that works fine. But for <strong>live job costing</strong> — knowing your GP% on an active job right now, not after it closes — the native sync falls short.</p>
+
+  <p>The problem is timing and granularity. QuickBooks knows what you've invoiced and what you've collected. JobTread knows what you've budgeted and what you've committed to spend. Neither platform, on its own, gives you a single view that answers the question every owner actually needs answered:</p>
+
+  <div class="callout">
+    <p>"On this job, right now — am I on track to hit my target margin, or am I already in trouble?"</p>
+  </div>
+
+  <p>To answer that question in real time, you need to pull data from both APIs simultaneously and do the math yourself.</p>
+
+  <h2>What live job costing actually requires</h2>
+
+  <p>A real job costing setup needs four data points per job, updated continuously:</p>
+
+  <ul>
+    <li><strong>Budgeted cost</strong> — what you planned to spend (from JobTread)</li>
+    <li><strong>Actual cost to date</strong> — what you've actually spent, including committed costs (from JobTread + QuickBooks)</li>
+    <li><strong>Contract value</strong> — what the client owes you (from JobTread)</li>
+    <li><strong>Amount collected</strong> — what you've actually received (from QuickBooks)</li>
+  </ul>
+
+  <p>From those four numbers you can calculate GP%, cost burn rate, and AR status in real time. The issue is that no out-of-the-box dashboard gives you all four in one place. That's what has to be built.</p>
+
+  <h2>The technical approach</h2>
+
+  <p>Both JobTread and QuickBooks have well-documented APIs. JobTread uses a JSON graph API (similar to GraphQL) that lets you query jobs, cost items, documents, and financial data with a single request. QuickBooks has a REST API that exposes invoices, payments, expenses, and journal entries.</p>
+
+  <p>The architecture that works best for a small contractor:</p>
+
+  <ul>
+    <li>A serverless backend (Vercel functions work well) that queries both APIs on a schedule or on demand</li>
+    <li>A lightweight database (Supabase) to cache results and track historical data</li>
+    <li>A dashboard layer that displays the combined data with calculated fields for GP%, burn rate, and AR</li>
+  </ul>
+
+  <p>The result is a dashboard that refreshes automatically, requires no manual exports, and gives the owner the same financial visibility on a job that's 20% complete as on one that's 80% done.</p>
+
+  <h2>What this looks like in practice</h2>
+
+  <p>For a commercial painting contractor in Georgia, we built exactly this. The dashboard pulls live data from both platforms and displays:</p>
+
+  <ul>
+    <li>Pipeline value by status — pending, approved, active</li>
+    <li>GP% per job, updated daily</li>
+    <li>Cost burn vs. budget — how much of the budget has been consumed</li>
+    <li>AR status — what's invoiced, what's collected, what's overdue</li>
+    <li>Revenue vs. annual goal</li>
+  </ul>
+
+  <p>The owner went from checking a spreadsheet once a week (if that) to having a live view on his phone at any time. When a job's cost burn starts outpacing the schedule, he sees it while there's still time to do something about it.</p>
+
+  <h2>Can you do this yourself?</h2>
+
+  <p>If you have a developer on staff or a technical cofounder, yes — the APIs are well-documented and the architecture is straightforward. Budget 3-4 weeks of development time for a solid first version.</p>
+
+  <p>If you don't have technical resources in-house, this is exactly the kind of build that makes sense to bring in a consultant for. It's a fixed-scope project with a clear deliverable, and once it's built, it runs without ongoing maintenance.</p>
+
+  <hr>
+
+  <div class="cta-block">
+    <h2>Already on JobTread and QuickBooks?</h2>
+    <p>I build live job costing dashboards for specialty contractors — fixed price, delivered in 2 weeks. If you're dealing with any of the problems above, let's talk.</p>
+    <a href="/#contact-form" class="cta-btn">Start a conversation →</a>
+  </div>
+
+</div>
+
+</body>
+</html>
