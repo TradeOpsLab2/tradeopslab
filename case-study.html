@@ -59,7 +59,21 @@
     color: var(--accent);
   }
 
-  .header-label {
+  .back-link {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .back-link:hover { color: var(--accent); }
+
+  @media (max-width: 500px) {
+    .header-label { display: none; }
+  }
     font-family: var(--mono);
     font-size: 0.65rem;
     letter-spacing: 0.15em;
@@ -568,6 +582,7 @@
 
 <header class="site-header">
   <a href="/" class="site-logo">Trade<span>Ops</span>Lab</a>
+  <a href="/" class="back-link">← Back to Home</a>
   <div class="header-label">Case Study</div>
 </header>
 
