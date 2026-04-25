@@ -27,6 +27,10 @@
 }
 </script>
 
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=Figtree:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
@@ -65,6 +69,19 @@
   .cta-btn { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; padding: 0.75rem 1.75rem; border-radius: 3px; font-size: 0.875rem; font-weight: 500; }
   .cta-btn:hover { background: #a8360a; }
   hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+  .cta-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .cta-form-group { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.75rem; }
+  .cta-form-row .cta-form-group { margin-bottom: 0; }
+  .cta-form-group label { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+  .cta-form-group input, .cta-form-group textarea { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); border-radius: 2px; padding: 0.75rem 1rem; font-family: var(--sans); font-size: 0.875rem; color: rgba(255,255,255,0.8); outline: none; width: 100%; }
+  .cta-form-group input::placeholder, .cta-form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
+  .cta-form-group input:focus, .cta-form-group textarea:focus { border-color: var(--accent); }
+  .cta-form-group textarea { resize: none; }
+  .cta-form-submit { width: 100%; background: var(--accent); color: #fff; border: none; padding: 0.875rem 2rem; border-radius: 2px; font-family: var(--sans); font-size: 0.875rem; font-weight: 500; cursor: pointer; margin-top: 0.25rem; }
+  .cta-form-submit:hover { background: #a8360a; }
+  .cta-form-success { display: none; margin-top: 1rem; padding: 0.875rem 1rem; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); border-radius: 2px; font-family: var(--mono); font-size: 0.75rem; color: #4ade80; }
+  .cta-note { margin-top: 1rem; font-family: var(--mono); font-size: 0.65rem; color: rgba(255,255,255,0.25); letter-spacing: 0.1em; text-transform: uppercase; }
+  @media (max-width: 600px) { .cta-form-row { grid-template-columns: 1fr; } }
   @media (max-width: 600px) { nav { padding: 1rem 1.5rem; } .hero, .content { padding-left: 1.5rem; padding-right: 1.5rem; } }
 </style>
 </head>
@@ -136,9 +153,46 @@
   <div class="cta-block">
     <h2>Not sure if your GP% numbers are accurate?</h2>
     <p>I help specialty contractors audit their JobTread and QuickBooks setup and build the dashboards that surface the real numbers. Fixed price, no ongoing retainer.</p>
-    <a href="/#contact-form" class="cta-btn">Start a conversation →</a>
+        <form class="blog-contact-form" action="https://formspree.io/f/xqewnjeg" method="POST">
+      <div class="cta-form-row">
+        <div class="cta-form-group">
+          <label>Your Name</label>
+          <input type="text" name="name" placeholder="Ryan Smith" required>
+        </div>
+        <div class="cta-form-group">
+          <label>Company</label>
+          <input type="text" name="company" placeholder="Smith Painting Co.">
+        </div>
+      </div>
+      <div class="cta-form-group">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="ryan@smithpainting.com" required>
+      </div>
+      <div class="cta-form-group">
+        <label>What are you dealing with?</label>
+        <textarea name="message" rows="3" placeholder="e.g. We're on JobTread but have no visibility into job profitability..."></textarea>
+      </div>
+      <button type="submit" class="cta-form-submit">Send Message &rarr;</button>
+      <div class="cta-form-success">Got it &mdash; I'll be in touch within 24 hours.</div>
+    </form>
+    <div class="cta-note">Or email: andres@tradeopslab.com</div>
   </div>
 
 </div>
+<script>
+  document.querySelectorAll(".blog-contact-form").forEach(function(form) {
+    form.addEventListener("submit", async function(e) {
+      e.preventDefault();
+      var btn = form.querySelector(".cta-form-submit");
+      btn.textContent = "Sending...";
+      btn.disabled = true;
+      try {
+        var res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { "Accept": "application/json" } });
+        if (res.ok) { form.reset(); form.querySelector(".cta-form-success").style.display = "block"; btn.style.display = "none"; }
+        else { btn.textContent = "Something went wrong — email andres@tradeopslab.com"; btn.disabled = false; }
+      } catch(err) { btn.textContent = "Something went wrong — email andres@tradeopslab.com"; btn.disabled = false; }
+    });
+  });
+</script>
 </body>
 </html>
