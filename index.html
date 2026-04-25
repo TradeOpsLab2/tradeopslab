@@ -787,7 +787,97 @@
     text-transform: uppercase;
   }
 
-  /* FOOTER */
+  /* FORM */
+  #contact-form { margin-top: 0; }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .form-row .form-group { margin-bottom: 0; }
+
+  .form-group label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .form-group input,
+  .form-group textarea {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 2px;
+    padding: 0.75rem 1rem;
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.8);
+    outline: none;
+    transition: border-color 0.15s, background 0.15s;
+    width: 100%;
+    font-weight: 300;
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: rgba(255,255,255,0.2);
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.07);
+  }
+
+  .form-group textarea { resize: none; }
+
+  .form-submit {
+    width: 100%;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 0.875rem 2rem;
+    border-radius: 2px;
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+    margin-top: 0.25rem;
+  }
+
+  .form-submit:hover { background: #a8360a; transform: translateY(-1px); }
+  .form-submit:active { transform: translateY(0); }
+
+  .form-success {
+    margin-top: 1rem;
+    padding: 0.875rem 1rem;
+    background: rgba(74, 222, 128, 0.1);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    border-radius: 2px;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: #4ade80;
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+
   footer {
     background: var(--ink);
     border-top: 1px solid rgba(255,255,255,0.06);
@@ -1080,11 +1170,31 @@
     <h2>Ready to actually<br>use what you're<br><em>paying for?</em></h2>
     <div class="cta-right">
       <p>If you're on JobTread or QuickBooks and not getting real value from them, let's talk. One conversation — no pitch, no pressure. Just an honest look at what's possible.</p>
-      <a href="mailto:andres@tradeopslab.com" class="cta-email-block">
-        <div class="cta-email-icon">✉</div>
-        <div class="cta-email-text">andres@tradeopslab.com</div>
-      </a>
-      <div class="cta-note">Typically responds within 24 hours</div>
+
+      <form id="contact-form" action="https://formspree.io/f/xqewnjeg" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Ryan Smith" required>
+          </div>
+          <div class="form-group">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company" placeholder="Smith Painting Co.">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="ryan@smithpainting.com" required>
+        </div>
+        <div class="form-group">
+          <label for="message">What are you dealing with?</label>
+          <textarea id="message" name="message" rows="3" placeholder="e.g. We're on JobTread but have no visibility into job profitability..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send Message →</button>
+        <div id="form-success" class="form-success" style="display:none;">Got it — I'll be in touch within 24 hours.</div>
+      </form>
+
+      <div class="cta-note" style="margin-top: 1rem;">Or email directly: andres@tradeopslab.com</div>
     </div>
   </div>
 </div>
@@ -1095,5 +1205,32 @@
   <div class="footer-right">© 2026 · tradeopslab.com</div>
 </footer>
 
+<script>
+  const form = document.getElementById('contact-form');
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = form.querySelector('.form-submit');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        form.reset();
+        document.getElementById('form-success').style.display = 'block';
+        btn.style.display = 'none';
+      } else {
+        btn.textContent = 'Something went wrong — email andres@tradeopslab.com';
+        btn.disabled = false;
+      }
+    } catch {
+      btn.textContent = 'Something went wrong — email andres@tradeopslab.com';
+      btn.disabled = false;
+    }
+  });
+</script>
 </body>
 </html>
