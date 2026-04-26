@@ -56,9 +56,10 @@
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { max-width: 100%; overflow-x: hidden; }
 
   :root {
     --ink: #1a1814;
@@ -69,7 +70,7 @@
     --accent: #c8440a;
     --accent-light: #f0e8e2;
     --rule: #d8d2c8;
-    --mono: 'DM Mono', monospace;
+    --mono: 'Inter', sans-serif;
     --serif: 'Libre Baskerville', Georgia, serif;
     --sans: 'Figtree', sans-serif;
     --display: 'Bebas Neue', sans-serif;
@@ -112,6 +113,7 @@
     max-width: 760px;
     margin: 0 auto;
     padding: 5rem 2rem 3rem;
+    box-sizing: border-box;
   }
 
   .eyebrow {
@@ -157,6 +159,7 @@
     max-width: 760px;
     margin: 0 auto 3rem;
     padding: 0 2rem;
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0;
@@ -724,9 +727,8 @@
   <div class="section">
     <div class="section-label">The Problem</div>
     <h2>They were running a $3M+ business without being able to see it clearly</h2>
-    <p>This commercial painting contractor in the Southeast had been growing steadily — 140+ jobs in their project management system, a mix of residential and commercial clients, national accounts alongside local work. But the visibility wasn't there.</p>
-    <p>Estimating was happening in spreadsheets, manually — every bid required pulling data from multiple places and reconstructing a budget by hand. Job costing was a rearview mirror exercise: you found out if a job was profitable after it was done. Invoicing for larger commercial jobs required AIA 702/703 forms that were being drafted from scratch each time.</p>
-    <p>They had JobTread for project management and QuickBooks for accounting. Both were active. Neither was connected to anything that gave the owner a real-time picture of the business.</p>
+    <p>A commercial painting contractor in the Southeast — 140+ active jobs, mix of residential and commercial work. Growing fast. But flying blind.</p>
+    <p>Estimating in spreadsheets. Job costing only visible after job close. AIA invoices drafted from scratch every billing cycle. JobTread and QuickBooks both active — but not connected to anything useful.</p>
 
     <div class="pull-quote">
       <p>"They were paying for two good platforms and getting maybe 20% of the value. The data was there — it just wasn't surfaced anywhere useful."</p>
@@ -738,7 +740,7 @@
   <div class="section">
     <div class="section-label">What I Built — Tool 1</div>
     <h2>A live financial dashboard connected to their actual data</h2>
-    <p>The first priority was visibility. I built a financial ops dashboard pulling live data from both JobTread and QuickBooks — no manual exports, no weekly updates. It refreshes automatically.</p>
+    <p>A live financial ops dashboard pulling from JobTread and QuickBooks simultaneously. No exports. No manual updates. Refreshes automatically.</p>
 
     <div class="screenshot-block">
       <div class="screenshot-label">Fig. 1 — Financial Operations Dashboard</div>
@@ -794,7 +796,7 @@
       </div>
     </div>
 
-    <p>The dashboard tracks pipeline value by job status, revenue vs. annual goal, gross profit percentage across active jobs, and AR outstanding — all in one view. The owner can check it on a phone in 30 seconds and know exactly where the business stands.</p>
+    <p>Pipeline, GP%, revenue vs. goal, and AR outstanding — one view, 30 seconds to read on any device.</p>
   </div>
 
   <hr class="section-rule">
@@ -802,8 +804,7 @@
   <div class="section">
     <div class="section-label">What I Built — Tool 2</div>
     <h2>An AI estimating tool that turns a scope description into a JobTread budget</h2>
-    <p>Estimating was the biggest time sink. The owner or estimator would review a job, write up a scope, then manually translate that into a JobTread budget — line item by line item. Every estimate took the same setup work, regardless of size.</p>
-    <p>I built an AI-powered estimating tool: describe the scope in plain text (or record a voice note on-site), and the tool generates a structured budget estimate and pushes it directly into JobTread as a draft budget — ready to review and adjust, not start from scratch.</p>
+    <p>Every estimate was being rebuilt from scratch. I built an AI estimating tool — describe the scope by voice or text, it generates a structured budget and pushes it into JobTread as a draft. Ready to review in minutes, not hours.</p>
 
     <div class="screenshot-block">
       <div class="screenshot-label">Fig. 2 — AI Estimating Tool</div>
@@ -938,22 +939,7 @@
 
   <hr class="section-rule">
 
-  <div class="section">
-    <div class="section-label">Technology</div>
-    <h2>The full stack</h2>
-    <p>Everything was built on top of the contractor's existing platforms. No new software subscriptions. No migrations. Just the connective tissue that was missing.</p>
-    <div class="stack-tags">
-      <span class="tag">React</span>
-      <span class="tag">Vercel</span>
-      <span class="tag">Supabase</span>
-      <span class="tag">JobTread API</span>
-      <span class="tag">QuickBooks API</span>
-      <span class="tag">Anthropic API</span>
-      <span class="tag">Deepgram</span>
-      <span class="tag">Resend</span>
-      <span class="tag">HTML / JS</span>
-    </div>
-  </div>
+  
 
   <div class="cta-block">
     <div class="eyebrow">Work With Me</div>
