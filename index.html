@@ -745,11 +745,42 @@
 
   .cta-section h2 em { font-style: normal; color: var(--accent); }
 
+  .cta-right {
+    width: 100%;
+    min-width: 0;
+  }
+
   .cta-right p {
     color: rgba(245,242,237,0.5);
     margin-bottom: 2rem;
     font-size: 0.975rem;
     line-height: 1.7;
+  }
+
+  /* Form inside CTA — ensure proper mobile sizing */
+  .cta-right #contact-form {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .cta-right .form-group {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .cta-right .form-group input,
+  .cta-right .form-group textarea {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 2px;
+  }
+
+  .cta-right .form-row {
+    width: 100%;
+    min-width: 0;
   }
 
   .cta-email-block {
@@ -1115,7 +1146,10 @@
     .case-teaser-inner { grid-template-columns: 1fr; gap: 2.5rem; padding: 0 1.5rem; }
     .cta-section { padding: 4rem 0; }
     .cta-inner { grid-template-columns: 1fr; gap: 2rem; padding: 0 1.5rem; }
-    .cta-right { width: 100%; }
+    .cta-right { width: 100%; min-width: 0; box-sizing: border-box; }
+    .cta-right #contact-form { width: 100%; }
+    .cta-right .form-group input,
+    .cta-right .form-group textarea { font-size: 16px; } /* prevents iOS zoom on focus */
     .form-row { grid-template-columns: 1fr; }
     .offers-grid { grid-template-columns: 1fr; }
     .process-steps { grid-template-columns: 1fr 1fr; }
