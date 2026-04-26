@@ -43,6 +43,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.tradeopslab.com/blog/jobtread-dashboard-setup.html</loc>
+    <lastmod>2026-04-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.tradeopslab.com/blog/jobtread-implementation-guide.html</loc>
+    <lastmod>2026-04-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.tradeopslab.com/blog/jobtread-features-painting-contractors.html</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
