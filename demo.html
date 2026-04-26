@@ -243,7 +243,28 @@ nav {
   font-size: 0.75rem;
   color: var(--ink-light);
 }
-.currency-input { position: relative; }
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+  .btn-opt {
+    background: var(--paper);
+    border: 1.5px solid var(--rule);
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--ink-mid);
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .btn-opt:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-opt.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 500; }
+  .currency-input { position: relative; }
 .currency-input::before {
   content: '$';
   position: absolute;
@@ -653,46 +674,50 @@ nav {
           <label>Company Name</label>
           <input type="text" id="company-name" placeholder="Smith Painting Co." maxlength="40">
         </div>
-        <div class="field">
+        <div class="field full">
           <label>Trade / Industry</label>
-          <select id="trade-type">
-            <option value="Painting">Painting Contractor</option>
-            <option value="Roofing">Roofing Contractor</option>
-            <option value="Flooring">Flooring Contractor</option>
-            <option value="Drywall">Drywall Contractor</option>
-            <option value="General">General Contractor</option>
-            <option value="Other">Other Specialty Trade</option>
-          </select>
+          <div class="btn-group" id="trade-type-group">
+            <button type="button" class="btn-opt active" data-val="Painting">Painting</button>
+            <button type="button" class="btn-opt" data-val="Roofing">Roofing</button>
+            <button type="button" class="btn-opt" data-val="Flooring">Flooring</button>
+            <button type="button" class="btn-opt" data-val="Drywall">Drywall</button>
+            <button type="button" class="btn-opt" data-val="General">General</button>
+            <button type="button" class="btn-opt" data-val="Other">Other</button>
+          </div>
+          <input type="hidden" id="trade-type" value="Painting">
         </div>
-        <div class="field">
+        <div class="field full">
           <label>Team Size</label>
-          <select id="team-size">
-            <option value="5-10">5–10 employees</option>
-            <option value="10-20" selected>10–20 employees</option>
-            <option value="20-35">20–35 employees</option>
-            <option value="35-50">35–50 employees</option>
-            <option value="50+">50+ employees</option>
-          </select>
+          <div class="btn-group" id="team-size-group">
+            <button type="button" class="btn-opt" data-val="5-10">5–10</button>
+            <button type="button" class="btn-opt active" data-val="10-20">10–20</button>
+            <button type="button" class="btn-opt" data-val="20-35">20–35</button>
+            <button type="button" class="btn-opt" data-val="35-50">35–50</button>
+            <button type="button" class="btn-opt" data-val="50+">50+</button>
+          </div>
+          <input type="hidden" id="team-size" value="10-20">
         </div>
-        <div class="field">
+        <div class="field full">
           <label>Project Management Software</label>
-          <select id="current-software">
-            <option value="JobTread">JobTread</option>
-            <option value="Buildertrend">Buildertrend</option>
-            <option value="CoConstruct">CoConstruct</option>
-            <option value="Spreadsheets">Spreadsheets only</option>
-            <option value="Nothing">No system yet</option>
-          </select>
+          <div class="btn-group" id="software-group">
+            <button type="button" class="btn-opt active" data-val="JobTread">JobTread</button>
+            <button type="button" class="btn-opt" data-val="Buildertrend">Buildertrend</button>
+            <button type="button" class="btn-opt" data-val="CoConstruct">CoConstruct</button>
+            <button type="button" class="btn-opt" data-val="Spreadsheets">Spreadsheets</button>
+            <button type="button" class="btn-opt" data-val="Nothing">None yet</button>
+          </div>
+          <input type="hidden" id="current-software" value="JobTread">
         </div>
-        <div class="field">
+        <div class="field full">
           <label>Accounting Software</label>
-          <select id="accounting-software">
-            <option value="QuickBooks">QuickBooks</option>
-            <option value="Xero">Xero</option>
-            <option value="FreshBooks">FreshBooks</option>
-            <option value="Spreadsheets">Spreadsheets only</option>
-            <option value="Nothing">No system yet</option>
-          </select>
+          <div class="btn-group" id="accounting-group">
+            <button type="button" class="btn-opt active" data-val="QuickBooks">QuickBooks</button>
+            <button type="button" class="btn-opt" data-val="Xero">Xero</button>
+            <button type="button" class="btn-opt" data-val="FreshBooks">FreshBooks</button>
+            <button type="button" class="btn-opt" data-val="Spreadsheets">Spreadsheets</button>
+            <button type="button" class="btn-opt" data-val="Nothing">None yet</button>
+          </div>
+          <input type="hidden" id="accounting-software" value="QuickBooks">
         </div>
       </div>
       <div class="btn-row">
@@ -919,6 +944,24 @@ nav {
 </footer>
 
 <script>
+// ── BUTTON GROUPS ─────────────────────────────────────────────────────────
+  document.querySelectorAll('.btn-group').forEach(function(group) {
+    group.querySelectorAll('.btn-opt').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        group.querySelectorAll('.btn-opt').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        // Update hidden input
+        var hiddenId = {
+          'trade-type-group': 'trade-type',
+          'team-size-group': 'team-size',
+          'software-group': 'current-software',
+          'accounting-group': 'accounting-software'
+        }[group.id];
+        if (hiddenId) document.getElementById(hiddenId).value = btn.dataset.val;
+      });
+    });
+  });
+
 // ── STATE ──────────────────────────────────────────────────────────────────
 var currentStep = 1;
 var data = {};
@@ -938,13 +981,43 @@ function nextStep(from) {
     data.accounting = document.getElementById('accounting-software').value;
   }
   if (from === 2) {
-    data.revenueGoal = parseFloat(document.getElementById('revenue-goal').value) || 1500000;
+    var goal = document.getElementById('revenue-goal').value;
+    var ytd = document.getElementById('revenue-ytd').value;
+    if (!goal && !ytd) {
+      alert('Please enter at least your revenue goal or YTD revenue to generate your dashboard.');
+      return;
+    }
+    data.revenueGoal = parseFloat(goal) || 1500000;
     data.revenueYTD = parseFloat(document.getElementById('revenue-ytd').value) || 840000;
     data.targetGP = parseFloat(document.getElementById('target-gp').value) || 35;
     data.actualGP = parseFloat(document.getElementById('actual-gp').value) || 31;
     data.pipeline = parseFloat(document.getElementById('pipeline-value').value) || 920000;
     data.ar = parseFloat(document.getElementById('ar-outstanding').value) || 145000;
     renderDashboard();
+
+    // Silent background capture of step 1+2 data
+    (function() {
+      var fd = new FormData();
+      fd.append('name', data.company);
+      fd.append('email', 'partial-demo-lead@tradeopslab.com');
+      fd.append('_subject', 'Demo Partial Lead: ' + data.company);
+      fd.append('message',
+        'PARTIAL DEMO — User completed steps 1 & 2 but may not have submitted contact form.\n\n' +
+        'Company: ' + data.company + '\n' +
+        'Trade: ' + (data.trade || '?') + '\n' +
+        'Team: ' + (data.teamSize || '?') + '\n' +
+        'Software: ' + (data.software || '?') + ' / ' + (data.accounting || '?') + '\n' +
+        'Revenue Goal: $' + (data.revenueGoal || '?') + '\n' +
+        'Revenue YTD: $' + (data.revenueYTD || '?') + '\n' +
+        'Target GP%: ' + (data.targetGP || '?') + '%\n' +
+        'Actual GP%: ' + (data.actualGP || '?') + '%\n' +
+        'Pipeline: $' + (data.pipeline || '?') + '\n' +
+        'AR: $' + (data.ar || '?')
+      );
+      fetch('https://formspree.io/f/xqewnjeg', {
+        method: 'POST', body: fd, headers: { 'Accept': 'application/json' }
+      }).catch(function(){});
+    })();
   }
   if (from === 3) {
     // Pre-fill contact form with what we know
