@@ -1114,7 +1114,9 @@
     .case-teaser { padding: 4rem 0; }
     .case-teaser-inner { grid-template-columns: 1fr; gap: 2.5rem; padding: 0 1.5rem; }
     .cta-section { padding: 4rem 0; }
-    .cta-inner { grid-template-columns: 1fr; gap: 2.5rem; padding: 0 1.5rem; }
+    .cta-inner { grid-template-columns: 1fr; gap: 2rem; padding: 0 1.5rem; }
+    .cta-right { width: 100%; }
+    .form-row { grid-template-columns: 1fr; }
     .offers-grid { grid-template-columns: 1fr; }
     .process-steps { grid-template-columns: 1fr 1fr; }
     .process { padding: 4rem 0; }
@@ -1139,6 +1141,10 @@
     .form-row { grid-template-columns: 1fr; }
     .hero-actions { flex-direction: column; align-items: flex-start; gap: 1rem; }
   }
+
+  /* Fix anchor scroll offset for sticky nav on mobile */
+  #contact-form { scroll-margin-top: 80px; }
+  #what-i-do, #process, #about, #resources, #work { scroll-margin-top: 80px; }
 </style>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-E19H7VEJCB"></script>
