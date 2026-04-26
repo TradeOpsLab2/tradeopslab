@@ -42,7 +42,7 @@
     --serif: 'Libre Baskerville', Georgia, serif;
     --sans: 'Figtree', sans-serif; --display: 'Bebas Neue', sans-serif;
   }
-  html { font-size: 16px; }
+  html { font-size: 16px; scroll-behavior: auto; }
   body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; -webkit-font-smoothing: antialiased; }
   .hero { max-width: 720px; margin: 0 auto; padding: 4rem 2rem 2.5rem; }
   .eyebrow { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
@@ -365,6 +365,41 @@
     document.querySelectorAll('.mobile-menu-link').forEach(function(link) {
       link.addEventListener('click', closeMenu);
       link.addEventListener('touchend', function(e) { closeMenu(); });
+    });
+  })();
+</script>
+
+<script>
+  // Scroll to hash on page load with nav offset
+  (function() {
+    function scrollToHash() {
+      var hash = window.location.hash;
+      if (!hash) return;
+      var target = document.querySelector(hash);
+      if (!target) return;
+      var navHeight = document.querySelector('nav') ? document.querySelector('nav').offsetHeight : 70;
+      setTimeout(function() {
+        var targetPos = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 16;
+        window.scrollTo({ top: targetPos, behavior: 'smooth' });
+      }, 100);
+    }
+    if (document.readyState === 'complete') {
+      scrollToHash();
+    } else {
+      window.addEventListener('load', scrollToHash);
+    }
+    // Also handle same-page anchor clicks
+    document.addEventListener('click', function(e) {
+      var anchor = e.target.closest('a[href^="#"]');
+      if (!anchor) return;
+      var href = anchor.getAttribute('href');
+      if (href === '#') return;
+      var target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      var navHeight = document.querySelector('nav') ? document.querySelector('nav').offsetHeight : 70;
+      var targetPos = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 16;
+      window.scrollTo({ top: targetPos, behavior: 'smooth' });
     });
   })();
 </script>
