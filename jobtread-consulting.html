@@ -45,6 +45,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: auto; }
   html, body { max-width: 100%; overflow-x: hidden; }
   * { min-width: 0; }
   :root {
@@ -643,6 +644,41 @@
     document.querySelectorAll('.mobile-menu-link').forEach(function(link) {
       link.addEventListener('click', closeMenu);
       link.addEventListener('touchend', function(e) { closeMenu(); });
+    });
+  })();
+</script>
+
+<script>
+  // Scroll to hash on page load with nav offset
+  (function() {
+    function scrollToHash() {
+      var hash = window.location.hash;
+      if (!hash) return;
+      var target = document.querySelector(hash);
+      if (!target) return;
+      var navHeight = document.querySelector('nav') ? document.querySelector('nav').offsetHeight : 70;
+      setTimeout(function() {
+        var targetPos = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 16;
+        window.scrollTo({ top: targetPos, behavior: 'smooth' });
+      }, 100);
+    }
+    if (document.readyState === 'complete') {
+      scrollToHash();
+    } else {
+      window.addEventListener('load', scrollToHash);
+    }
+    // Also handle same-page anchor clicks
+    document.addEventListener('click', function(e) {
+      var anchor = e.target.closest('a[href^="#"]');
+      if (!anchor) return;
+      var href = anchor.getAttribute('href');
+      if (href === '#') return;
+      var target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      var navHeight = document.querySelector('nav') ? document.querySelector('nav').offsetHeight : 70;
+      var targetPos = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 16;
+      window.scrollTo({ top: targetPos, behavior: 'smooth' });
     });
   })();
 </script>

@@ -98,7 +98,7 @@
     --display: 'Bebas Neue', sans-serif;
   }
 
-  html { font-size: 16px; scroll-behavior: smooth; scroll-padding-top: 80px; }
+  html { font-size: 16px; scroll-behavior: auto; }
 
   body {
     background: var(--paper);
@@ -1598,6 +1598,21 @@
       link.addEventListener('click', closeMenu);
     });
   })();
+
+
+  // Smooth scroll with nav offset for all anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var href = this.getAttribute('href');
+      if (href === '#') return;
+      var target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      var navHeight = document.querySelector('nav') ? document.querySelector('nav').offsetHeight : 70;
+      var targetPos = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 16;
+      window.scrollTo({ top: targetPos, behavior: 'smooth' });
+    });
+  });
 
   // ── SCROLL SPY ──────────────────────────────────────────────────────────
   (function() {
