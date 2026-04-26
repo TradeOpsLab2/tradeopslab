@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Dashboard Demo — See Your Numbers — TradeOpsLab</title>
+<meta name="description" content="See exactly what your contractor financial dashboard would look like with your own numbers. Enter your data and preview the Contractor Clarity Dashboard live.">
+<link rel="canonical" href="https://www.tradeopslab.com/demo.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { max-width: 100%; overflow-x: hidden; }
+
+:root {
+  --ink: #1a1814;
+  --ink-mid: #4a4540;
+  --ink-light: #8a8278;
+  --paper: #f5f2ed;
+  --paper-warm: #ede9e2;
+  --accent: #c8440a;
+  --accent-light: #fdf0eb;
+  --rule: #d8d2c8;
+  --mono: 'Inter', sans-serif;
+  --serif: 'Libre Baskerville', Georgia, serif;
+  --sans: 'Figtree', sans-serif;
+  --display: 'Bebas Neue', sans-serif;
+  --green: #10b981;
+  --amber: #f59e0b;
+  --red: #ef4444;
+  --blue: #3b82f6;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  padding: 1.25rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(245,242,237,0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+.nav-logo { font-family: var(--display); font-size: 1.4rem; letter-spacing: 0.05em; color: var(--ink); text-decoration: none; }
+.nav-logo span { color: var(--accent); }
+.nav-back { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); text-decoration: none; transition: color 0.15s; font-weight: 500; }
+.nav-back:hover { color: var(--accent); }
+
+/* HERO */
+.demo-hero {
+  background: var(--ink);
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.demo-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.demo-hero::after {
+  content: '';
+  position: absolute;
+  top: -80px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 300px;
+  background: radial-gradient(ellipse, rgba(200,68,10,0.18) 0%, transparent 70%);
+}
+.demo-hero-inner { position: relative; z-index: 2; max-width: 640px; margin: 0 auto; }
+.demo-eyebrow {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(200,68,10,0.3);
+  padding: 0.3rem 0.85rem;
+  border-radius: 2px;
+  margin-bottom: 1.25rem;
+}
+.demo-hero h1 {
+  font-family: var(--display);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  color: #fff;
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
+}
+.demo-hero h1 em { font-style: normal; color: var(--accent); }
+.demo-hero p {
+  color: rgba(255,255,255,0.5);
+  font-size: 1rem;
+  max-width: 480px;
+  margin: 0 auto;
+  font-weight: 400;
+}
+
+/* STEP INDICATOR */
+.steps-bar {
+  background: var(--paper-warm);
+  border-bottom: 1px solid var(--rule);
+  padding: 1rem 2rem;
+}
+.steps-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  cursor: pointer;
+}
+.step-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--rule);
+  background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--ink-light);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.step-dot.active { border-color: var(--accent); background: var(--accent); color: #fff; }
+.step-dot.done { border-color: var(--green); background: var(--green); color: #fff; }
+.step-label {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  transition: color 0.2s;
+}
+.step-label.active { color: var(--accent); }
+.step-label.done { color: var(--green); }
+.step-connector { flex: 1; height: 1px; background: var(--rule); margin: 0 0.5rem; }
+.step-connector.done { background: var(--green); }
+
+/* MAIN LAYOUT */
+.demo-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
+}
+
+/* STEP PANELS */
+.step-panel { display: none; }
+.step-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+/* INPUT CARDS */
+.input-card {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+.input-card-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+.input-card-eyebrow {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+.input-card-title {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.input-card-sub {
+  font-size: 0.85rem;
+  color: var(--ink-light);
+  margin-top: 0.25rem;
+}
+
+/* FORM FIELDS */
+.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.field-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+.field.full { grid-column: 1 / -1; }
+.field label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+}
+.field input, .field select {
+  background: var(--paper);
+  border: 1.5px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.7rem 0.9rem;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+  width: 100%;
+  font-weight: 400;
+  -webkit-appearance: none;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--accent);
+  background: #fff;
+}
+.field .hint {
+  font-size: 0.75rem;
+  color: var(--ink-light);
+}
+.currency-input { position: relative; }
+.currency-input::before {
+  content: '$';
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-light);
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+.currency-input input { padding-left: 1.75rem; }
+
+/* BUTTONS */
+.btn-row { display: flex; gap: 1rem; align-items: center; margin-top: 1.5rem; }
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.875rem 2rem;
+  border-radius: 4px;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+.btn-primary:hover { background: #a8360a; transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+.btn-secondary {
+  background: none;
+  color: var(--ink-mid);
+  border: 1.5px solid var(--rule);
+  padding: 0.875rem 1.5rem;
+  border-radius: 4px;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-secondary:hover { border-color: var(--ink-mid); color: var(--ink); }
+
+/* DASHBOARD PREVIEW */
+.dashboard-preview {
+  background: #0f1117;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+  margin-bottom: 2rem;
+}
+.dash-chrome {
+  background: #1a1c24;
+  padding: 0.65rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.dash-dot { width: 9px; height: 9px; border-radius: 50%; }
+.dash-dot-r { background: #ff5f57; }
+.dash-dot-y { background: #febc2e; }
+.dash-dot-g { background: #28c840; }
+.dash-url {
+  margin-left: 0.75rem;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  padding: 0.2rem 0.75rem;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.3);
+  font-weight: 400;
+}
+.dash-body { padding: 1.5rem; }
+
+/* Dashboard header */
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.875rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.dash-company {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+}
+.dash-live {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: var(--green);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+/* KPI Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.875rem;
+  margin-bottom: 1.25rem;
+}
+.kpi-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 5px;
+  padding: 1rem;
+  transition: border-color 0.2s;
+}
+.kpi-card:hover { border-color: rgba(255,255,255,0.15); }
+.kpi-label {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 0.5rem;
+}
+.kpi-value {
+  font-family: var(--sans);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+.kpi-value.green { color: #4ade80; }
+.kpi-value.amber { color: #fbbf24; }
+.kpi-value.red { color: #f87171; }
+.kpi-sub {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.25);
+  font-family: var(--mono);
+  font-weight: 400;
+}
+
+/* Bar charts */
+.bar-section { margin-bottom: 0.75rem; }
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+.bar-name {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.4);
+  width: 140px;
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+}
+.bar-track {
+  flex: 1;
+  height: 5px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 0%;
+}
+.bar-fill.accent { background: var(--accent); }
+.bar-fill.green { background: #4ade80; }
+.bar-fill.amber { background: #fbbf24; }
+.bar-fill.blue { background: #60a5fa; }
+.bar-pct {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.3);
+  width: 36px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Job table */
+.job-table { width: 100%; border-collapse: collapse; }
+.job-table th {
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  padding: 0.5rem 0;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.job-table td {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.6);
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-family: var(--mono);
+  font-weight: 400;
+}
+.job-table td:first-child { color: rgba(255,255,255,0.8); font-weight: 500; }
+.status-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 2px;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.status-badge.on-track { background: rgba(74,222,128,0.15); color: #4ade80; }
+.status-badge.at-risk { background: rgba(251,191,36,0.15); color: #fbbf24; }
+.status-badge.over { background: rgba(248,113,113,0.15); color: #f87171; }
+
+/* SUMMARY / CTA SECTION */
+.summary-box {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.summary-metric { text-align: center; }
+.summary-num {
+  font-family: var(--display);
+  font-size: 2.5rem;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+.summary-label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+}
+
+.insight-box {
+  background: var(--accent-light);
+  border: 1px solid rgba(200,68,10,0.15);
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--ink-mid);
+  line-height: 1.6;
+}
+.insight-box strong { color: var(--accent); }
+
+/* CONTACT FORM STEP */
+.contact-step-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.contact-step-header h2 {
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+.contact-step-header p {
+  color: var(--ink-mid);
+  font-size: 0.95rem;
+}
+
+.contact-form-box {
+  background: var(--ink);
+  border-radius: 6px;
+  padding: 2rem;
+  max-width: 540px;
+  margin: 0 auto;
+}
+.contact-form-box .field label { color: rgba(255,255,255,0.4); }
+.contact-form-box .field input,
+.contact-form-box .field select,
+.contact-form-box .field textarea {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.85);
+}
+.contact-form-box .field input::placeholder,
+.contact-form-box .field textarea::placeholder { color: rgba(255,255,255,0.2); }
+.contact-form-box .field input:focus,
+.contact-form-box .field select:focus,
+.contact-form-box .field textarea:focus {
+  border-color: var(--accent);
+  background: rgba(255,255,255,0.09);
+}
+.contact-form-box .field textarea { resize: none; padding: 0.7rem 0.9rem; }
+.contact-form-box .btn-primary { width: 100%; justify-content: center; margin-top: 0.5rem; }
+.form-note-small {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  text-align: center;
+  margin-top: 1rem;
+}
+.form-success-msg {
+  display: none;
+  text-align: center;
+  padding: 2rem;
+}
+.form-success-msg .check { font-size: 2.5rem; margin-bottom: 1rem; }
+.form-success-msg h3 { font-family: var(--serif); font-size: 1.4rem; color: #fff; margin-bottom: 0.5rem; }
+.form-success-msg p { color: rgba(255,255,255,0.4); font-size: 0.9rem; }
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  #other-tools > div > div:last-of-type > div { grid-template-columns: 1fr !important; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .field-grid, .field-grid-3 { grid-template-columns: 1fr; }
+  .summary-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .bar-name { width: 90px; font-size: 0.55rem; }
+  .btn-row { flex-direction: column; }
+  .btn-primary, .btn-secondary { width: 100%; text-align: center; }
+}
+@media (max-width: 480px) {
+  .kpi-grid { grid-template-columns: 1fr 1fr; }
+  .dash-body { padding: 1rem; }
+  .job-table { font-size: 0.7rem; }
+  .demo-hero { padding: 3rem 1.5rem 2rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Trade<span>Ops</span>Lab</a>
+  <a href="/" class="nav-back">← Back to Home</a>
+</nav>
+
+<div class="demo-hero">
+  <div class="demo-hero-inner">
+    <div class="demo-eyebrow">Interactive Demo</div>
+    <h1>See your numbers.<br><em>Live.</em></h1>
+    <p>Enter your real data and preview exactly what your Contractor Clarity Dashboard would show — built on your JobTread and QuickBooks numbers.</p>
+  </div>
+</div>
+
+<!-- STEP INDICATOR -->
+<div class="steps-bar">
+  <div class="steps-inner">
+    <div class="step-indicator" onclick="goToStep(1)">
+      <div class="step-dot active" id="dot-1">1</div>
+      <div class="step-label active" id="label-1">Your Business</div>
+    </div>
+    <div class="step-connector" id="conn-1"></div>
+    <div class="step-indicator" onclick="goToStep(2)">
+      <div class="step-dot" id="dot-2">2</div>
+      <div class="step-label" id="label-2">Financials</div>
+    </div>
+    <div class="step-connector" id="conn-2"></div>
+    <div class="step-indicator" onclick="goToStep(3)">
+      <div class="step-dot" id="dot-3">3</div>
+      <div class="step-label" id="label-3">Your Dashboard</div>
+    </div>
+    <div class="step-connector" id="conn-3"></div>
+    <div class="step-indicator" onclick="goToStep(4)">
+      <div class="step-dot" id="dot-4">4</div>
+      <div class="step-label" id="label-4">Get It Built</div>
+    </div>
+  </div>
+</div>
+
+<div class="demo-main">
+
+  <!-- STEP 1: BUSINESS INFO -->
+  <div class="step-panel active" id="step-1">
+    <div class="input-card">
+      <div class="input-card-header">
+        <div class="input-card-eyebrow">Step 1 of 4</div>
+        <div class="input-card-title">Tell me about your business</div>
+        <div class="input-card-sub">This personalizes your dashboard preview with your actual company context.</div>
+      </div>
+      <div class="field-grid">
+        <div class="field full">
+          <label>Company Name</label>
+          <input type="text" id="company-name" placeholder="Smith Painting Co." maxlength="40">
+        </div>
+        <div class="field">
+          <label>Trade / Industry</label>
+          <select id="trade-type">
+            <option value="Painting">Painting Contractor</option>
+            <option value="Roofing">Roofing Contractor</option>
+            <option value="Flooring">Flooring Contractor</option>
+            <option value="Drywall">Drywall Contractor</option>
+            <option value="General">General Contractor</option>
+            <option value="Other">Other Specialty Trade</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Team Size</label>
+          <select id="team-size">
+            <option value="5-10">5–10 employees</option>
+            <option value="10-20" selected>10–20 employees</option>
+            <option value="20-35">20–35 employees</option>
+            <option value="35-50">35–50 employees</option>
+            <option value="50+">50+ employees</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Project Management Software</label>
+          <select id="current-software">
+            <option value="JobTread">JobTread</option>
+            <option value="Buildertrend">Buildertrend</option>
+            <option value="CoConstruct">CoConstruct</option>
+            <option value="Spreadsheets">Spreadsheets only</option>
+            <option value="Nothing">No system yet</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Accounting Software</label>
+          <select id="accounting-software">
+            <option value="QuickBooks">QuickBooks</option>
+            <option value="Xero">Xero</option>
+            <option value="FreshBooks">FreshBooks</option>
+            <option value="Spreadsheets">Spreadsheets only</option>
+            <option value="Nothing">No system yet</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="nextStep(1)">Next: Enter Your Numbers →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: FINANCIALS -->
+  <div class="step-panel" id="step-2">
+    <div class="input-card">
+      <div class="input-card-header">
+        <div class="input-card-eyebrow">Step 2 of 4</div>
+        <div class="input-card-title">Your financial picture</div>
+        <div class="input-card-sub">Estimates are fine — your dashboard will show real-time data once connected to your accounts.</div>
+      </div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Annual Revenue Goal</label>
+          <div class="currency-input">
+            <input type="number" id="revenue-goal" placeholder="1500000" min="0" max="99999999">
+          </div>
+          <span class="hint">Your target revenue for this year</span>
+        </div>
+        <div class="field">
+          <label>Revenue YTD (so far this year)</label>
+          <div class="currency-input">
+            <input type="number" id="revenue-ytd" placeholder="840000" min="0" max="99999999">
+          </div>
+          <span class="hint">What you've invoiced or collected so far</span>
+        </div>
+        <div class="field">
+          <label>Target Gross Profit %</label>
+          <input type="number" id="target-gp" placeholder="35" min="1" max="99" style="padding-right: 2rem;">
+          <span class="hint">Your target margin per job (e.g. 35%)</span>
+        </div>
+        <div class="field">
+          <label>Actual GP% (current average)</label>
+          <input type="number" id="actual-gp" placeholder="31" min="1" max="99">
+          <span class="hint">What you're actually hitting across jobs</span>
+        </div>
+        <div class="field">
+          <label>Active Pipeline Value</label>
+          <div class="currency-input">
+            <input type="number" id="pipeline-value" placeholder="920000" min="0" max="99999999">
+          </div>
+          <span class="hint">Pending + approved jobs not yet started</span>
+        </div>
+        <div class="field">
+          <label>AR Outstanding</label>
+          <div class="currency-input">
+            <input type="number" id="ar-outstanding" placeholder="145000" min="0" max="99999999">
+          </div>
+          <span class="hint">Invoiced but not yet collected</span>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-secondary" onclick="prevStep(2)">← Back</button>
+        <button class="btn-primary" onclick="nextStep(2)">Generate My Dashboard →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: DASHBOARD PREVIEW -->
+  <div class="step-panel" id="step-3">
+
+    <div class="dashboard-preview">
+      <div class="dash-chrome">
+        <div class="dash-dot dash-dot-r"></div>
+        <div class="dash-dot dash-dot-y"></div>
+        <div class="dash-dot dash-dot-g"></div>
+        <div class="dash-url" id="dash-url">ops.smithpaintingco.com/dashboard</div>
+      </div>
+      <div class="dash-body">
+        <div class="dash-header">
+          <div class="dash-company" id="dash-company-name">Smith Painting Co. — Financial Overview</div>
+          <div class="dash-live"><div class="live-dot"></div>Live</div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Pipeline Value</div>
+            <div class="kpi-value" id="kpi-pipeline">$920K</div>
+            <div class="kpi-sub">Active + Approved</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Revenue YTD</div>
+            <div class="kpi-value amber" id="kpi-revenue">$840K</div>
+            <div class="kpi-sub" id="kpi-revenue-sub">vs. $1.5M goal</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Avg GP%</div>
+            <div class="kpi-value" id="kpi-gp">31%</div>
+            <div class="kpi-sub" id="kpi-gp-sub">vs. 35% target</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">AR Outstanding</div>
+            <div class="kpi-value" id="kpi-ar">$145K</div>
+            <div class="kpi-sub" id="kpi-ar-sub">8 open invoices</div>
+          </div>
+        </div>
+
+        <!-- Progress Bars -->
+        <div class="bar-section">
+          <div class="bar-row">
+            <div class="bar-name">Revenue vs. Goal</div>
+            <div class="bar-track"><div class="bar-fill amber" id="bar-revenue" style="width:0%"></div></div>
+            <div class="bar-pct" id="pct-revenue">56%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-name">GP% vs. Target</div>
+            <div class="bar-track"><div class="bar-fill" id="bar-gp" style="width:0%"></div></div>
+            <div class="bar-pct" id="pct-gp">89%</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-name">Pipeline Coverage</div>
+            <div class="bar-track"><div class="bar-fill blue" id="bar-pipeline" style="width:0%"></div></div>
+            <div class="bar-pct" id="pct-pipeline">61%</div>
+          </div>
+        </div>
+
+        <!-- Job Table -->
+        <table class="job-table">
+          <thead>
+            <tr>
+              <th>Job</th>
+              <th>Contract</th>
+              <th>GP%</th>
+              <th>Cost Burn</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="job-table-body">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <!-- OTHER TOOLS SECTION (shown after step 3) -->
+    <div id="other-tools" style="display:none; margin-bottom:2rem;">
+      <div style="background:#fff; border:1px solid var(--rule); border-radius:6px; padding:2rem; margin-bottom:1.5rem;">
+        <div style="font-family:var(--mono); font-size:0.6rem; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent); margin-bottom:0.5rem;">The Dashboard Is Just One Piece</div>
+        <div style="font-family:var(--serif); font-size:1.15rem; font-weight:700; color:var(--ink); margin-bottom:1.25rem;">I build four tools on top of your JobTread + QuickBooks stack</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+          <div style="background:var(--paper); border:1px solid var(--rule); border-radius:4px; padding:1.25rem; border-left:3px solid var(--accent);">
+            <div style="font-family:var(--mono); font-size:0.6rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:0.4rem;">What you just saw</div>
+            <div style="font-weight:600; color:var(--ink); margin-bottom:0.4rem; font-size:0.95rem;">Contractor Clarity Dashboard</div>
+            <div style="font-size:0.82rem; color:var(--ink-light); line-height:1.5;">Live GP%, pipeline, AR, and revenue vs. goal — connected to your real data. Starting from $3,500.</div>
+          </div>
+          <div style="background:var(--paper); border:1px solid var(--rule); border-radius:4px; padding:1.25rem;">
+            <div style="font-family:var(--mono); font-size:0.6rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-light); margin-bottom:0.4rem;">Also available</div>
+            <div style="font-weight:600; color:var(--ink); margin-bottom:0.4rem; font-size:0.95rem;">AI Estimating Tool</div>
+            <div style="font-size:0.82rem; color:var(--ink-light); line-height:1.5;">Describe a scope by voice or text — get a structured JobTread budget in minutes. Starting from $4,500.</div>
+          </div>
+          <div style="background:var(--paper); border:1px solid var(--rule); border-radius:4px; padding:1.25rem;">
+            <div style="font-family:var(--mono); font-size:0.6rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-light); margin-bottom:0.4rem;">Also available</div>
+            <div style="font-weight:600; color:var(--ink); margin-bottom:0.4rem; font-size:0.95rem;">Job Scorecard</div>
+            <div style="font-size:0.82rem; color:var(--ink-light); line-height:1.5;">Per-job cost burn, invoicing status, and AR — updated daily. Know which jobs are at risk before they close. Starting from $2,500.</div>
+          </div>
+          <div style="background:var(--paper); border:1px solid var(--rule); border-radius:4px; padding:1.25rem;">
+            <div style="font-family:var(--mono); font-size:0.6rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-light); margin-bottom:0.4rem;">Also available</div>
+            <div style="font-weight:600; color:var(--ink); margin-bottom:0.4rem; font-size:0.95rem;">AIA Invoice Generator</div>
+            <div style="font-size:0.82rem; color:var(--ink-light); line-height:1.5;">Auto-generate G702/G703 forms from your JobTread job data. No more building pay apps from scratch. Starting from $3,000.</div>
+          </div>
+        </div>
+        <div style="margin-top:1.25rem; padding:1rem 1.25rem; background:var(--accent-light); border-radius:4px; font-size:0.85rem; color:var(--ink-mid); line-height:1.6;">
+          <strong style="color:var(--accent);">All four tools together:</strong> Starting from $8,000. Most clients start with the dashboard and add tools as they see the value.
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="prevStep(3)">← Edit Numbers</button>
+      <button class="btn-primary" onclick="nextStep(3)">Get This Built for Real →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: CONTACT -->
+  <div class="step-panel" id="step-4">
+    <div class="contact-step-header">
+      <h2>Ready to see real numbers?</h2>
+      <p>Your dashboard connected to live JobTread and QuickBooks data — delivered in 2 weeks, starting from $3,500.</p>
+    </div>
+
+    <div class="contact-form-box">
+      <div id="contact-form-inner">
+        <div class="field-grid" style="margin-bottom:1rem;">
+          <div class="field">
+            <label>Your Name</label>
+            <input type="text" id="contact-name" placeholder="Ryan Smith">
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="email" id="contact-email" placeholder="ryan@smithpainting.com">
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:1rem;">
+          <label>Phone (optional)</label>
+          <input type="tel" id="contact-phone" placeholder="+1 (555) 000-0000">
+        </div>
+        <div class="field" style="margin-bottom:1rem;">
+          <label>Biggest ops headache right now</label>
+          <textarea id="contact-message" rows="3" placeholder="e.g. No visibility into job profitability until it's too late..."></textarea>
+        </div>
+        <button class="btn-primary" onclick="submitContact()">Send — Let's Talk →</button>
+        <div class="form-note-small" style="margin-top:0.875rem;">I'll respond within 24 hours · andres@tradeopslab.com</div>
+      </div>
+      <div class="form-success-msg" id="form-success">
+        <div class="check">✓</div>
+        <h3>Got it — I'll be in touch soon.</h3>
+        <p>Check your inbox within 24 hours. In the meantime, take a look at the full case study.</p>
+        <a href="/case-study.html" style="display:inline-block;margin-top:1.25rem;color:var(--accent);font-family:var(--mono);font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;">View Case Study →</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer style="background:var(--ink);border-top:1px solid rgba(255,255,255,0.06);padding:2rem 4rem;display:flex;align-items:center;justify-content:space-between;">
+  <div style="font-family:var(--display);font-size:1.2rem;color:rgba(255,255,255,0.3);letter-spacing:0.05em;">Trade<span style="color:var(--accent);">Ops</span>Lab</div>
+  <div style="font-family:var(--mono);font-size:0.65rem;font-weight:500;color:rgba(255,255,255,0.2);letter-spacing:0.1em;text-transform:uppercase;">© 2026 · tradeopslab.com</div>
+</footer>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────────────────
+var currentStep = 1;
+var data = {};
+
+// ── STEP NAVIGATION ────────────────────────────────────────────────────────
+function goToStep(n) {
+  if (n > currentStep) return; // can't skip forward
+  showStep(n);
+}
+
+function nextStep(from) {
+  if (from === 1) {
+    data.company = document.getElementById('company-name').value || 'Your Company';
+    data.trade = document.getElementById('trade-type').value;
+    data.teamSize = document.getElementById('team-size').value;
+    data.software = document.getElementById('current-software').value;
+    data.accounting = document.getElementById('accounting-software').value;
+  }
+  if (from === 2) {
+    data.revenueGoal = parseFloat(document.getElementById('revenue-goal').value) || 1500000;
+    data.revenueYTD = parseFloat(document.getElementById('revenue-ytd').value) || 840000;
+    data.targetGP = parseFloat(document.getElementById('target-gp').value) || 35;
+    data.actualGP = parseFloat(document.getElementById('actual-gp').value) || 31;
+    data.pipeline = parseFloat(document.getElementById('pipeline-value').value) || 920000;
+    data.ar = parseFloat(document.getElementById('ar-outstanding').value) || 145000;
+    renderDashboard();
+  }
+  if (from === 3) {
+    // Pre-fill contact form with what we know
+    var nameEl = document.getElementById('contact-name');
+    if (nameEl && !nameEl.value) nameEl.value = '';
+  }
+  showStep(from + 1);
+}
+
+function prevStep(from) {
+  showStep(from - 1);
+}
+
+function showStep(n) {
+  // Hide all panels
+  document.querySelectorAll('.step-panel').forEach(function(p) { p.classList.remove('active'); });
+  document.getElementById('step-' + n).classList.add('active');
+
+  // Update step indicators
+  for (var i = 1; i <= 4; i++) {
+    var dot = document.getElementById('dot-' + i);
+    var label = document.getElementById('label-' + i);
+    dot.classList.remove('active', 'done');
+    label.classList.remove('active', 'done');
+    if (i < n) { dot.classList.add('done'); dot.textContent = '✓'; label.classList.add('done'); }
+    else if (i === n) { dot.classList.add('active'); dot.textContent = i; label.classList.add('active'); }
+    else { dot.textContent = i; }
+  }
+  for (var j = 1; j <= 3; j++) {
+    var conn = document.getElementById('conn-' + j);
+    if (conn) conn.classList.toggle('done', j < n);
+  }
+
+  currentStep = n;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── FORMAT HELPERS ─────────────────────────────────────────────────────────
+function fmt(n) {
+  if (n >= 1000000) return '$' + (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+  if (n >= 1000) return '$' + Math.round(n / 1000) + 'K';
+  return '$' + n;
+}
+
+function fmtPct(n) { return Math.round(n) + '%'; }
+
+// ── RENDER DASHBOARD ───────────────────────────────────────────────────────
+function renderDashboard() {
+  var d = data;
+  var revPct = Math.min(Math.round((d.revenueYTD / d.revenueGoal) * 100), 100);
+  var gpPct = Math.min(Math.round((d.actualGP / d.targetGP) * 100), 100);
+  var pipePct = Math.min(Math.round((d.pipeline / d.revenueGoal) * 100), 100);
+
+  // URL
+  var slug = d.company.toLowerCase().replace(/[^a-z0-9]+/g, '').substring(0, 20) || 'yourcompany';
+  document.getElementById('dash-url').textContent = 'ops.' + slug + '.com/dashboard';
+
+  // Company name
+  document.getElementById('dash-company-name').textContent = d.company + ' — Financial Overview';
+
+  // KPI values
+  document.getElementById('kpi-pipeline').textContent = fmt(d.pipeline);
+  document.getElementById('kpi-revenue').textContent = fmt(d.revenueYTD);
+  document.getElementById('kpi-revenue-sub').textContent = 'vs. ' + fmt(d.revenueGoal) + ' goal';
+
+  var gpEl = document.getElementById('kpi-gp');
+  gpEl.textContent = fmtPct(d.actualGP);
+  gpEl.className = 'kpi-value ' + (d.actualGP >= d.targetGP ? 'green' : d.actualGP >= d.targetGP * 0.9 ? 'amber' : 'red');
+
+  document.getElementById('kpi-gp-sub').textContent = 'vs. ' + fmtPct(d.targetGP) + ' target';
+  document.getElementById('kpi-ar').textContent = fmt(d.ar);
+
+  var arInvoices = Math.max(3, Math.round(d.ar / 18000));
+  document.getElementById('kpi-ar-sub').textContent = arInvoices + ' open invoices';
+
+  // Revenue bar color
+  var revBar = document.getElementById('bar-revenue');
+  revBar.className = 'bar-fill ' + (revPct >= 75 ? 'green' : revPct >= 50 ? 'amber' : 'accent');
+
+  // GP bar color
+  var gpBar = document.getElementById('bar-gp');
+  gpBar.className = 'bar-fill ' + (gpPct >= 95 ? 'green' : gpPct >= 80 ? 'amber' : 'accent');
+
+  document.getElementById('pct-revenue').textContent = revPct + '%';
+  document.getElementById('pct-gp').textContent = gpPct + '%';
+  document.getElementById('pct-pipeline').textContent = pipePct + '%';
+
+  // Show other tools section
+  var ot = document.getElementById("other-tools");
+  if (ot) ot.style.display = "block";
+
+  // Animate bars after a tick
+  setTimeout(function() {
+    document.getElementById('bar-revenue').style.width = revPct + '%';
+    document.getElementById('bar-gp').style.width = Math.min(gpPct, 100) + '%';
+    document.getElementById('bar-pipeline').style.width = Math.min(pipePct, 100) + '%';
+  }, 100);
+
+  // Generate sample job table
+  var trade = d.trade;
+  var avgJob = d.revenueYTD / 12;
+  var jobs = [
+    { name: trade + ' — Commercial Building A', contract: avgJob * 1.4, gp: d.actualGP + 4, burn: 72, status: 'on-track' },
+    { name: trade + ' — Office Complex', contract: avgJob * 0.9, gp: d.actualGP - 6, burn: 88, status: 'at-risk' },
+    { name: trade + ' — Retail Center', contract: avgJob * 1.1, gp: d.actualGP + 2, burn: 45, status: 'on-track' },
+    { name: trade + ' — Warehouse Project', contract: avgJob * 1.8, gp: d.actualGP - 12, burn: 95, status: 'over' },
+    { name: trade + ' — Municipal Contract', contract: avgJob * 0.7, gp: d.actualGP + 1, burn: 60, status: 'on-track' },
+  ];
+
+  var tbody = document.getElementById('job-table-body');
+  tbody.innerHTML = jobs.map(function(j) {
+    var statusLabel = j.status === 'on-track' ? 'On Track' : j.status === 'at-risk' ? 'At Risk' : 'Over Budget';
+    return '<tr>' +
+      '<td>' + j.name + '</td>' +
+      '<td>' + fmt(j.contract) + '</td>' +
+      '<td>' + fmtPct(j.gp) + '</td>' +
+      '<td>' + j.burn + '%</td>' +
+      '<td><span class="status-badge ' + j.status + '">' + statusLabel + '</span></td>' +
+    '</tr>';
+  }).join('');
+}
+
+// ── CONTACT FORM SUBMIT ────────────────────────────────────────────────────
+function submitContact() {
+  var name = document.getElementById('contact-name').value;
+  var email = document.getElementById('contact-email').value;
+  var phone = document.getElementById('contact-phone').value;
+  var message = document.getElementById('contact-message').value;
+
+  if (!email) { alert('Please enter your email address.'); return; }
+
+  var btn = document.querySelector('#contact-form-inner .btn-primary');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  // Build enriched message with all the demo data
+  var enriched = message + '\n\n--- Demo Data ---\n' +
+    'Company: ' + (data.company || 'Not provided') + '\n' +
+    'Trade: ' + (data.trade || 'Not provided') + '\n' +
+    'Team: ' + (data.teamSize || 'Not provided') + '\n' +
+    'Software: ' + (data.software || 'Not provided') + ' / ' + (data.accounting || 'Not provided') + '\n' +
+    'Revenue Goal: $' + (data.revenueGoal || 'Not provided') + '\n' +
+    'Revenue YTD: $' + (data.revenueYTD || 'Not provided') + '\n' +
+    'Target GP%: ' + (data.targetGP || 'Not provided') + '%\n' +
+    'Actual GP%: ' + (data.actualGP || 'Not provided') + '%\n' +
+    'Pipeline: $' + (data.pipeline || 'Not provided') + '\n' +
+    'AR Outstanding: $' + (data.ar || 'Not provided');
+
+  var formData = new FormData();
+  formData.append('name', name);
+  formData.append('email', email);
+  formData.append('phone', phone);
+  formData.append('message', enriched);
+  formData.append('_subject', 'Demo Lead: ' + (data.company || 'Unknown Company'));
+
+  fetch('https://formspree.io/f/xqewnjeg', {
+    method: 'POST',
+    body: formData,
+    headers: { 'Accept': 'application/json' }
+  }).then(function(res) {
+    if (res.ok) {
+      document.getElementById('contact-form-inner').style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    } else {
+      btn.textContent = 'Something went wrong — email andres@tradeopslab.com';
+      btn.disabled = false;
+    }
+  }).catch(function() {
+    btn.textContent = 'Something went wrong — email andres@tradeopslab.com';
+    btn.disabled = false;
+  });
+}
+</script>
+
+</body>
+</html>

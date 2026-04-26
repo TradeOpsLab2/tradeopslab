@@ -60,6 +60,8 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { max-width: 100%; overflow-x: hidden; }
+  body { padding-top: 0; }
+  .page-wrapper { max-width: 760px; margin: 0 auto; padding: 0 2rem; }
 
   :root {
     --ink: #1a1814;
@@ -113,6 +115,7 @@
     max-width: 760px;
     margin: 0 auto;
     padding: 5rem 2rem 3rem;
+    width: 100%;
     box-sizing: border-box;
   }
 
@@ -160,6 +163,7 @@
     margin: 0 auto 3rem;
     padding: 0 2rem;
     width: 100%;
+    box-sizing: border-box;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0;
@@ -194,7 +198,9 @@
   .content {
     max-width: 760px;
     margin: 0 auto;
-    padding: 0 2rem 6rem;
+    padding: 2rem 2rem 6rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .section {
