@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>JobTread Implementation Guide for Specialty Contractors — TradeOpsLab</title>
+<meta name="description" content="A practical JobTread implementation guide for painting, roofing, and specialty contractors — covering setup, configuration, QuickBooks sync, and the integrations that unlock the platform's real value.">
+<meta name="keywords" content="JobTread implementation, JobTread setup guide, JobTread for contractors, JobTread painting contractor, JobTread consultant, JobTread expert, JobTread QuickBooks setup, specialty contractor software setup">
+<link rel="canonical" href="https://www.tradeopslab.com/blog/jobtread-implementation-guide.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.tradeopslab.com/blog/jobtread-implementation-guide.html">
+<meta property="og:title" content="JobTread Implementation Guide for Specialty Contractors">
+<meta property="og:description" content="Practical JobTread implementation guide — setup, configuration, QuickBooks sync, and the integrations that make the platform actually work.">
+<meta property="og:site_name" content="TradeOpsLab">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "JobTread Implementation Guide for Specialty Contractors",
+  "description": "A practical JobTread implementation guide covering setup, configuration, QuickBooks sync, and custom integrations.",
+  "author": { "@type": "Person", "name": "Andres Bedoya", "url": "https://www.tradeopslab.com" },
+  "publisher": { "@type": "Organization", "name": "TradeOpsLab", "url": "https://www.tradeopslab.com" },
+  "keywords": "JobTread implementation, JobTread setup, JobTread consultant, specialty contractor"
+}
+</script>
+
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { max-width: 100%; overflow-x: hidden; }
+  :root {
+    --ink: #1a1814; --ink-mid: #4a4540; --ink-light: #8a8278;
+    --paper: #f5f2ed; --paper-warm: #ede9e2; --accent: #c8440a;
+    --accent-light: #fdf0eb; --rule: #d8d2c8;
+    --mono: 'Inter', sans-serif;
+    --serif: 'Libre Baskerville', Georgia, serif;
+    --sans: 'Figtree', sans-serif;
+    --display: 'Bebas Neue', sans-serif;
+  }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; background: rgba(245,242,237,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
+  .nav-logo { font-family: var(--display); font-size: 1.4rem; letter-spacing: 0.05em; color: var(--ink); text-decoration: none; flex-shrink: 0; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+  .nav-links a { font-family: var(--mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-mid); text-decoration: none; transition: color 0.15s; white-space: nowrap; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a.nav-active { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+  .nav-links .nav-cta { background: var(--ink) !important; color: var(--paper) !important; padding: 0.45rem 1rem; border-radius: 2px; border-bottom: none !important; }
+  .nav-links .nav-cta:hover { background: var(--accent) !important; }
+  .nav-links .nav-demo { background: var(--accent-light) !important; color: var(--accent) !important; padding: 0.4rem 0.9rem; border-radius: 2px; font-weight: 500; border: 1px solid rgba(200,68,10,0.2); }
+  .nav-links .nav-demo:hover { background: var(--accent) !important; color: #fff !important; }
+  #hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+  #hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.25s ease; transform-origin: center; }
+  #hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  #hamburger.open span:nth-child(2) { opacity: 0; }
+  #hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  #mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(26,24,20,0.5); z-index: 150; opacity: 0; transition: opacity 0.25s; }
+  #mobile-overlay.open { display: block; opacity: 1; }
+  #mobile-menu { position: fixed; top: 0; right: 0; width: 280px; height: 100vh; background: var(--paper); z-index: 160; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; box-shadow: -4px 0 32px rgba(0,0,0,0.12); }
+  #mobile-menu.open { transform: translateX(0); }
+  .mobile-menu-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--rule); }
+  #mobile-close { background: none; border: none; font-size: 1.1rem; color: var(--ink-light); cursor: pointer; padding: 4px; }
+  .mobile-nav { display: flex; flex-direction: column; padding: 1rem 0; flex: 1; }
+  .mobile-menu-link { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mid); text-decoration: none; padding: 1rem 1.5rem; border-bottom: 1px solid var(--rule); transition: color 0.15s, background 0.15s; }
+  .mobile-menu-link:hover { color: var(--accent); background: var(--paper-warm); }
+  .mobile-menu-link.nav-active { color: var(--accent); }
+  .mobile-menu-link.mobile-cta { margin: 1.5rem; border: none; background: var(--accent); color: #fff !important; text-align: center; border-radius: 2px; padding: 0.875rem 1rem; }
+  .mobile-demo-link { background: var(--accent-light) !important; color: var(--accent) !important; font-weight: 500; }
+  @media (max-width: 900px) { .nav-links { display: none; } #hamburger { display: flex; } nav { padding: 1rem 1.5rem; } }
+  .hero { max-width: 720px; margin: 0 auto; padding: 4rem 2rem 2.5rem; }
+  .eyebrow { font-family: var(--mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+  .eyebrow::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--accent); }
+  .hero h1 { font-family: var(--serif); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 1.25rem; }
+  .hero-meta { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); padding-bottom: 1.5rem; border-bottom: 1px solid var(--rule); }
+  .content { max-width: 720px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+  .content h2 { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; color: var(--ink); margin: 2.5rem 0 1rem; line-height: 1.3; }
+  .content h3 { font-family: var(--mono); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 2rem 0 0.75rem; }
+  .content p { color: var(--ink-mid); font-size: 1rem; margin-bottom: 1.25rem; line-height: 1.75; }
+  .content strong { color: var(--ink); font-weight: 500; }
+  .content ul, .content ol { margin: 0 0 1.25rem 1.5rem; }
+  .content ul li, .content ol li { color: var(--ink-mid); font-size: 1rem; margin-bottom: 0.5rem; line-height: 1.7; }
+  .callout { background: var(--paper-warm); border-left: 3px solid var(--accent); padding: 1.25rem 1.5rem; margin: 2rem 0; border-radius: 0 4px 4px 0; }
+  .callout p { margin-bottom: 0; font-style: italic; color: var(--ink); }
+  hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+  .cta-block { background: var(--ink); border-radius: 6px; padding: 2.5rem; margin-top: 4rem; }
+  .cta-block h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; color: var(--paper); margin-bottom: 0.75rem; }
+  .cta-block p { color: rgba(245,242,237,0.55); font-size: 0.9rem; margin-bottom: 1.25rem; }
+  .cta-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .cta-form-group { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.75rem; }
+  .cta-form-row .cta-form-group { margin-bottom: 0; }
+  .cta-form-group label { font-family: var(--mono); font-size: 0.6rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+  .cta-form-group input, .cta-form-group textarea { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); border-radius: 2px; padding: 0.75rem 1rem; font-family: var(--sans); font-size: 0.875rem; color: rgba(255,255,255,0.8); outline: none; width: 100%; }
+  .cta-form-group input::placeholder, .cta-form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
+  .cta-form-group input:focus, .cta-form-group textarea:focus { border-color: var(--accent); }
+  .cta-form-group textarea { resize: none; }
+  .cta-form-submit { width: 100%; background: var(--accent); color: #fff; border: none; padding: 0.875rem 2rem; border-radius: 2px; font-family: var(--sans); font-size: 0.875rem; font-weight: 500; cursor: pointer; }
+  .cta-form-submit:hover { background: #a8360a; }
+  .cta-form-success { display: none; margin-top: 1rem; padding: 0.875rem 1rem; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); border-radius: 2px; font-family: var(--mono); font-size: 0.75rem; color: #4ade80; }
+  .cta-note { margin-top: 1rem; font-family: var(--mono); font-size: 0.65rem; font-weight: 500; color: rgba(255,255,255,0.25); letter-spacing: 0.1em; text-transform: uppercase; }
+  @media (max-width: 600px) { .cta-form-row { grid-template-columns: 1fr; } .hero, .content { padding-left: 1.5rem; padding-right: 1.5rem; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Trade<span>Ops</span>Lab</a>
+  <ul class="nav-links">
+    <li><a href="/#what-i-do">What I Do</a></li>
+    <li><a href="/#process">How It Works</a></li>
+    <li><a href="/#about">About</a></li>
+    <li><a href="/#resources" class="nav-active">Resources</a></li>
+    <li><a href="/case-study.html">Case Study</a></li>
+    <li><a href="/jobtread-consulting.html">JobTread</a></li>
+    <li><a href="/demo.html" class="nav-demo">Try Demo</a></li>
+    <li><a href="/#contact-form" class="nav-cta">Get in Touch</a></li>
+  </ul>
+  <button id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div id="mobile-overlay"></div>
+<div id="mobile-menu">
+  <div class="mobile-menu-header">
+    <a href="/" class="nav-logo">Trade<span>Ops</span>Lab</a>
+    <button id="mobile-close" aria-label="Close">✕</button>
+  </div>
+  <nav class="mobile-nav">
+    <a href="/#what-i-do" class="mobile-menu-link">What I Do</a>
+    <a href="/#process" class="mobile-menu-link">How It Works</a>
+    <a href="/#about" class="mobile-menu-link">About</a>
+    <a href="/#resources" class="mobile-menu-link nav-active">Resources</a>
+    <a href="/case-study.html" class="mobile-menu-link">Case Study</a>
+    <a href="/jobtread-consulting.html" class="mobile-menu-link">JobTread</a>
+    <a href="/demo.html" class="mobile-menu-link mobile-demo-link">Try Demo →</a>
+    <a href="/#contact-form" class="mobile-menu-link mobile-cta">Get in Touch</a>
+  </nav>
+</div>
+
+<div class="hero">
+  <div class="eyebrow">JobTread · Implementation · Setup Guide</div>
+  <h1>JobTread Implementation Guide for Specialty Contractors</h1>
+  <div class="hero-meta">By Andres Bedoya · TradeOpsLab · 8 min read</div>
+</div>
+
+<div class="content">
+
+  <p>Most specialty contractors who sign up for JobTread go through the same pattern: they set it up quickly, start creating jobs, and within a few months realize they're only using a fraction of what the platform can do. Estimating is still partially in spreadsheets. The QuickBooks sync is on but not really trusted. Job costing is a manual exercise at the end of every project.</p>
+
+  <p>A proper <strong>JobTread implementation</strong> fixes this from the start — or, if you're already on the platform, corrects the gaps that have built up over time. This guide walks through the key setup decisions that determine whether JobTread actually works for your business.</p>
+
+  <h2>Phase 1 — Account structure and settings</h2>
+
+  <h3>Company information</h3>
+  <p>Before anything else, make sure your company information is complete — legal name, address, license numbers if applicable. This information flows into documents like estimates and invoices, so errors here show up on client-facing materials.</p>
+
+  <h3>User roles and permissions</h3>
+  <p>JobTread has a role-based permission system. Set up roles before you add team members — not after. Typical roles for a specialty contractor: Owner/Admin (full access), Project Manager (job access, no financial settings), Estimator (estimate creation, no cost visibility), Field Crew (time tracking, daily logs only). Getting this wrong means either giving people too much access or creating friction that makes the platform hard to use.</p>
+
+  <h3>Job numbering</h3>
+  <p>Configure your job numbering convention before you create your first job. Changing it later is painful. A format like YYYY-001 (year + sequential number) works well for most contractors and makes it easy to find jobs by year.</p>
+
+  <h2>Phase 2 — Pipeline and job status configuration</h2>
+
+  <p>JobTread's default job statuses — Created, Pending, Approved, Active, Closed — are a starting point, not a finished workflow. Configure custom statuses that match how your business actually moves work through the pipeline.</p>
+
+  <p>For most painting and specialty contractors, something like this works better:</p>
+
+  <ol>
+    <li><strong>Lead</strong> — initial inquiry, not yet estimated</li>
+    <li><strong>Estimate Sent</strong> — proposal delivered, awaiting decision</li>
+    <li><strong>Follow-up</strong> — chasing a response</li>
+    <li><strong>Approved</strong> — signed, not yet scheduled</li>
+    <li><strong>Scheduled</strong> — on the calendar, crew assigned</li>
+    <li><strong>Active</strong> — work in progress</li>
+    <li><strong>Punch List</strong> — primary work done, minor items remaining</li>
+    <li><strong>Invoiced</strong> — final invoice sent</li>
+    <li><strong>Closed</strong> — paid and complete</li>
+  </ol>
+
+  <p>This gives you a real pipeline view — you can see at a glance how many jobs are at each stage and where the bottlenecks are.</p>
+
+  <h2>Phase 3 — Budget and cost item templates</h2>
+
+  <p>This is where most implementations fall short. Budget templates determine whether your job costing data is meaningful or noise.</p>
+
+  <h3>Cost item categories</h3>
+  <p>Set up cost item categories that reflect how you actually track costs. For a painting contractor: Labor (broken down by type if needed — lead painter, helper, etc.), Materials (paint, primer, supplies), Subcontractors, Equipment/Rental, Overhead Allocation. Every job should use the same categories so you can compare margins across jobs meaningfully.</p>
+
+  <h3>Document templates</h3>
+  <p>Create estimate templates for each type of work you do — interior residential repaint, exterior commercial, new construction, etc. Each template should have the standard line items and markup rates pre-populated. When you get a new job that fits a template, duplicate it and adjust quantities. This alone cuts estimating time significantly.</p>
+
+  <div class="callout">
+    <p>The contractors who get the most out of JobTread are the ones who spend time on setup upfront. An hour configuring budget templates correctly saves dozens of hours rebuilding estimates from scratch over the next year.</p>
+  </div>
+
+  <h2>Phase 4 — QuickBooks integration setup</h2>
+
+  <p>The JobTread-QuickBooks sync is powerful but requires careful configuration. Out of the box, it pushes invoices from JobTread to QuickBooks and pulls payment status back. To make it actually useful:</p>
+
+  <h3>Chart of accounts mapping</h3>
+  <p>Each JobTread cost category needs to map to a QuickBooks account. This mapping determines where costs appear in your P&L. Get it wrong and your financial reports are meaningless. Work through each cost category and confirm the QuickBooks account mapping before you start entering live data.</p>
+
+  <h3>Customer and vendor sync</h3>
+  <p>Decide whether customers and vendors are created in JobTread or QuickBooks first. Pick one system as the source of truth and stick to it. Creating in JobTread first (which syncs to QuickBooks) is usually cleaner.</p>
+
+  <h3>Invoice workflow</h3>
+  <p>Configure how invoices flow between systems. The cleanest setup: create invoices in JobTread, sync to QuickBooks, receive payments in QuickBooks, pull payment status back to JobTread. This keeps your project data in JobTread and your financial records in QuickBooks without duplication.</p>
+
+  <h2>Phase 5 — Time tracking and daily logs</h2>
+
+  <p>If your crew isn't logging time in JobTread against specific jobs and cost categories, your job-level labor costs are invisible. Set up time tracking before your first active job:</p>
+
+  <ul>
+    <li>Configure time entry requirements — job selection should be mandatory, not optional</li>
+    <li>Set up the daily log template — what fields you want crew to fill out each day</li>
+    <li>Test the mobile experience — crew will use phones, make sure it works</li>
+    <li>Establish the daily routine — end-of-day log entry as a non-negotiable step</li>
+  </ul>
+
+  <h2>Phase 6 — Custom integrations and what's beyond the platform</h2>
+
+  <p>A properly configured JobTread implementation gets you 70% of the way to a well-run ops system. The remaining 30% requires building on top of the platform — this is where most contractors either stop or bring in outside help.</p>
+
+  <p>What you can't get from JobTread out of the box, even with perfect setup:</p>
+
+  <ul>
+    <li><strong>A live financial dashboard</strong> combining JobTread and QuickBooks data in real time — pipeline, GP%, revenue vs. goal, AR outstanding in one view</li>
+    <li><strong>AI-powered estimating</strong> — describing a scope and having a budget pushed into JobTread automatically</li>
+    <li><strong>AIA G702/G703 invoice generation</strong> — auto-populated from your JobTread job data for GC billing</li>
+    <li><strong>Custom job scorecards</strong> — per-job cost burn, invoicing status, and margin tracking with alert thresholds</li>
+  </ul>
+
+  <p>These are built using the <strong>JobTread API</strong>, which gives external tools full access to your job data. If you're a <strong>JobTread specialist or developer</strong>, the API is well-documented. If you're a contractor who wants these capabilities without building them yourself, this is what a <strong>JobTread consultant</strong> provides.</p>
+
+  <h2>Common implementation mistakes to avoid</h2>
+
+  <ul>
+    <li><strong>Skipping the setup and going live immediately</strong> — creates a mess that's hard to clean up later</li>
+    <li><strong>Not training the team</strong> — JobTread only works if everyone uses it consistently</li>
+    <li><strong>Inconsistent cost entry</strong> — some costs in JobTread, some in QuickBooks, reconciling manually</li>
+    <li><strong>Not using budget templates</strong> — rebuilding estimates from scratch every time</li>
+    <li><strong>Treating job statuses as suggestions</strong> — pipeline reports are meaningless if statuses aren't kept current</li>
+  </ul>
+
+  <hr>
+
+  <div class="cta-block">
+    <h2>Need help with your JobTread setup or implementation?</h2>
+    <p>I work with specialty contractors to implement JobTread correctly, connect it to QuickBooks, and build the custom tools that turn it into a real ops system. Fixed price, no retainer.</p>
+    <form class="blog-contact-form" action="https://formspree.io/f/xqewnjeg" method="POST">
+      <div class="cta-form-row">
+        <div class="cta-form-group">
+          <label>Your Name</label>
+          <input type="text" name="name" placeholder="Ryan Smith" required>
+        </div>
+        <div class="cta-form-group">
+          <label>Company</label>
+          <input type="text" name="company" placeholder="Smith Painting Co.">
+        </div>
+      </div>
+      <div class="cta-form-group">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="ryan@smithpainting.com" required>
+      </div>
+      <div class="cta-form-group">
+        <label>Where are you with JobTread?</label>
+        <textarea name="message" rows="3" placeholder="e.g. Just signed up and need help setting it up properly / Been on it for a year but not getting full value..."></textarea>
+      </div>
+      <button type="submit" class="cta-form-submit">Send Message →</button>
+      <div class="cta-form-success">Got it — I'll be in touch within 24 hours.</div>
+    </form>
+    <div class="cta-note">Or email: andres@tradeopslab.com</div>
+  </div>
+
+</div>
+
+<script>
+  (function() {
+    var hbg = document.getElementById('hamburger');
+    var mob = document.getElementById('mobile-menu');
+    var ovl = document.getElementById('mobile-overlay');
+    var cls = document.getElementById('mobile-close');
+    function openMenu() { mob.classList.add('open'); ovl.classList.add('open'); hbg.classList.add('open'); document.body.style.overflow='hidden'; }
+    function closeMenu() { mob.classList.remove('open'); ovl.classList.remove('open'); hbg.classList.remove('open'); document.body.style.overflow=''; }
+    hbg.addEventListener('click', function(e) { e.stopPropagation(); mob.classList.contains('open') ? closeMenu() : openMenu(); });
+    if (ovl) ovl.addEventListener('click', closeMenu);
+    if (cls) cls.addEventListener('click', closeMenu);
+    document.querySelectorAll('.mobile-menu-link').forEach(function(l) { l.addEventListener('click', closeMenu); });
+  })();
+
+  document.querySelectorAll('.blog-contact-form').forEach(function(form) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var btn = form.querySelector('.cta-form-submit');
+      btn.textContent = 'Sending...'; btn.disabled = true;
+      try {
+        var res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+        if (res.ok) { form.reset(); form.querySelector('.cta-form-success').style.display = 'block'; btn.style.display = 'none'; }
+        else { btn.textContent = 'Something went wrong — email andres@tradeopslab.com'; btn.disabled = false; }
+      } catch(err) { btn.textContent = 'Something went wrong — email andres@tradeopslab.com'; btn.disabled = false; }
+    });
+  });
+</script>
+
+</body>
+</html>

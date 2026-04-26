@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>How to Set Up a Live Financial Dashboard in JobTread — TradeOpsLab</title>
+<meta name="description" content="A step-by-step guide to building a live financial dashboard on top of JobTread — showing pipeline value, GP% by job, revenue vs. goal, and AR outstanding in real time.">
+<meta name="keywords" content="JobTread dashboard setup, JobTread financial dashboard, JobTread live dashboard, JobTread GP% dashboard, JobTread QuickBooks dashboard, contractor financial dashboard, JobTread consultant, JobTread expert">
+<link rel="canonical" href="https://www.tradeopslab.com/blog/jobtread-dashboard-setup.html">
+
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.tradeopslab.com/blog/jobtread-dashboard-setup.html">
+<meta property="og:title" content="How to Set Up a Live Financial Dashboard in JobTread">
+<meta property="og:description" content="Step-by-step guide to building a live GP%, pipeline, and AR dashboard on top of JobTread and QuickBooks.">
+<meta property="og:site_name" content="TradeOpsLab">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Set Up a Live Financial Dashboard in JobTread",
+  "description": "A step-by-step guide to building a live financial dashboard on top of JobTread — showing pipeline value, GP% by job, revenue vs. goal, and AR outstanding in real time.",
+  "author": { "@type": "Person", "name": "Andres Bedoya", "url": "https://www.tradeopslab.com" },
+  "publisher": { "@type": "Organization", "name": "TradeOpsLab", "url": "https://www.tradeopslab.com" },
+  "keywords": "JobTread dashboard, JobTread setup, contractor financial dashboard, GP% tracking"
+}
+</script>
+
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { max-width: 100%; overflow-x: hidden; }
+  :root {
+    --ink: #1a1814; --ink-mid: #4a4540; --ink-light: #8a8278;
+    --paper: #f5f2ed; --paper-warm: #ede9e2; --accent: #c8440a;
+    --accent-light: #fdf0eb; --rule: #d8d2c8;
+    --mono: 'Inter', sans-serif;
+    --serif: 'Libre Baskerville', Georgia, serif;
+    --sans: 'Figtree', sans-serif;
+    --display: 'Bebas Neue', sans-serif;
+  }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+  /* NAV */
+  nav { position: sticky; top: 0; z-index: 100; padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; background: rgba(245,242,237,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
+  .nav-logo { font-family: var(--display); font-size: 1.4rem; letter-spacing: 0.05em; color: var(--ink); text-decoration: none; flex-shrink: 0; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+  .nav-links a { font-family: var(--mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-mid); text-decoration: none; transition: color 0.15s; white-space: nowrap; }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a.nav-active { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+  .nav-links .nav-cta { background: var(--ink) !important; color: var(--paper) !important; padding: 0.45rem 1rem; border-radius: 2px; border-bottom: none !important; }
+  .nav-links .nav-cta:hover { background: var(--accent) !important; }
+  .nav-links .nav-demo { background: var(--accent-light) !important; color: var(--accent) !important; padding: 0.4rem 0.9rem; border-radius: 2px; font-weight: 500; border: 1px solid rgba(200,68,10,0.2); }
+  .nav-links .nav-demo:hover { background: var(--accent) !important; color: #fff !important; }
+  #hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+  #hamburger span { display: block; width: 24px; height: 2px; background: var(--ink); border-radius: 2px; transition: all 0.25s ease; transform-origin: center; }
+  #hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  #hamburger.open span:nth-child(2) { opacity: 0; }
+  #hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  #mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(26,24,20,0.5); z-index: 150; opacity: 0; transition: opacity 0.25s; }
+  #mobile-overlay.open { display: block; opacity: 1; }
+  #mobile-menu { position: fixed; top: 0; right: 0; width: 280px; height: 100vh; background: var(--paper); z-index: 160; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; box-shadow: -4px 0 32px rgba(0,0,0,0.12); }
+  #mobile-menu.open { transform: translateX(0); }
+  .mobile-menu-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--rule); }
+  #mobile-close { background: none; border: none; font-size: 1.1rem; color: var(--ink-light); cursor: pointer; padding: 4px; }
+  .mobile-nav { display: flex; flex-direction: column; padding: 1rem 0; flex: 1; }
+  .mobile-menu-link { font-family: var(--mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mid); text-decoration: none; padding: 1rem 1.5rem; border-bottom: 1px solid var(--rule); transition: color 0.15s, background 0.15s; }
+  .mobile-menu-link:hover { color: var(--accent); background: var(--paper-warm); }
+  .mobile-menu-link.nav-active { color: var(--accent); }
+  .mobile-menu-link.mobile-cta { margin: 1.5rem; border: none; background: var(--accent); color: #fff !important; text-align: center; border-radius: 2px; padding: 0.875rem 1rem; }
+  .mobile-demo-link { background: var(--accent-light) !important; color: var(--accent) !important; font-weight: 500; }
+  @media (max-width: 900px) { .nav-links { display: none; } #hamburger { display: flex; } nav { padding: 1rem 1.5rem; } }
+
+  /* ARTICLE */
+  .hero { max-width: 720px; margin: 0 auto; padding: 4rem 2rem 2.5rem; }
+  .eyebrow { font-family: var(--mono); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+  .eyebrow::before { content: ''; display: block; width: 2rem; height: 1px; background: var(--accent); }
+  .hero h1 { font-family: var(--serif); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 1.25rem; }
+  .hero-meta { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); padding-bottom: 1.5rem; border-bottom: 1px solid var(--rule); }
+  .content { max-width: 720px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+  .content h2 { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; color: var(--ink); margin: 2.5rem 0 1rem; line-height: 1.3; }
+  .content h3 { font-family: var(--mono); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 2rem 0 0.75rem; }
+  .content p { color: var(--ink-mid); font-size: 1rem; margin-bottom: 1.25rem; line-height: 1.75; }
+  .content strong { color: var(--ink); font-weight: 500; }
+  .content ul, .content ol { margin: 0 0 1.25rem 1.5rem; }
+  .content ul li, .content ol li { color: var(--ink-mid); font-size: 1rem; margin-bottom: 0.5rem; line-height: 1.7; }
+  .callout { background: var(--paper-warm); border-left: 3px solid var(--accent); padding: 1.25rem 1.5rem; margin: 2rem 0; border-radius: 0 4px 4px 0; }
+  .callout p { margin-bottom: 0; font-style: italic; color: var(--ink); }
+  hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+
+  /* CTA */
+  .cta-block { background: var(--ink); border-radius: 6px; padding: 2.5rem; margin-top: 4rem; }
+  .cta-block h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; color: var(--paper); margin-bottom: 0.75rem; }
+  .cta-block p { color: rgba(245,242,237,0.55); font-size: 0.9rem; margin-bottom: 1.25rem; }
+  .cta-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .cta-form-group { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 0.75rem; }
+  .cta-form-row .cta-form-group { margin-bottom: 0; }
+  .cta-form-group label { font-family: var(--mono); font-size: 0.6rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+  .cta-form-group input, .cta-form-group textarea { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15); border-radius: 2px; padding: 0.75rem 1rem; font-family: var(--sans); font-size: 0.875rem; color: rgba(255,255,255,0.8); outline: none; width: 100%; }
+  .cta-form-group input::placeholder, .cta-form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
+  .cta-form-group input:focus, .cta-form-group textarea:focus { border-color: var(--accent); }
+  .cta-form-group textarea { resize: none; }
+  .cta-form-submit { width: 100%; background: var(--accent); color: #fff; border: none; padding: 0.875rem 2rem; border-radius: 2px; font-family: var(--sans); font-size: 0.875rem; font-weight: 500; cursor: pointer; }
+  .cta-form-submit:hover { background: #a8360a; }
+  .cta-form-success { display: none; margin-top: 1rem; padding: 0.875rem 1rem; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); border-radius: 2px; font-family: var(--mono); font-size: 0.75rem; color: #4ade80; }
+  .cta-note { margin-top: 1rem; font-family: var(--mono); font-size: 0.65rem; font-weight: 500; color: rgba(255,255,255,0.25); letter-spacing: 0.1em; text-transform: uppercase; }
+  @media (max-width: 600px) { .cta-form-row { grid-template-columns: 1fr; } .hero, .content { padding-left: 1.5rem; padding-right: 1.5rem; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Trade<span>Ops</span>Lab</a>
+  <ul class="nav-links">
+    <li><a href="/#what-i-do">What I Do</a></li>
+    <li><a href="/#process">How It Works</a></li>
+    <li><a href="/#about">About</a></li>
+    <li><a href="/#resources" class="nav-active">Resources</a></li>
+    <li><a href="/case-study.html">Case Study</a></li>
+    <li><a href="/jobtread-consulting.html">JobTread</a></li>
+    <li><a href="/demo.html" class="nav-demo">Try Demo</a></li>
+    <li><a href="/#contact-form" class="nav-cta">Get in Touch</a></li>
+  </ul>
+  <button id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div id="mobile-overlay"></div>
+<div id="mobile-menu">
+  <div class="mobile-menu-header">
+    <a href="/" class="nav-logo">Trade<span>Ops</span>Lab</a>
+    <button id="mobile-close" aria-label="Close">✕</button>
+  </div>
+  <nav class="mobile-nav">
+    <a href="/#what-i-do" class="mobile-menu-link">What I Do</a>
+    <a href="/#process" class="mobile-menu-link">How It Works</a>
+    <a href="/#about" class="mobile-menu-link">About</a>
+    <a href="/#resources" class="mobile-menu-link nav-active">Resources</a>
+    <a href="/case-study.html" class="mobile-menu-link">Case Study</a>
+    <a href="/jobtread-consulting.html" class="mobile-menu-link">JobTread</a>
+    <a href="/demo.html" class="mobile-menu-link mobile-demo-link">Try Demo →</a>
+    <a href="/#contact-form" class="mobile-menu-link mobile-cta">Get in Touch</a>
+  </nav>
+</div>
+
+<div class="hero">
+  <div class="eyebrow">JobTread · Dashboard Setup · Financial Visibility</div>
+  <h1>How to Set Up a Live Financial Dashboard in JobTread</h1>
+  <div class="hero-meta">By Andres Bedoya · TradeOpsLab · 7 min read</div>
+</div>
+
+<div class="content">
+
+  <p>JobTread has the data you need to run your business — active jobs, budgets, invoices, cost items, time entries. But out of the box, there's no single view that shows you pipeline value, gross profit percentage by job, revenue vs. goal, and AR outstanding all at once. That view has to be built.</p>
+
+  <p>This guide walks through exactly how to set up a live financial dashboard on top of JobTread — what data to connect, how to structure it, and what the end result actually looks like in practice.</p>
+
+  <h2>What a JobTread financial dashboard should show</h2>
+
+  <p>Before building anything, it helps to be clear on what you actually need to see. For most specialty contractors, the four metrics that matter most are:</p>
+
+  <ul>
+    <li><strong>Pipeline value by status</strong> — what's pending approval, what's approved but not started, what's active. This tells you what's coming and when.</li>
+    <li><strong>Gross profit percentage by job</strong> — not the overall company GP%, but the per-job GP% updated in real time as costs come in. This is where you catch problems before they become losses.</li>
+    <li><strong>Revenue vs. annual goal</strong> — a simple progress bar. Are you on track to hit your number this year?</li>
+    <li><strong>AR outstanding</strong> — what's been invoiced but not collected, broken down by job and aging.</li>
+  </ul>
+
+  <p>Everything else is secondary. If you can see these four things clearly, you can run your business. If you can't, you're flying blind no matter how good your estimating or crew management is.</p>
+
+  <h2>The data sources: JobTread + QuickBooks</h2>
+
+  <p>A complete financial dashboard for a specialty contractor needs data from two places:</p>
+
+  <p><strong>JobTread</strong> gives you: job status, contract value (from approved customer orders), budget amounts by cost category, actual costs tracked against the budget, and invoice history.</p>
+
+  <p><strong>QuickBooks</strong> gives you: actual payment receipts (what's been collected, not just invoiced), vendor bill payments that may not be in JobTread, and payroll data that affects job costs.</p>
+
+  <div class="callout">
+    <p>The GP% you see inside JobTread is only as accurate as the cost data entered there. If vendor bills are going into QuickBooks but not being reflected in JobTread, your job-level margins are overstated. A connected dashboard pulls from both sources simultaneously.</p>
+  </div>
+
+  <h2>Step 1 — Set up your JobTread data correctly</h2>
+
+  <p>Before connecting anything externally, your JobTread setup needs to be clean. Three things matter most:</p>
+
+  <h3>Job statuses</h3>
+  <p>Configure custom job statuses that reflect your actual pipeline stages — not just JobTread's defaults. For most painting and specialty contractors, something like: Lead → Estimate Sent → Approved → Scheduled → Active → Punch List → Invoiced → Closed works better than the generic options. Your dashboard pipeline view is only useful if the statuses mean something.</p>
+
+  <h3>Budget structure</h3>
+  <p>Every job should have a budget with cost items that match how you actually track costs — Labor, Materials, Subcontractors, Equipment. If your budget structure is inconsistent across jobs, your GP% comparisons won't be meaningful. Set up a budget template and use it on every job.</p>
+
+  <h3>Cost capture workflow</h3>
+  <p>Decide where costs get entered first — JobTread or QuickBooks — and be consistent. The cleanest approach: enter vendor bills in JobTread first (which syncs to QuickBooks), rather than entering in QuickBooks and trying to reconcile back. Time entries should always be logged in JobTread against specific jobs and cost categories.</p>
+
+  <h2>Step 2 — Connect the JobTread API</h2>
+
+  <p>JobTread has a well-documented JSON graph API that lets you query jobs, budgets, cost items, invoices, and financial data in a single request. To connect it:</p>
+
+  <ol>
+    <li>Go to your JobTread account settings and generate an API key under the developer/integrations section</li>
+    <li>Store the key securely — treat it like a password</li>
+    <li>Test the connection with a simple query to pull your active jobs</li>
+  </ol>
+
+  <p>The API uses a graph query structure similar to GraphQL. You can request exactly the fields you need — job name, status, projected price, projected cost, actual cost — in a single call rather than multiple requests.</p>
+
+  <h2>Step 3 — Connect the QuickBooks API</h2>
+
+  <p>QuickBooks uses OAuth 2.0 for authentication. The setup process:</p>
+
+  <ol>
+    <li>Create a developer app at developer.intuit.com</li>
+    <li>Get your client ID and client secret</li>
+    <li>Go through the OAuth flow — the contractor (or you on their behalf) authorizes the connection from their QuickBooks account</li>
+    <li>Store the access token and refresh token securely</li>
+  </ol>
+
+  <p>Once connected, you can query invoices, payments, vendor bills, and journal entries. The payment data is what tells you what's actually been collected vs. just invoiced — critical for accurate AR tracking.</p>
+
+  <h2>Step 4 — Build the dashboard layer</h2>
+
+  <p>With both APIs connected, you need a backend that queries them on a schedule and a frontend that displays the results. The stack that works well for this:</p>
+
+  <ul>
+    <li><strong>Backend:</strong> Serverless functions (Vercel works well) that query both APIs and calculate the derived metrics — GP%, revenue progress, AR aging</li>
+    <li><strong>Database:</strong> A lightweight cache (Supabase) to store results between refreshes so the dashboard loads instantly</li>
+    <li><strong>Frontend:</strong> A simple React or plain HTML/JS dashboard that displays the KPI cards and charts</li>
+  </ul>
+
+  <p>The dashboard should refresh automatically — either on a schedule (every hour) or on demand when the user loads the page. No manual exports, no copy-pasting from JobTread reports.</p>
+
+  <h2>What the finished dashboard looks like</h2>
+
+  <p>For a commercial painting contractor in Georgia, the finished dashboard shows:</p>
+
+  <ul>
+    <li>Pipeline value by status — $X pending, $X approved, $X active — updated live from JobTread</li>
+    <li>GP% per job, ranked highest to lowest — with color coding for jobs that are tracking below target</li>
+    <li>A revenue progress bar — YTD revenue vs. annual goal, updated as invoices are created</li>
+    <li>AR outstanding — total amount, number of open invoices, and which jobs have invoices overdue by 30+ days</li>
+    <li>Cost burn per job — what percentage of each job's budget has been consumed, flagging jobs that are burning fast</li>
+  </ul>
+
+  <p>The owner can check it from a phone in 30 seconds. The first time a job shows up as "at risk" in the cost burn column while there's still time to do something about it, the dashboard pays for itself.</p>
+
+  <h2>Can you build this yourself?</h2>
+
+  <p>If you have a developer on staff or in your network, yes — the APIs are well-documented and the architecture is straightforward. Budget 3-4 weeks of development time for a solid first version.</p>
+
+  <p>If you don't have technical resources in-house, this is a fixed-scope project that's worth bringing in a specialist for. The setup is done once, and from that point the dashboard runs without maintenance.</p>
+
+  <hr>
+
+  <div class="cta-block">
+    <h2>Want this built for your JobTread account?</h2>
+    <p>I build live financial dashboards for specialty contractors — connected to JobTread and QuickBooks, delivered in 2 weeks, starting from $3,500.</p>
+    <form class="blog-contact-form" action="https://formspree.io/f/xqewnjeg" method="POST">
+      <div class="cta-form-row">
+        <div class="cta-form-group">
+          <label>Your Name</label>
+          <input type="text" name="name" placeholder="Ryan Smith" required>
+        </div>
+        <div class="cta-form-group">
+          <label>Company</label>
+          <input type="text" name="company" placeholder="Smith Painting Co.">
+        </div>
+      </div>
+      <div class="cta-form-group">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="ryan@smithpainting.com" required>
+      </div>
+      <div class="cta-form-group">
+        <label>What are you dealing with?</label>
+        <textarea name="message" rows="3" placeholder="e.g. We're on JobTread but have no visibility into job profitability..."></textarea>
+      </div>
+      <button type="submit" class="cta-form-submit">Send Message →</button>
+      <div class="cta-form-success">Got it — I'll be in touch within 24 hours.</div>
+    </form>
+    <div class="cta-note">Or email: andres@tradeopslab.com</div>
+  </div>
+
+</div>
+
+<script>
+  (function() {
+    var hbg = document.getElementById('hamburger');
+    var mob = document.getElementById('mobile-menu');
+    var ovl = document.getElementById('mobile-overlay');
+    var cls = document.getElementById('mobile-close');
+    function openMenu() { mob.classList.add('open'); ovl.classList.add('open'); hbg.classList.add('open'); document.body.style.overflow='hidden'; }
+    function closeMenu() { mob.classList.remove('open'); ovl.classList.remove('open'); hbg.classList.remove('open'); document.body.style.overflow=''; }
+    hbg.addEventListener('click', function(e) { e.stopPropagation(); mob.classList.contains('open') ? closeMenu() : openMenu(); });
+    if (ovl) ovl.addEventListener('click', closeMenu);
+    if (cls) cls.addEventListener('click', closeMenu);
+    document.querySelectorAll('.mobile-menu-link').forEach(function(l) { l.addEventListener('click', closeMenu); });
+  })();
+
+  document.querySelectorAll('.blog-contact-form').forEach(function(form) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      var btn = form.querySelector('.cta-form-submit');
+      btn.textContent = 'Sending...'; btn.disabled = true;
+      try {
+        var res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+        if (res.ok) { form.reset(); form.querySelector('.cta-form-success').style.display = 'block'; btn.style.display = 'none'; }
+        else { btn.textContent = 'Something went wrong — email andres@tradeopslab.com'; btn.disabled = false; }
+      } catch(err) { btn.textContent = 'Something went wrong — email andres@tradeopslab.com'; btn.disabled = false; }
+    });
+  });
+</script>
+
+</body>
+</html>
