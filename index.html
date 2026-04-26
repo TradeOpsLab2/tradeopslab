@@ -1207,9 +1207,9 @@
     <li><a href="#what-i-do">What I Do</a></li>
     <li><a href="#process">How It Works</a></li>
     <li><a href="#about">About</a></li>
+    <li><a href="#resources">Resources</a></li>
     <li><a href="/case-study.html">Case Study</a></li>
     <li><a href="/jobtread-consulting.html">JobTread</a></li>
-    <li><a href="#resources">Resources</a></li>
     <li><a href="#contact-form" class="nav-cta">Get in Touch</a></li>
   </ul>
   <button id="hamburger" aria-label="Open menu">
@@ -1222,15 +1222,15 @@
 <div id="mobile-menu">
   <div class="mobile-menu-header">
     <a href="/" class="nav-logo">Trade<span>Ops</span>Lab</a>
-    <button id="mobile-close" onclick="closeMenu()" aria-label="Close menu">✕</button>
+    <button id="mobile-close" aria-label="Close menu">✕</button>
   </div>
   <nav class="mobile-nav">
     <a href="#what-i-do" class="mobile-menu-link">What I Do</a>
     <a href="#process" class="mobile-menu-link">How It Works</a>
     <a href="#about" class="mobile-menu-link">About</a>
+    <a href="#resources" class="mobile-menu-link">Resources</a>
     <a href="/case-study.html" class="mobile-menu-link">Case Study</a>
     <a href="/jobtread-consulting.html" class="mobile-menu-link">JobTread</a>
-    <a href="#resources" class="mobile-menu-link">Resources</a>
     <a href="#contact-form" class="mobile-menu-link mobile-cta">Get in Touch</a>
   </nav>
 </div>
@@ -1559,69 +1559,81 @@
         btn.textContent = 'Something went wrong — email andres@tradeopslab.com';
         btn.disabled = false;
       }
-    } catch {
+    } catch(err) {
       btn.textContent = 'Something went wrong — email andres@tradeopslab.com';
       btn.disabled = false;
     }
   });
 
+  // ── HAMBURGER MENU ──────────────────────────────────────────────────────
+  (function() {
+    var hamburger = document.getElementById('hamburger');
+    var mobileMenu = document.getElementById('mobile-menu');
+    var mobileOverlay = document.getElementById('mobile-overlay');
+    var mobileClose = document.getElementById('mobile-close');
 
-<script>
-  // ── HAMBURGER MENU ────────────────────────────────────────────────────────
-  const hamburger = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const mobileOverlay = document.getElementById('mobile-overlay');
+    if (!hamburger || !mobileMenu) return;
 
-  function openMenu() {
-    mobileMenu.classList.add('open');
-    mobileOverlay.classList.add('open');
-    hamburger.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
+    function openMenu() {
+      mobileMenu.classList.add('open');
+      mobileOverlay.classList.add('open');
+      hamburger.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
 
-  function closeMenu() {
-    mobileMenu.classList.remove('open');
-    mobileOverlay.classList.remove('open');
-    hamburger.classList.remove('open');
-    document.body.style.overflow = '';
-  }
+    function closeMenu() {
+      mobileMenu.classList.remove('open');
+      mobileOverlay.classList.remove('open');
+      hamburger.classList.remove('open');
+      document.body.style.overflow = '';
+    }
 
-  hamburger.addEventListener('click', () => {
-    mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
-  });
-  mobileOverlay.addEventListener('click', closeMenu);
-  document.querySelectorAll('.mobile-menu-link').forEach(l => l.addEventListener('click', closeMenu));
-
-  // ── SCROLL SPY ────────────────────────────────────────────────────────────
-  const sections = [
-    { id: 'what-i-do', href: '#what-i-do' },
-    { id: 'process',   href: '#process' },
-    { id: 'about',     href: '#about' },
-    { id: 'resources', href: '#resources' },
-    { id: 'contact-form', href: '#contact-form' },
-  ];
-
-  function updateActive() {
-    let current = '';
-    // Use getBoundingClientRect for accurate position
-    sections.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      if (rect.top <= 140) current = id;
+    hamburger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
     });
 
-    document.querySelectorAll('.nav-links a:not(.nav-cta), .mobile-menu-link:not(.mobile-cta)').forEach(a => {
-      const href = a.getAttribute('href');
-      a.classList.remove('nav-active');
-      if (current && (href === '#' + current)) {
-        a.classList.add('nav-active');
-      }
-    });
-  }
+    if (mobileOverlay) mobileOverlay.addEventListener('click', closeMenu);
+    if (mobileClose) mobileClose.addEventListener('click', closeMenu);
 
-  window.addEventListener('scroll', updateActive, { passive: true });
-  updateActive();
+    document.querySelectorAll('.mobile-menu-link').forEach(function(link) {
+      link.addEventListener('click', closeMenu);
+    });
+  })();
+
+  // ── SCROLL SPY ──────────────────────────────────────────────────────────
+  (function() {
+    var sections = [
+      { id: 'what-i-do', href: '#what-i-do' },
+      { id: 'process',   href: '#process' },
+      { id: 'about',     href: '#about' },
+      { id: 'resources', href: '#resources' },
+      { id: 'contact-form', href: '#contact-form' },
+    ];
+
+    function updateActive() {
+      var current = '';
+      sections.forEach(function(s) {
+        var el = document.getElementById(s.id);
+        if (!el) return;
+        var rect = el.getBoundingClientRect();
+        if (rect.top <= 130) current = s.id;
+      });
+
+      document.querySelectorAll('.nav-links a, .mobile-menu-link').forEach(function(a) {
+        if (a.classList.contains('nav-cta') || a.classList.contains('mobile-cta')) return;
+        var href = a.getAttribute('href');
+        if (href === '#' + current) {
+          a.classList.add('nav-active');
+        } else if (sections.some(function(s) { return href === '#' + s.id; })) {
+          a.classList.remove('nav-active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateActive, { passive: true });
+    updateActive();
+  })();
 </script>
 </body>
 </html>

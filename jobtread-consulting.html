@@ -265,17 +265,32 @@
     <li><a href="/#what-i-do">What I Do</a></li>
     <li><a href="/#process">How It Works</a></li>
     <li><a href="/#about">About</a></li>
+    <li><a href="/#resources">Resources</a></li>
     <li><a href="/case-study.html">Case Study</a></li>
     <li><a href="/jobtread-consulting.html" class="nav-active">JobTread</a></li>
-    <li><a href="/#resources">Resources</a></li>
     <li><a href="#contact-form" class="nav-cta">Get in Touch</a></li>
   </ul>
+  <button id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-inner">
-    <div class="eyebrow">Independent JobTread Consultant</div>
+<div id="mobile-overlay"></div>
+<div id="mobile-menu">
+  <div class="mobile-menu-header">
+    <a href="/" class="nav-logo">Trade<span>Ops</span>Lab</a>
+    <button id="mobile-close" aria-label="Close menu">✕</button>
+  </div>
+  <nav class="mobile-nav">
+    <a href="/#what-i-do" class="mobile-menu-link">What I Do</a>
+    <a href="/#process" class="mobile-menu-link">How It Works</a>
+    <a href="/#about" class="mobile-menu-link">About</a>
+    <a href="/#resources" class="mobile-menu-link">Resources</a>
+    <a href="/case-study.html" class="mobile-menu-link">Case Study</a>
+    <a href="/jobtread-consulting.html" class="mobile-menu-link nav-active">JobTread</a>
+    <a href="#contact-form" class="mobile-menu-link mobile-cta">Get in Touch</a>
+  </nav>
+</div>
     <h1>Get more out of<br><em>JobTread.</em></h1>
     <p class="hero-sub">Most specialty contractors using JobTread are getting 20% of what the platform can do. I build the dashboards, automations, and integrations that unlock the other 80% — connected to your real data, delivered in weeks.</p>
     <div class="hero-actions">
@@ -539,6 +554,43 @@
   ovl.addEventListener('click', closeMenu);
   cls.addEventListener('click', closeMenu);
   document.querySelectorAll('.mobile-menu-link').forEach(l => l.addEventListener('click', closeMenu));
+</script>
+
+<script>
+  (function() {
+    var hamburger = document.getElementById('hamburger');
+    var mobileMenu = document.getElementById('mobile-menu');
+    var mobileOverlay = document.getElementById('mobile-overlay');
+    var mobileClose = document.getElementById('mobile-close');
+
+    if (!hamburger || !mobileMenu) return;
+
+    function openMenu() {
+      mobileMenu.classList.add('open');
+      if (mobileOverlay) mobileOverlay.classList.add('open');
+      hamburger.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeMenu() {
+      mobileMenu.classList.remove('open');
+      if (mobileOverlay) mobileOverlay.classList.remove('open');
+      hamburger.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
+    });
+
+    if (mobileOverlay) mobileOverlay.addEventListener('click', closeMenu);
+    if (mobileClose) mobileClose.addEventListener('click', closeMenu);
+
+    document.querySelectorAll('.mobile-menu-link').forEach(function(link) {
+      link.addEventListener('click', closeMenu);
+    });
+  })();
 </script>
 </body>
 </html>
