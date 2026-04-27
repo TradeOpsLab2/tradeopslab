@@ -1008,6 +1008,7 @@ function nextStep(from) {
       var fd = new FormData();
       fd.append('name', data.company || 'Unknown Company');
       fd.append('email', 'andres@tradeopslab.com');
+      fd.append('_subject', 'New Partial Lead: ' + (data.company || 'Unknown'));
       fd.append('message',
         'PARTIAL DEMO — Completed steps 1 & 2, has not submitted contact form yet.\n\n' +
         'Company: ' + (data.company || '?') + '\n' +
@@ -1180,7 +1181,7 @@ function submitContact() {
   formData.append('email', email);
   formData.append('phone', phone);
   formData.append('message', enriched);
-  formData.append('_subject', 'Demo Lead: ' + (data.company || 'Unknown Company'));
+  formData.append('_subject', 'New Lead: ' + (name || data.company || 'Unknown'));
 
   fetch('https://formspree.io/f/mdayvrjn', {
     method: 'POST',
