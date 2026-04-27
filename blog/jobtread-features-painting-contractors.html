@@ -145,17 +145,18 @@
   #hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
   #mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(26,24,20,0.5); z-index: 150; opacity: 0; transition: opacity 0.25s; }
   #mobile-overlay.open { display: block; opacity: 1; }
-  #mobile-menu { position: fixed; top: 0; right: 0; width: 280px; height: 100vh; background: var(--paper); z-index: 160; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; box-shadow: -4px 0 32px rgba(0,0,0,0.12); }
+  #mobile-menu { position: fixed; top: 0; right: 0; width: 280px; max-height: 100vh; overflow-y: auto; background: var(--paper); z-index: 160; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; box-shadow: -4px 0 32px rgba(0,0,0,0.12); border-radius: 0 0 0 8px; }
   #mobile-menu.open { transform: translateX(0); }
-  .mobile-menu-header { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--rule); }
+  .mobile-menu-header { display: flex; align-items: center; justify-content: flex-end; padding: 0.75rem 1rem; border-bottom: 1px solid var(--rule); }
   #mobile-close { background: none; border: none; font-size: 1.1rem; color: var(--ink-light); cursor: pointer; padding: 4px; line-height: 1; }
-  .mobile-nav { display: flex; flex-direction: column; padding: 1rem 0; flex: 1; }
+  .mobile-nav { display: flex; flex-direction: column; padding: 0.5rem 0 1rem; }
   .mobile-menu-link { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-mid); text-decoration: none; padding: 1rem 1.5rem; border-bottom: 1px solid var(--rule); transition: color 0.15s, background 0.15s; }
   .mobile-menu-link:hover { color: var(--accent); background: var(--paper-warm); }
   .mobile-menu-link.nav-active { color: var(--accent); }
-  .mobile-menu-link.mobile-cta { margin: 1.5rem; border: none; background: var(--accent); color: #fff !important; text-align: center; border-radius: 2px; padding: 0.875rem 1rem; }
+  .mobile-menu-link.mobile-cta { margin: 0.75rem 1rem; border: none; background: var(--accent); color: #fff !important; text-align: center; border-radius: 2px; padding: 0.75rem 1rem; }
   .mobile-menu-link.mobile-cta:hover { background: #a8360a; }
   @media (max-width: 900px) { #hamburger { display: flex; } }
+  #contact-form { scroll-margin-top: 90px; }
 </style>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-E19H7VEJCB"></script>
@@ -188,7 +189,6 @@
 <div id="mobile-overlay"></div>
 <div id="mobile-menu">
   <div class="mobile-menu-header">
-    <a href="/" class="nav-logo">Trade<span>Ops</span>Lab</a>
     <button id="mobile-close" aria-label="Close menu">✕</button>
   </div>
   <nav class="mobile-nav">
