@@ -1181,14 +1181,19 @@ function submitContact() {
     body: formData,
     headers: { 'Accept': 'application/json' }
   }).then(function(res) {
-    if (res.ok) {
-      document.getElementById('contact-form-inner').style.display = 'none';
-      document.getElementById('form-success').style.display = 'block';
-    } else {
-      btn.textContent = 'Something went wrong — email andres@tradeopslab.com';
-      btn.disabled = false;
-    }
-  }).catch(function() {
+    return res.json().then(function(json) {
+      if (res.ok) {
+        document.getElementById('contact-form-inner').style.display = 'none';
+        document.getElementById('form-success').style.display = 'block';
+      } else {
+        console.error('Formspree error:', JSON.stringify(json));
+        var errMsg = (json.errors && json.errors[0] && json.errors[0].message) ? json.errors[0].message : 'Unknown error';
+        btn.textContent = 'Error: ' + errMsg + ' — email andres@tradeopslab.com';
+        btn.disabled = false;
+      }
+    });
+  }).catch(function(err) {
+    console.error('Fetch error:', err);
     btn.textContent = 'Something went wrong — email andres@tradeopslab.com';
     btn.disabled = false;
   });
