@@ -987,6 +987,23 @@ function nextStep(from) {
     data.teamSize = document.getElementById('team-size').value;
     data.software = document.getElementById('current-software').value;
     data.accounting = document.getElementById('accounting-software').value;
+
+    // Partial capture after step 1 — fire immediately
+    if (!data.fullSubmitted) {
+      var fd1 = new FormData();
+      fd1.append('name', data.company);
+      fd1.append('email', 'andres@tradeopslab.com');
+      fd1.append('message',
+        'STEP 1 DEMO — User entered business info, may not complete the full form.\n\n' +
+        'Company: ' + data.company + '\n' +
+        'Trade: ' + data.trade + '\n' +
+        'Team Size: ' + data.teamSize + '\n' +
+        'Software: ' + data.software + ' / ' + data.accounting
+      );
+      fetch('https://formspree.io/f/mdayvrjn', {
+        method: 'POST', body: fd1, headers: { 'Accept': 'application/json' }
+      }).catch(function(){});
+    }
   }
   if (from === 2) {
     var goal = document.getElementById('revenue-goal').value;
@@ -1002,32 +1019,6 @@ function nextStep(from) {
     data.pipeline = parseFloat(document.getElementById('pipeline-value').value) || 920000;
     data.ar = parseFloat(document.getElementById('ar-outstanding').value) || 145000;
     renderDashboard();
-
-    // Partial capture — only send if user hasn't already submitted full form
-    if (!data.fullSubmitted) {
-      var fd = new FormData();
-      fd.append('name', data.company || 'Unknown Company');
-      fd.append('email', 'andres@tradeopslab.com');
-      fd.append('_subject', 'New Partial Lead: ' + (data.company || 'Unknown'));
-      fd.append('message',
-        'PARTIAL DEMO — Completed steps 1 & 2, has not submitted contact form yet.\n\n' +
-        'Company: ' + (data.company || '?') + '\n' +
-        'Trade: ' + (data.trade || '?') + '\n' +
-        'Team Size: ' + (data.teamSize || '?') + '\n' +
-        'Software: ' + (data.software || '?') + ' / ' + (data.accounting || '?') + '\n' +
-        'Revenue Goal: $' + (data.revenueGoal || '?') + '\n' +
-        'Revenue YTD: $' + (data.revenueYTD || '?') + '\n' +
-        'Target GP%: ' + (data.targetGP || '?') + '%\n' +
-        'Actual GP%: ' + (data.actualGP || '?') + '%\n' +
-        'Pipeline: $' + (data.pipeline || '?') + '\n' +
-        'AR Outstanding: $' + (data.ar || '?')
-      );
-      fetch('https://formspree.io/f/mdayvrjn', {
-        method: 'POST',
-        body: fd,
-        headers: { 'Accept': 'application/json' }
-      }).catch(function(){});
-    }
   }
   if (from === 3) {
     // Pre-fill contact form with what we know
