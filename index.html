@@ -1573,34 +1573,42 @@
 
     function openMenu() {
       mobileMenu.classList.add('open');
-      mobileOverlay.classList.add('open');
+      if (mobileOverlay) mobileOverlay.classList.add('open');
       hamburger.classList.add('open');
       document.body.style.overflow = 'hidden';
     }
 
     function closeMenu() {
       mobileMenu.classList.remove('open');
-      mobileOverlay.classList.remove('open');
+      if (mobileOverlay) mobileOverlay.classList.remove('open');
       hamburger.classList.remove('open');
       document.body.style.overflow = '';
     }
 
-    hamburger.addEventListener('click', function(e) {
+    function toggleMenu(e) {
+      e.preventDefault();
       e.stopPropagation();
       mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
-    });
+    }
 
-    if (mobileOverlay) mobileOverlay.addEventListener('click', closeMenu);
-    if (mobileClose) mobileClose.addEventListener('click', closeMenu);
+    hamburger.addEventListener('click', toggleMenu);
+    hamburger.addEventListener('touchend', toggleMenu);
+
+    if (mobileOverlay) {
+      mobileOverlay.addEventListener('click', closeMenu);
+      mobileOverlay.addEventListener('touchend', function(e) { e.preventDefault(); closeMenu(); });
+    }
+    if (mobileClose) {
+      mobileClose.addEventListener('click', closeMenu);
+      mobileClose.addEventListener('touchend', function(e) { e.preventDefault(); closeMenu(); });
+    }
 
     document.querySelectorAll('.mobile-menu-link').forEach(function(link) {
       link.addEventListener('click', closeMenu);
+      link.addEventListener('touchend', function() { closeMenu(); });
     });
   })();
 
-
-    });
-  });
 
   // ── SCROLL SPY ──────────────────────────────────────────────────────────
   (function() {
