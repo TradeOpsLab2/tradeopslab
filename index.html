@@ -965,7 +965,8 @@
     position: fixed;
     top: 0; right: 0;
     width: 280px;
-    height: 100vh;
+    max-height: 100vh;
+    overflow-y: auto;
     background: var(--paper);
     z-index: 160;
     transform: translateX(100%);
@@ -973,14 +974,15 @@
     display: flex;
     flex-direction: column;
     box-shadow: -4px 0 32px rgba(0,0,0,0.12);
+    border-radius: 0 0 0 8px;
   }
   #mobile-menu.open { transform: translateX(0); }
 
   .mobile-menu-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 1.25rem 1.5rem;
+    justify-content: flex-end;
+    padding: 0.75rem 1rem;
     border-bottom: 1px solid var(--rule);
   }
 
@@ -997,8 +999,7 @@
   .mobile-nav {
     display: flex;
     flex-direction: column;
-    padding: 1rem 0;
-    flex: 1;
+    padding: 0.5rem 0 1rem;
   }
 
   .mobile-menu-link {
@@ -1015,13 +1016,13 @@
   .mobile-menu-link:hover { color: var(--accent); background: var(--paper-warm); }
   .mobile-menu-link.nav-active { color: var(--accent); }
   .mobile-menu-link.mobile-cta {
-    margin: 1.5rem;
+    margin: 0.75rem 1rem;
     border: none;
     background: var(--accent);
     color: #fff !important;
     text-align: center;
     border-radius: 2px;
-    padding: 0.875rem 1rem;
+    padding: 0.75rem 1rem;
   }
   .mobile-menu-link.mobile-cta:hover { background: #a8360a; }
 
@@ -1176,9 +1177,8 @@
     .hero-actions { flex-direction: column; align-items: flex-start; gap: 1rem; }
   }
 
-  /* Fix anchor scroll offset for sticky nav on mobile */
-  #contact-form { scroll-margin-top: 80px; }
-  #what-i-do, #process, #about, #resources, #work { scroll-margin-top: 80px; }
+  /* Fix anchor scroll offset for sticky nav */
+  #contact-form, #what-i-do, #process, #about, #resources, #work { scroll-margin-top: 90px; }
 </style>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-E19H7VEJCB"></script>
@@ -1213,7 +1213,6 @@
 <div id="mobile-overlay"></div>
 <div id="mobile-menu">
   <div class="mobile-menu-header">
-    <a href="/" class="nav-logo">Trade<span>Ops</span>Lab</a>
     <button id="mobile-close" aria-label="Close menu">✕</button>
   </div>
   <nav class="mobile-nav">
@@ -1600,17 +1599,6 @@
   })();
 
 
-  // Smooth scroll with nav offset for all anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-    anchor.addEventListener('click', function(e) {
-      var href = this.getAttribute('href');
-      if (href === '#') return;
-      var target = document.querySelector(href);
-      if (!target) return;
-      e.preventDefault();
-      var navHeight = document.querySelector('nav') ? document.querySelector('nav').offsetHeight : 70;
-      var targetPos = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 16;
-      window.scrollTo({ top: targetPos, behavior: 'smooth' });
     });
   });
 
