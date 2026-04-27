@@ -587,18 +587,7 @@
 </script>
 
 
-<script>
-  const hbg = document.getElementById('hamburger');
-  const mob = document.getElementById('mobile-menu');
-  const ovl = document.getElementById('mobile-overlay');
-  const cls = document.getElementById('mobile-close');
-  function openMenu() { mob.classList.add('open'); ovl.classList.add('open'); hbg.classList.add('open'); document.body.style.overflow='hidden'; }
-  function closeMenu() { mob.classList.remove('open'); ovl.classList.remove('open'); hbg.classList.remove('open'); document.body.style.overflow=''; }
-  hbg.addEventListener('click', () => mob.classList.contains('open') ? closeMenu() : openMenu());
-  ovl.addEventListener('click', closeMenu);
-  cls.addEventListener('click', closeMenu);
-  document.querySelectorAll('.mobile-menu-link').forEach(l => l.addEventListener('click', closeMenu));
-</script>
+
 
 <script>
   (function() {
