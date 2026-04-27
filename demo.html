@@ -1003,24 +1003,31 @@ function nextStep(from) {
     data.ar = parseFloat(document.getElementById('ar-outstanding').value) || 145000;
     renderDashboard();
 
-    // Silent background capture - store in localStorage only, no Formspree submission
-    // (avoids triggering spam filters with fake email addresses)
-    try {
-      localStorage.setItem('demo_partial_data', JSON.stringify({
-        company: data.company,
-        trade: data.trade,
-        teamSize: data.teamSize,
-        software: data.software,
-        accounting: data.accounting,
-        revenueGoal: data.revenueGoal,
-        revenueYTD: data.revenueYTD,
-        targetGP: data.targetGP,
-        actualGP: data.actualGP,
-        pipeline: data.pipeline,
-        ar: data.ar,
-        timestamp: new Date().toISOString()
-      }));
-    } catch(e) {}
+    // Partial capture — send step 1+2 data to Formspree
+    // Uses real email so it won't be flagged as spam
+    (function() {
+      var fd = new FormData();
+      fd.append('name', data.company || 'Unknown Company');
+      fd.append('email', 'andres@tradeopslab.com');
+      fd.append('message',
+        'PARTIAL DEMO — User completed steps 1 & 2 but may not have submitted contact form yet.\n\n' +
+        'Company: ' + (data.company || '?') + '\n' +
+        'Trade: ' + (data.trade || '?') + '\n' +
+        'Team Size: ' + (data.teamSize || '?') + '\n' +
+        'Software: ' + (data.software || '?') + ' / ' + (data.accounting || '?') + '\n' +
+        'Revenue Goal: $' + (data.revenueGoal || '?') + '\n' +
+        'Revenue YTD: $' + (data.revenueYTD || '?') + '\n' +
+        'Target GP%: ' + (data.targetGP || '?') + '%\n' +
+        'Actual GP%: ' + (data.actualGP || '?') + '%\n' +
+        'Pipeline: $' + (data.pipeline || '?') + '\n' +
+        'AR Outstanding: $' + (data.ar || '?')
+      );
+      fetch('https://formspree.io/f/mdayvrjn', {
+        method: 'POST',
+        body: fd,
+        headers: { 'Accept': 'application/json' }
+      }).catch(function(){});
+    })();
   }
   if (from === 3) {
     // Pre-fill contact form with what we know
