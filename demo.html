@@ -1151,9 +1151,9 @@ function submitContact() {
   if (!name) { alert('Please enter your name.'); return; }
   if (!email) { alert('Please enter your email address.'); return; }
 
-  var btn = document.querySelector('#contact-form-inner .btn-primary');
-  btn.textContent = 'Sending...';
-  btn.disabled = true;
+  var btn = document.querySelector('.contact-form-box .btn-primary');
+  if (!btn) btn = document.querySelector('#contact-form-inner button');
+  if (btn) { btn.textContent = 'Sending...'; btn.disabled = true; }
 
   // Build enriched message with all the demo data
   var enriched = 'NEW LEAD from Demo\n\n' +
@@ -1191,14 +1191,12 @@ function submitContact() {
       } else {
         console.error('Formspree error:', JSON.stringify(json));
         var errMsg = (json.errors && json.errors[0] && json.errors[0].message) ? json.errors[0].message : 'Unknown error';
-        btn.textContent = 'Error: ' + errMsg + ' — email andres@tradeopslab.com';
-        btn.disabled = false;
+        if (btn) { btn.textContent = 'Error: ' + errMsg + ' — email andres@tradeopslab.com'; btn.disabled = false; }
       }
     });
   }).catch(function(err) {
     console.error('Fetch error:', err);
-    btn.textContent = 'Something went wrong — email andres@tradeopslab.com';
-    btn.disabled = false;
+    if (btn) { btn.textContent = 'Something went wrong — email andres@tradeopslab.com'; btn.disabled = false; }
   });
 }
 </script>
