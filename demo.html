@@ -994,7 +994,7 @@ function nextStep(from) {
       fd1.append('name', data.company);
       fd1.append('email', 'andres@tradeopslab.com');
       fd1.append('message',
-        'STEP 1 DEMO — User entered business info, may not complete the full form.\n\n' +
+        'NEW PARTIAL LEAD — Step 1 only, has not completed the demo yet.\n\n' +
         'Company: ' + data.company + '\n' +
         'Trade: ' + data.trade + '\n' +
         'Team Size: ' + data.teamSize + '\n' +
@@ -1148,6 +1148,7 @@ function submitContact() {
   var phone = document.getElementById('contact-phone').value;
   var message = document.getElementById('contact-message').value;
 
+  if (!name) { alert('Please enter your name.'); return; }
   if (!email) { alert('Please enter your email address.'); return; }
 
   var btn = document.querySelector('#contact-form-inner .btn-primary');
@@ -1155,7 +1156,12 @@ function submitContact() {
   btn.disabled = true;
 
   // Build enriched message with all the demo data
-  var enriched = message + '\n\n--- Demo Data ---\n' +
+  var enriched = 'NEW LEAD from Demo\n\n' +
+    'Name: ' + name + '\n' +
+    'Email: ' + email + '\n' +
+    'Phone: ' + (phone || 'Not provided') + '\n' +
+    'Message: ' + (message || 'None') + '\n\n' +
+    '--- Demo Data ---\n' +
     'Company: ' + (data.company || 'Not provided') + '\n' +
     'Trade: ' + (data.trade || 'Not provided') + '\n' +
     'Team: ' + (data.teamSize || 'Not provided') + '\n' +
@@ -1170,9 +1176,7 @@ function submitContact() {
   var formData = new FormData();
   formData.append('name', name);
   formData.append('email', email);
-  formData.append('phone', phone);
   formData.append('message', enriched);
-  formData.append('_subject', 'New Lead: ' + (name || data.company || 'Unknown'));
 
   fetch('https://formspree.io/f/mdayvrjn', {
     method: 'POST',
