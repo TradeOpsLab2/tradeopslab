@@ -1003,12 +1003,13 @@ function nextStep(from) {
     data.ar = parseFloat(document.getElementById('ar-outstanding').value) || 145000;
     renderDashboard();
 
-    // Partial capture — send step 1+2 data to Formspree
-    // Uses real email so it won't be flagged as spam
-    (function() {
-      var fd = new FormData();
+    // Partial capture — only send if user hasn't already submitted full form
+    if (!data.fullSubmitted) {
+      (function() {
+        var fd = new FormData();
       fd.append('name', data.company || 'Unknown Company');
       fd.append('email', 'andres@tradeopslab.com');
+      fd.append('_subject', 'PARTIAL Demo: ' + (data.company || 'Unknown'));
       fd.append('message',
         'PARTIAL DEMO — User completed steps 1 & 2 but may not have submitted contact form yet.\n\n' +
         'Company: ' + (data.company || '?') + '\n' +
@@ -1027,7 +1028,8 @@ function nextStep(from) {
         body: fd,
         headers: { 'Accept': 'application/json' }
       }).catch(function(){});
-    })();
+      })();
+    } // end if !fullSubmitted
   }
   if (from === 3) {
     // Pre-fill contact form with what we know
@@ -1190,6 +1192,7 @@ function submitContact() {
   }).then(function(res) {
     return res.json().then(function(json) {
       if (res.ok) {
+        data.fullSubmitted = true;
         document.getElementById('contact-form-inner').style.display = 'none';
         document.getElementById('form-success').style.display = 'block';
       } else {
