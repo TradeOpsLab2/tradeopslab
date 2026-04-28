@@ -116,7 +116,7 @@ nav {
 .steps-bar {
   background: var(--paper-warm);
   border-bottom: 1px solid var(--rule);
-  padding: 1rem 2rem;
+  padding: 0.875rem 1rem;
 }
 .steps-inner {
   max-width: 900px;
@@ -128,18 +128,19 @@ nav {
 .step-indicator {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
   flex: 1;
   cursor: pointer;
+  min-width: 0;
 }
 .step-dot {
-  width: 28px; height: 28px;
+  width: 26px; height: 26px;
   border-radius: 50%;
   border: 2px solid var(--rule);
   background: #fff;
   display: flex; align-items: center; justify-content: center;
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 600;
   color: var(--ink-light);
   flex-shrink: 0;
@@ -149,17 +150,30 @@ nav {
 .step-dot.done { border-color: var(--green); background: var(--green); color: #fff; }
 .step-label {
   font-family: var(--mono);
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-light);
   transition: color 0.2s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 .step-label.active { color: var(--accent); }
 .step-label.done { color: var(--green); }
-.step-connector { flex: 1; height: 1px; background: var(--rule); margin: 0 0.5rem; }
+.step-connector { flex: 0 0 10px; height: 1px; background: var(--rule); margin: 0 0.2rem; }
 .step-connector.done { background: var(--green); }
+
+@media (max-width: 600px) {
+  .step-label { display: none; }
+  .step-dot { width: 34px; height: 34px; font-size: 0.8rem; }
+  .step-connector { flex: 1; margin: 0 0.5rem; }
+  .step-indicator { flex: none; }
+  .steps-inner { justify-content: center; padding: 0 1rem; }
+  .steps-bar { padding: 0.875rem 1rem; }
+}
 
 /* MAIN LAYOUT */
 .demo-main {
