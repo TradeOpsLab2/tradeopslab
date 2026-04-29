@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TradeOpsLab — Lead Checker</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d0d0d;
+    --surface: #141414;
+    --surface2: #1a1a1a;
+    --border: #252525;
+    --accent: #e8ff47;
+    --accent2: #ff4747;
+    --green: #47ff8a;
+    --blue: #47c8ff;
+    --text: #f0f0f0;
+    --muted: #555;
+    --mono: 'DM Mono', monospace;
+    --display: 'Bebas Neue', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px 80px;
+  }
+
+  .header { text-align: center; margin-bottom: 36px; animation: fadeUp 0.5s ease both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  .logo { font-family: var(--display); font-size: 12px; letter-spacing: 0.35em; color: var(--muted); margin-bottom: 8px; }
+  h1 { font-family: var(--display); font-size: clamp(48px, 7vw, 80px); letter-spacing: 0.04em; line-height: 0.88; color: var(--text); }
+  h1 span { color: var(--accent); }
+  .subtitle { margin-top: 14px; font-size: 11px; color: var(--muted); letter-spacing: 0.12em; }
+
+  .stats-bar { width:100%; max-width:700px; display:flex; gap:1px; margin-bottom:28px; background:var(--border); animation: fadeUp 0.5s 0.1s ease both; }
+  .stat { flex:1; background:var(--surface); padding:14px; text-align:center; }
+  .stat-num { font-family:var(--display); font-size:34px; letter-spacing:0.05em; }
+  .stat-num.yellow { color:var(--accent); }
+  .stat-num.red { color:var(--accent2); }
+  .stat-num.green { color:var(--green); }
+  .stat-num.dim { color:var(--muted); }
+  .stat-label { font-size:9px; color:var(--muted); letter-spacing:0.14em; text-transform:uppercase; margin-top:3px; }
+
+  .tabs { width:100%; max-width:700px; display:flex; gap:1px; background:var(--border); margin-bottom:24px; animation: fadeUp 0.5s 0.15s ease both; }
+  .tab { flex:1; padding:11px; background:var(--surface); border:none; color:var(--muted); font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; transition:all 0.15s; }
+  .tab.active { background:var(--accent); color:#000; }
+  .tab:not(.active):hover { color:var(--text); background:var(--surface2); }
+
+  .panel { width:100%; max-width:700px; display:none; animation: fadeUp 0.25s ease both; }
+  .panel.active { display:block; }
+
+  input[type="text"], input[type="email"], select {
+    background:var(--surface); border:1px solid var(--border);
+    color:var(--text); font-family:var(--mono); font-size:14px;
+    padding:14px 18px; outline:none; transition:border-color 0.2s;
+    letter-spacing:0.02em; width:100%;
+  }
+  input[type="text"]:focus, input[type="email"]:focus { border-color:var(--accent); }
+  input::placeholder { color:var(--muted); }
+  select { color:var(--muted); cursor:pointer; }
+  select option { background:var(--surface); }
+
+  .input-row { display:flex; gap:10px; }
+  .btn-primary { background:var(--accent); border:none; color:#000; font-family:var(--display); font-size:18px; letter-spacing:0.1em; padding:0 24px; cursor:pointer; transition:all 0.15s; white-space:nowrap; flex-shrink:0; }
+  .btn-primary:hover { background:#d4eb30; }
+  .btn-primary:active { transform:scale(0.97); }
+  .hint { margin-top:7px; font-size:10px; color:var(--muted); letter-spacing:0.05em; }
+
+  .result-card { margin-top:18px; border:1px solid var(--border); padding:22px 26px; display:none; animation: fadeUp 0.2s ease; }
+  .result-card.found { border-color:var(--accent2); background:rgba(255,71,71,0.04); }
+  .result-card.clear { border-color:var(--green); background:rgba(71,255,138,0.04); }
+  .result-card.info { border-color:var(--blue); background:rgba(71,200,255,0.04); }
+
+  .result-status { font-family:var(--display); font-size:28px; letter-spacing:0.08em; margin-bottom:10px; }
+  .result-card.found .result-status { color:var(--accent2); }
+  .result-card.clear .result-status { color:var(--green); }
+  .result-card.info .result-status { color:var(--blue); }
+  .result-detail { font-size:12px; color:var(--muted); line-height:2; }
+  .result-detail strong { color:var(--text); font-weight:500; }
+
+  .badge { display:inline-block; font-size:9px; letter-spacing:0.15em; padding:3px 8px; margin-bottom:8px; border:1px solid; }
+  .badge.emailed { color:var(--accent2); border-color:rgba(255,71,71,0.4); background:rgba(255,71,71,0.08); }
+  .badge.not-contacted { color:var(--muted); border-color:var(--border); }
+  .badge.client { color:var(--green); border-color:rgba(71,255,138,0.4); }
+  .badge.new-lead { color:var(--blue); border-color:rgba(71,200,255,0.4); }
+
+  .add-form { display:flex; flex-direction:column; gap:10px; }
+  .form-row { display:flex; gap:10px; }
+  .form-row > div { flex:1; }
+  .form-label { font-size:10px; color:var(--muted); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:5px; }
+
+  .btn-add { background:var(--green); border:none; color:#000; font-family:var(--display); font-size:20px; letter-spacing:0.1em; padding:14px; cursor:pointer; transition:all 0.15s; width:100%; margin-top:4px; }
+  .btn-add:hover { background:#35e878; }
+  .btn-add:active { transform:scale(0.98); }
+
+  .add-feedback { margin-top:12px; padding:14px 18px; font-size:12px; display:none; border:1px solid; }
+  .add-feedback.success { border-color:var(--green); color:var(--green); background:rgba(71,255,138,0.05); }
+  .add-feedback.error { border-color:var(--accent2); color:var(--accent2); background:rgba(255,71,71,0.05); }
+
+  .divider { height:1px; background:var(--border); margin:18px 0; }
+  .section-label { font-size:10px; color:var(--muted); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:10px; }
+
+  .list-controls { display:flex; gap:10px; margin-bottom:14px; }
+  .list-controls input { font-size:12px; padding:10px 14px; }
+  .btn-export { background:none; border:1px solid var(--border); color:var(--muted); font-family:var(--mono); font-size:10px; letter-spacing:0.12em; padding:10px 14px; cursor:pointer; transition:all 0.15s; white-space:nowrap; flex-shrink:0; }
+  .btn-export:hover { border-color:var(--accent); color:var(--accent); }
+  .filter-pills { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+  .pill-filter { font-size:10px; letter-spacing:0.1em; padding:5px 12px; border:1px solid var(--border); background:var(--surface); color:var(--muted); cursor:pointer; transition:all 0.15s; }
+  .pill-filter.active { border-color:var(--accent); color:var(--accent); background:rgba(232,255,71,0.05); }
+  .pill-filter:hover:not(.active) { border-color:var(--muted); color:var(--text); }
+
+  .company-list { border:1px solid var(--border); max-height:440px; overflow-y:auto; }
+  .company-item { display:flex; align-items:center; justify-content:space-between; padding:11px 16px; border-bottom:1px solid var(--border); font-size:12px; gap:10px; transition:background 0.1s; }
+  .company-item:last-child { border-bottom:none; }
+  .company-item:hover { background:var(--surface2); }
+  .co-name { color:var(--text); font-weight:500; }
+  .co-meta { color:var(--muted); font-size:10px; margin-top:2px; }
+
+  .status-pill { font-size:9px; letter-spacing:0.1em; padding:3px 8px; border:1px solid; flex-shrink:0; white-space:nowrap; }
+  .status-pill.emailed { color:var(--accent2); border-color:rgba(255,71,71,0.35); }
+  .status-pill.not-contacted { color:var(--muted); border-color:var(--border); }
+  .status-pill.client { color:var(--green); border-color:rgba(71,255,138,0.35); }
+  .status-pill.new-lead { color:var(--blue); border-color:rgba(71,200,255,0.35); }
+
+  .empty-state { padding:40px; text-align:center; color:var(--muted); font-size:12px; letter-spacing:0.05em; }
+
+  .edit-btn { background:none; border:1px solid var(--border); color:var(--muted); font-family:var(--mono); font-size:9px; letter-spacing:0.1em; padding:3px 8px; cursor:pointer; flex-shrink:0; transition:all 0.15s; white-space:nowrap; }
+  .edit-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .email-btn { background:none; border:1px solid rgba(71,200,255,0.25); color:var(--blue); font-family:var(--mono); font-size:9px; letter-spacing:0.1em; padding:3px 8px; cursor:pointer; flex-shrink:0; transition:all 0.15s; white-space:nowrap; }
+  .email-btn:hover { border-color:var(--blue); background:rgba(71,200,255,0.05); }
+
+  /* Modal */
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.85); display:none; align-items:center; justify-content:center; z-index:999; padding:20px; }
+  .modal-overlay.open { display:flex; animation: fadeUp 0.2s ease; }
+  .modal { background:var(--surface); border:1px solid var(--border); padding:28px; width:100%; max-width:500px; max-height:90vh; overflow-y:auto; }
+  .modal-title { font-family:var(--display); font-size:24px; letter-spacing:0.08em; color:var(--accent); margin-bottom:20px; }
+  .modal-form { display:flex; flex-direction:column; gap:10px; }
+  .modal-row { display:flex; gap:10px; }
+  .modal-row > div { flex:1; }
+  .modal-actions { display:flex; gap:8px; margin-top:8px; }
+  .btn-save { background:var(--accent); border:none; color:#000; font-family:var(--display); font-size:18px; letter-spacing:0.1em; padding:12px 20px; cursor:pointer; flex:1; transition:all 0.15s; }
+  .btn-save:hover { background:#d4eb30; }
+  .btn-cancel { background:none; border:1px solid var(--border); color:var(--muted); font-family:var(--mono); font-size:11px; letter-spacing:0.1em; padding:12px 16px; cursor:pointer; transition:all 0.15s; }
+  .btn-cancel:hover { border-color:var(--muted); color:var(--text); }
+  .btn-delete { background:none; border:1px solid rgba(255,71,71,0.3); color:var(--accent2); font-family:var(--mono); font-size:11px; letter-spacing:0.1em; padding:12px 14px; cursor:pointer; transition:all 0.15s; }
+  .btn-delete:hover { background:rgba(255,71,71,0.1); }
+
+  ::-webkit-scrollbar { width:3px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:var(--border); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">TradeOpsLab</div>
+  <h1>LEAD<br><span>CHECKER</span></h1>
+  <div class="subtitle">// CHECK · ADD · TRACK — SAVES AUTOMATICALLY</div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num yellow" id="statTotal">–</div><div class="stat-label">Total</div></div>
+  <div class="stat"><div class="stat-num red" id="statEmailed">–</div><div class="stat-label">Emailed</div></div>
+  <div class="stat"><div class="stat-num green" id="statNew">–</div><div class="stat-label">New Leads</div></div>
+  <div class="stat"><div class="stat-num dim" id="statCold">–</div><div class="stat-label">Not Contacted</div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('check')">⌕ Check</button>
+  <button class="tab" onclick="switchTab('add')">+ Add Lead</button>
+  <button class="tab" onclick="switchTab('list')">≡ All Leads</button>
+</div>
+
+<!-- CHECK -->
+<div class="panel active" id="panel-check">
+  <div class="input-row">
+    <input type="text" id="searchInput" placeholder="Type company name from Google Maps..." autocomplete="off" />
+    <button class="btn-primary" onclick="checkLead()">CHECK</button>
+  </div>
+  <div class="hint">Partial names work — "roofing", "Atlanta painting", etc.</div>
+  <div class="result-card" id="resultCard">
+    <div class="result-status" id="resultStatus"></div>
+    <div id="resultDetail" class="result-detail"></div>
+  </div>
+</div>
+
+<!-- ADD -->
+<div class="panel" id="panel-add">
+  <div class="add-form">
+    <div class="section-label">Company Info</div>
+    <div>
+      <div class="form-label">Company Name *</div>
+      <input type="text" id="addName" placeholder="e.g. Atlas Roofing LLC" />
+    </div>
+    <div class="form-row">
+      <div>
+        <div class="form-label">Contact Name</div>
+        <input type="text" id="addContact" placeholder="e.g. John Smith" />
+      </div>
+      <div>
+        <div class="form-label">Title</div>
+        <input type="text" id="addTitle" placeholder="e.g. Owner" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <div class="form-label">Email</div>
+        <input type="email" id="addEmail" placeholder="john@company.com" />
+      </div>
+      <div>
+        <div class="form-label">City / State</div>
+        <input type="text" id="addCity" placeholder="e.g. Atlanta, GA" />
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="section-label">Status</div>
+    <div>
+      <div class="form-label">Outreach Status *</div>
+      <select id="addStatus">
+        <option value="new-lead">New Lead (Found on Google Maps)</option>
+        <option value="emailed">Already Emailed</option>
+        <option value="not-contacted">In Tracker — Not Contacted</option>
+        <option value="client">Active Client</option>
+      </select>
+    </div>
+    <div>
+      <div class="form-label">Notes</div>
+      <input type="text" id="addNotes" placeholder="e.g. Commercial painting, 15 employees, found via Google Maps" />
+    </div>
+    <button class="btn-add" onclick="addLead()">+ ADD TO DATABASE</button>
+    <div class="add-feedback" id="addFeedback"></div>
+  </div>
+</div>
+
+<!-- LIST -->
+<div class="panel" id="panel-list">
+  <div class="list-controls">
+    <input type="text" id="listSearch" placeholder="Search by name, contact, city..." oninput="renderList()" />
+    <button class="btn-export" onclick="exportCSV()">↓ EXPORT CSV</button>
+  </div>
+  <div class="filter-pills">
+    <button class="pill-filter active" onclick="setFilter('all',this)">All</button>
+    <button class="pill-filter" onclick="setFilter('emailed',this)">Emailed</button>
+    <button class="pill-filter" onclick="setFilter('followup2',this)">⚡ Follow-up 2 (2+ days)</button>
+    <button class="pill-filter" onclick="setFilter('followup3',this)">🔥 Follow-up 3 (7+ days)</button>
+    <button class="pill-filter" onclick="setFilter('new-lead',this)">New Leads</button>
+    <button class="pill-filter" onclick="setFilter('not-contacted',this)">Not Contacted</button>
+    <button class="pill-filter" onclick="setFilter('client',this)">Clients</button>
+  </div>
+  <div class="company-list" id="companyList"></div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="editModal" onclick="closeModalOnOverlay(event)">
+  <div class="modal">
+    <div class="modal-title">EDIT LEAD</div>
+    <div class="modal-form">
+      <input type="hidden" id="editIndex" />
+      <div>
+        <div class="form-label">Company Name</div>
+        <input type="text" id="editName" />
+      </div>
+      <div class="modal-row">
+        <div>
+          <div class="form-label">Contact Name</div>
+          <input type="text" id="editContact" />
+        </div>
+        <div>
+          <div class="form-label">Title</div>
+          <input type="text" id="editTitle" />
+        </div>
+      </div>
+      <div class="modal-row">
+        <div>
+          <div class="form-label">Email</div>
+          <input type="email" id="editEmail" />
+        </div>
+        <div>
+          <div class="form-label">City / State</div>
+          <input type="text" id="editCity" />
+        </div>
+      </div>
+      <div>
+        <div class="form-label">Status</div>
+        <select id="editStatus">
+          <option value="new-lead">New Lead</option>
+          <option value="emailed">Emailed</option>
+          <option value="not-contacted">Not Contacted</option>
+          <option value="client">Active Client</option>
+        </select>
+      </div>
+      <div>
+        <div class="form-label">Notes</div>
+        <input type="text" id="editNotes" />
+      </div>
+      <div>
+        <div class="form-label">Last Contacted Date</div>
+        <input type="text" id="editLastContacted" placeholder="e.g. Apr 28, 2026" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn-save" onclick="saveEdit()">SAVE</button>
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-delete" onclick="deleteLead()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EMAIL MODAL -->
+<div class="modal-overlay" id="emailModal" onclick="closeEmailModalOnOverlay(event)">
+  <div class="modal" style="max-width:580px;">
+    <div class="modal-title" style="color:var(--blue);">✉ WRITE EMAIL</div>
+    <div id="emailLeadInfo" style="font-size:11px;color:var(--muted);margin-bottom:16px;letter-spacing:0.05em;"></div>
+    <div id="emailLoading" style="display:none;text-align:center;padding:32px;font-size:11px;color:var(--muted);letter-spacing:0.15em;">✦ WRITING EMAIL...</div>
+    <div id="emailOutput" style="display:none;">
+      <div class="form-label" style="margin-bottom:6px;">SUBJECT LINE</div>
+      <div id="emailSubject" style="background:var(--surface2);border:1px solid var(--border);padding:10px 14px;font-size:12px;color:var(--text);margin-bottom:12px;cursor:pointer;transition:border-color 0.15s;" onclick="copyField('emailSubject','copiedSubject')" title="Click to copy"></div>
+      <div style="font-size:9px;color:var(--muted);margin-bottom:14px;letter-spacing:0.08em;" id="copiedSubject"></div>
+      <div class="form-label" style="margin-bottom:6px;">EMAIL BODY</div>
+      <textarea id="emailBody" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:11px;padding:14px;width:100%;height:260px;resize:vertical;outline:none;line-height:1.8;" readonly></textarea>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button onclick="sendViaZoho()" style="flex:1;background:var(--green);border:none;color:#000;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:0.1em;padding:11px;cursor:pointer;" id="sendZohoBtn">⚡ SEND VIA ZOHO</button>
+        <button onclick="copyEmailBody()" style="flex:1;background:none;border:1px solid var(--accent);color:var(--accent);font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:0.1em;padding:11px;cursor:pointer;" id="copyBodyBtn">COPY</button>
+      </div>
+      <div id="sendStatus" style="display:none;margin-top:10px;padding:12px 16px;font-size:12px;letter-spacing:0.05em;border:1px solid;"></div>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button onclick="markAsEmailed()" style="flex:1;background:none;border:1px solid rgba(71,255,138,0.3);color:var(--green);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;padding:9px;cursor:pointer;" id="markEmailedBtn">✓ MARK EMAILED</button>
+        <button onclick="regenEmail()" style="flex:1;background:none;border:1px solid rgba(71,200,255,0.3);color:var(--blue);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;padding:9px;cursor:pointer;">↻ REGENERATE</button>
+        <button onclick="closeEmailModal()" style="flex:1;background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;padding:9px;cursor:pointer;">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SEED = [
+  {name:"Three Brothers Painting",contact:"Oscar Velez",title:"CEO",email:"oscar@threebrotherspainting.com",city:"Woodstock, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"Full Coverage Painting and Flooring",contact:"Andrew London",title:"Owner",email:"andrew@fullcoveragellc.com",city:"Nashville, TN",status:"emailed",notes:"",source:"apollo"},
+  {name:"Academy Roofing",contact:"Jennifer McGrew",title:"CEO",email:"jmcgrew@roofingprofessor.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Clark Brothers Roofing & Construction",contact:"Micah Clark",title:"CEO & President",email:"micah@clarkbrothersroofing.com",city:"Roswell, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"Nelson Exteriors",contact:"Scott Nelson",title:"Owner/President",email:"scott@nelson-exteriors.com",city:"Acworth, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"BERRONG Power Construction Insulation",contact:"Cannon Berrong",title:"CEO",email:"cannon@berrong.com",city:"Atlanta, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"Pro Roofing & Siding",contact:"Juan Reyes",title:"President/CEO",email:"juan@myproroofing.com",city:"Woodstock, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"Bonner Built Homes",contact:"Jason Bonner",title:"Owner/President",email:"jason@bonnerbuilt.com",city:"Marietta, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"Atlanta Painting Company",contact:"Wesley Dill",title:"President",email:"wes@atlantapaintingcompany.com",city:"Woodstock, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"Dr. Roof Atlanta",contact:"Paul Stoeppelwerth",title:"CEO/Owner",email:"paul@drroof.com",city:"Alpharetta, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"Electro Painting and Refurbishing",contact:"Tom Constantino",title:"President",email:"tomc@electropainting.com",city:"Marietta, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"Southern Perfection Painting Inc.",contact:"Sabrina Williams",title:"President & CEO",email:"sabrina@soperfectpaint.com",city:"Grayson, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"SuperiorPRO",contact:"Brandon Hutton",title:"President",email:"bhutton@superiorpro.com",city:"Powder Springs, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"INTEGRITY FINISHES INC",contact:"Todd Lowery",title:"CEO",email:"toddlowery@integrityfinishesinc.com",city:"Marietta, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"Phoenix Contracting",contact:"Dan Crossland",title:"President",email:"dan@phoenix-contracting.com",city:"Cumming, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"D & R Painting and Construction",contact:"David Rivas",title:"Owner",email:"rivasd@dandrpaintingconstruction.com",city:"Atlanta, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"Benise-Dowling & Associates",contact:"Tanya Dowling",title:"CEO",email:"tanyadowling@benise-dowling.com",city:"Decatur, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"Flawless Painting LLC",contact:"Scott Csaszar",title:"CEO & Founder",email:"scott@flawlesspainting.com",city:"Roswell, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"M&M Home Exteriors",contact:"Fernando Melo",title:"CEO",email:"fernando@sidingatlanta.com",city:"Marietta, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"Painter1 of North Georgia",contact:"Rick Ragsdale",title:"Business Owner",email:"rick@painter1.com",city:"Georgia",status:"emailed",notes:"",source:"apollo"},
+  {name:"All American Renovation",contact:"Thomas Williams",title:"Owner",email:"thomas@myexteriors.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Metal Pride",contact:"Michael Marchman",title:"President",email:"mmarchman@metalprideinc.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Paint Applicators",contact:"Mark Schulz",title:"Owner",email:"mark@paintapplicators.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"RCS Industrial",contact:"Rich Yates",title:"CEO",email:"ryates@rcs-ind.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Creative Cabinets",contact:"Evan Hill",title:"Owner",email:"evan@creativecabinetsff.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Trademark Contractors",contact:"Rob Spector",title:"Owner",email:"rob@trademark-contractors.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Brownlow and Sons Co.",contact:"Chuck Brownlow",title:"President",email:"chuck@brownlowandsons.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"D & D Decorators",contact:"Walt Dykes",title:"Owner",email:"walt@dndcompany.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Southern Perfection",contact:"Gordon Hale",title:"CEO",email:"ghale@southernperfection.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Lakeside Marine",contact:"Dane Michael",title:"Owner",email:"dane@lakesidemarine.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"SCI Roofing",contact:"Matthew Holmes",title:"Owner",email:"mholmes@sciroofing.org",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Wrightaway Construction",contact:"Christian Wright",title:"Co-Owner",email:"chris@wrightway.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"The Sign Store",contact:"Eric Lewis",title:"Owner",email:"eric@signstoremacon.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Specialty Finishes",contact:"Gary White / Kevin Lynn",title:"VP",email:"gwhite@specialtyfinishes.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"JACO Contracting Solutions",contact:"Jake Gresham",title:"Owner",email:"jakegresham@jacocontracting.net",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Elixer Extrusions",contact:"Philip Smith",title:"President",email:"psmith@elixirext.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Lacefield Designs",contact:"Beth Lacefield",title:"Founder & CEO",email:"beth@lacefielddesigns.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Finishing Dynamics",contact:"Holly Csi",title:"Owner",email:"holly@finishingdynamics.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Woodtech",contact:"Tom Spight",title:"Owner",email:"tom@woodtechltd.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Artisans of Atlanta",contact:"Matt Johnson",title:"President",email:"mattjohnson@artisansofatlanta.com",city:"Atlanta, GA",status:"emailed",notes:"",source:"apollo"},
+  {name:"Calderon Drywall",contact:"Juan Calderon",title:"SVP Operations",email:"juan@calderondrywallcontractors.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Engineered Fabrication",contact:"Chad Carr",title:"President",email:"ccarr@engfab.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"STAG Partners",contact:"Travis Couick",title:"President",email:"tcouick@stagpartners.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"GSB Industries",contact:"David Marlow",title:"Owner",email:"dm@gsbindustries.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Bulldog Steel Fabricator",contact:"Carlin Thomas",title:"President",email:"carlinthomas@bsfga.com",city:"",status:"emailed",notes:"",source:"apollo"},
+  {name:"Flint Contracting",contact:"Robert",title:"Owner/Principal",email:"",city:"Georgia",status:"not-contacted",notes:"Ryan referral. Reached out twice — no reply.",source:"prospects"},
+  {name:"Brush Strokes Quality Painting",contact:"Ryan",title:"Owner",email:"",city:"Augusta, GA",status:"client",notes:"Active client. Ask for referral + testimonial.",source:"prospects"},
+  // New leads from Sheet1 line 98+
+  {name:"Inline Renovations",contact:"Daniel Pentz",title:"Owner",email:"inlinereno25@gmail.com",city:"Lanoka Harbor, NJ",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+  {name:"Affinity Outdoor Living",contact:"",title:"",email:"info@affinityol.com",city:"Greensboro, GA",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+  {name:"Macktown Construction Group",contact:"",title:"",email:"hello@macktownconstruction.com",city:"Machesney Park, IL",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+  {name:"Turtle Creek Homes",contact:"Chris",title:"",email:"chris@turtlecreekhomes.org",city:"Plymouth, WI",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+  {name:"Kelvin Electric",contact:"",title:"",email:"admin@kelvinelectricok.com",city:"Oklahoma City, OK",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+  {name:"Waterrock Construction",contact:"",title:"",email:"contact@waterrock.us",city:"Waynesville, NC",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+  {name:"House Renovations",contact:"Matt Johnson",title:"Owner",email:"houserenovations1@yahoo.com",city:"Johnstown, PA",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+  {name:"Dalton Electrical Services LLC",contact:"",title:"",email:"daltonelectricalservices22@gmail.com",city:"Jefferson, GA",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+  {name:"Another Way To Roof",contact:"",title:"",email:"Info@AnotherWayToRoof.com",city:"Las Cruces, NM",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+  {name:"Pacific Remediation and Restoration",contact:"Steffen Werner",title:"Owner",email:"steffenw@pacificrandr.com",city:"Kirkland, WA",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+  {name:"KZ Builder Bros",contact:"Peyten Kazmierczak",title:"Co-Owner",email:"kz.builderbros@gmail.com",city:"Mentor, MN",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+  {name:"Original Design Builders",contact:"Brian",title:"",email:"brian@originaldesignbuilders.com",city:"Clover, SC",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+  {name:"CB Homes and Renovations",contact:"",title:"",email:"info@cbhomesandrenovations.com",city:"Salem, UT",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+  {name:"Tazzam Builders",contact:"",title:"",email:"admin@tzbuilders.com",city:"Addison, TX",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+  {name:"Northwoods Cabin Company LLC",contact:"",title:"",email:"info@northwoodscabinco.com",city:"Newbury, OH",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+  {name:"WC Builders",contact:"",title:"",email:"info@wcbuilder.com",city:"Kingston, MA",status:"new-lead",notes:"",source:"manual",addedAt:"Apr 29, 2026"},
+];
+
+const KEY = "tradeopslab_leads_v2";
+const KEY_LEGACY = "tradeopslab_leads_v1";
+let leads = [];
+let listFilter = "all";
+
+async function save() {
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      await window.storage.set(KEY, JSON.stringify(leads));
+      return;
+    } catch(e) {
+      if (attempt === 3) console.warn("Storage save failed after 3 attempts", e);
+      else await new Promise(r => setTimeout(r, 300 * attempt));
+    }
+  }
+}
+
+async function init() {
+  let saved = null;
+
+  // Try current key first
+  try {
+    const r = await window.storage.get(KEY);
+    if (r && r.value) saved = JSON.parse(r.value);
+  } catch(e) {}
+
+  // Fall back to legacy v1 key — this is where your 48 added leads are
+  if (!saved || saved.length === 0) {
+    try {
+      const r = await window.storage.get(KEY_LEGACY);
+      if (r && r.value) saved = JSON.parse(r.value);
+    } catch(e) {}
+  }
+
+  if (saved && saved.length > 0) {
+    leads = saved;
+    // Merge any seed entries missing from saved data
+    const names = new Set(leads.map(l => norm(l.name)));
+    SEED.forEach(s => { if (!names.has(norm(s.name))) leads.push(s); });
+    await save(); // migrate to v2 key
+  } else {
+    leads = [...SEED];
+    await save();
+  }
+
+  updateStats();
+  renderList();
+  backfillDates();
+  document.getElementById("searchInput").addEventListener("keydown", e => { if(e.key==="Enter") checkLead(); });
+}
+
+function norm(s) {
+  return (s||"").toLowerCase().replace(/[^a-z0-9\s]/g,"")
+    .replace(/\b(inc|llc|ltd|co|corp|the|and|of|painting|roofing|contracting|construction|contractors|services|solutions|group|associates)\b/g,"")
+    .replace(/\s+/g," ").trim();
+}
+
+function updateStats() {
+  document.getElementById("statTotal").textContent = leads.length;
+  document.getElementById("statEmailed").textContent = leads.filter(l=>l.status==="emailed").length;
+  document.getElementById("statNew").textContent = leads.filter(l=>l.status==="new-lead").length;
+  document.getElementById("statCold").textContent = leads.filter(l=>l.status==="not-contacted").length;
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['check','add','list'][i]===tab));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+tab).classList.add('active');
+  if(tab==='list') renderList();
+}
+
+function checkLead() {
+  const q = document.getElementById("searchInput").value.trim();
+  if(!q) return;
+  const nq = norm(q);
+  const words = nq.split(" ").filter(w=>w.length>2);
+
+  const scored = leads.map(l=>{
+    const nn = norm(l.name);
+    let s = 0;
+    if(nn===nq) s=100;
+    else if(nn.includes(nq)||nq.includes(nn)) s=80;
+    else words.forEach(w=>{ if(nn.includes(w)) s+=25; });
+    return {l, s};
+  }).filter(x=>x.s>0).sort((a,b)=>b.s-a.s);
+
+  const card=document.getElementById("resultCard");
+  const status=document.getElementById("resultStatus");
+  const detail=document.getElementById("resultDetail");
+  card.style.display="block";
+  card.className="result-card";
+
+  if(!scored.length) {
+    card.classList.add("clear");
+    status.textContent="✓ CLEAR TO CONTACT";
+    detail.innerHTML=`<strong>"${q}"</strong> is not in your database.<br>Fresh lead — go get it. Add it in the <strong>+ Add Lead</strong> tab after you send.`;
+    return;
+  }
+
+  const top=scored[0].l;
+  const lblMap={"emailed":"EMAILED · APR 27 2026","client":"ACTIVE CLIENT","new-lead":"NEW LEAD (ADDED BY YOU)","not-contacted":"IN TRACKER — NOT CONTACTED"};
+
+  let html=`<span class="badge ${top.status}">${lblMap[top.status]||top.status.toUpperCase()}</span><br>`;
+  html+=`<strong>Company:</strong> ${top.name}<br>`;
+  if(top.contact) html+=`<strong>Contact:</strong> ${top.contact}${top.title?" · "+top.title:""}<br>`;
+  if(top.city) html+=`<strong>Location:</strong> ${top.city}<br>`;
+  if(top.email) html+=`<strong>Email:</strong> ${top.email}<br>`;
+  if(top.notes) html+=`<strong>Notes:</strong> ${top.notes}<br>`;
+  if(top.addedAt) html+=`<strong>Added:</strong> ${top.addedAt}<br>`;
+
+  if(top.status==="emailed") {
+    card.classList.add("found");
+    status.textContent="⚠ ALREADY EMAILED";
+    html+=`<br><span style="color:var(--accent2)">Skip cold outreach — already in your pipeline.</span>`;
+  } else if(top.status==="client") {
+    card.classList.add("found");
+    status.textContent="✦ ACTIVE CLIENT";
+  } else {
+    card.classList.add("info");
+    status.textContent=top.status==="new-lead"?"↗ NEW LEAD (YOURS)":"⚡ IN TRACKER";
+    html+=`<br><span style="color:var(--blue)">Not yet emailed — you're clear to reach out.</span>`;
+  }
+
+  if(scored.length>1) html+=`<br><br><span style="color:var(--muted);font-size:10px">Also matched: ${scored.slice(1,3).map(x=>x.l.name).join(", ")}</span>`;
+  detail.innerHTML=html;
+}
+
+async function addLead() {
+  const name=document.getElementById("addName").value.trim();
+  const contact=document.getElementById("addContact").value.trim();
+  const title=document.getElementById("addTitle").value.trim();
+  const email=document.getElementById("addEmail").value.trim();
+  const city=document.getElementById("addCity").value.trim();
+  const status=document.getElementById("addStatus").value;
+  const notes=document.getElementById("addNotes").value.trim();
+  const fb=document.getElementById("addFeedback");
+
+  if(!name){fb.className="add-feedback error";fb.style.display="block";fb.textContent="Company name is required.";return;}
+
+  const existing=leads.find(l=>norm(l.name)===norm(name));
+  if(existing){fb.className="add-feedback error";fb.style.display="block";fb.textContent=`"${existing.name}" already exists (${existing.status}).`;return;}
+
+  const lead={name,contact,title,email,city,status,notes,source:"manual",addedAt:new Date().toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})};
+  leads.push(lead);
+  await save();
+  updateStats();
+
+  fb.className="add-feedback success";fb.style.display="block";
+  fb.textContent=`✓ "${name}" added as ${status.replace("-"," ")}.`;
+  ["addName","addContact","addTitle","addEmail","addCity","addNotes"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("addStatus").value="new-lead";
+  setTimeout(()=>{fb.style.display="none";},3000);
+}
+
+function openEdit(idx) {
+  const l = leads[idx];
+  document.getElementById("editIndex").value = idx;
+  document.getElementById("editName").value = l.name || "";
+  document.getElementById("editContact").value = l.contact || "";
+  document.getElementById("editTitle").value = l.title || "";
+  document.getElementById("editEmail").value = l.email || "";
+  document.getElementById("editCity").value = l.city || "";
+  document.getElementById("editStatus").value = l.status || "new-lead";
+  document.getElementById("editNotes").value = l.notes || "";
+  document.getElementById("editLastContacted").value = l.lastContacted || "";
+  document.getElementById("editModal").classList.add("open");
+}
+
+function closeModal() { resetDeleteBtn(); document.getElementById("editModal").classList.remove("open"); }
+function closeModalOnOverlay(e) { if(e.target===document.getElementById("editModal")) closeModal(); }
+
+async function saveEdit() {
+  const idx = parseInt(document.getElementById("editIndex").value);
+  leads[idx] = {
+    ...leads[idx],
+    name: document.getElementById("editName").value.trim(),
+    contact: document.getElementById("editContact").value.trim(),
+    title: document.getElementById("editTitle").value.trim(),
+    email: document.getElementById("editEmail").value.trim(),
+    city: document.getElementById("editCity").value.trim(),
+    status: document.getElementById("editStatus").value,
+    notes: document.getElementById("editNotes").value.trim(),
+    lastContacted: document.getElementById("editLastContacted").value.trim() || leads[idx].lastContacted || "",
+  };
+  await save();
+  updateStats();
+  renderList();
+  closeModal();
+}
+
+async function deleteLead() {
+  const idx = parseInt(document.getElementById("editIndex").value);
+  const name = leads[idx].name;
+  const actions = document.querySelector(".modal-actions");
+
+  // Prevent duplicate confirmations
+  if (document.getElementById("confirmDeleteBtn")) return;
+
+  const confirmBtn = document.createElement("button");
+  confirmBtn.id = "confirmDeleteBtn";
+  confirmBtn.textContent = `YES, DELETE "${name}"`;
+  confirmBtn.style.cssText = "background:var(--accent2);border:none;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:0.08em;padding:10px 14px;cursor:pointer;flex:1;";
+  confirmBtn.onclick = async () => {
+    leads.splice(idx, 1);
+    await save();
+    updateStats();
+    renderList();
+    closeModal();
+    resetDeleteBtn();
+  };
+
+  const cancelBtn = document.createElement("button");
+  cancelBtn.textContent = "Cancel";
+  cancelBtn.style.cssText = "background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;padding:10px 14px;cursor:pointer;";
+  cancelBtn.onclick = resetDeleteBtn;
+
+  // Hide existing buttons, append confirmation
+  actions.querySelectorAll("button").forEach(b => b.style.display = "none");
+  actions.appendChild(confirmBtn);
+  actions.appendChild(cancelBtn);
+}
+
+function resetDeleteBtn() {
+  const actions = document.querySelector(".modal-actions");
+  // Remove confirm/cancel buttons
+  const confirmBtn = document.getElementById("confirmDeleteBtn");
+  if (confirmBtn) confirmBtn.remove();
+  // Remove any dynamically added cancel button (last child if no id)
+  const btns = actions.querySelectorAll("button:not([id])");
+  btns.forEach(b => { if (b.textContent === "Cancel" && !b.getAttribute("onclick")) b.remove(); });
+  // Restore hidden buttons
+  actions.querySelectorAll("button").forEach(b => b.style.display = "");
+}
+
+
+function daysSince(dateStr) {
+  if (!dateStr) return null;
+  const parts = new Date(dateStr);
+  if (isNaN(parts)) return null;
+  const diff = new Date() - parts;
+  return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
+
+function setFilter(f,btn){
+  listFilter=f;
+  document.querySelectorAll('.pill-filter').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  renderList();
+}
+
+function renderList(){
+  const q=(document.getElementById("listSearch")?.value||"").toLowerCase();
+  const list=document.getElementById("companyList");
+  const order={"emailed":0,"client":1,"new-lead":2,"not-contacted":3};
+  const lblMap={"emailed":"EMAILED","client":"CLIENT","new-lead":"NEW LEAD","not-contacted":"NOT CONTACTED"};
+
+  let filtered=leads.map((l,i)=>({l,realIdx:i})).filter(({l})=>{
+    if (listFilter === "followup2") {
+      if (l.status !== "emailed") return false;
+      const days = daysSince(l.lastContacted);
+      const count = l.followupCount || 0;
+      return days >= 2 && count === 1;
+    }
+    if (listFilter === "followup3") {
+      if (l.status !== "emailed") return false;
+      const days = daysSince(l.lastContacted);
+      const count = l.followupCount || 0;
+      return days >= 7 && count === 2;
+    }
+    if(listFilter!=="all"&&l.status!==listFilter) return false;
+    if(q&&![l.name,l.contact,l.city,l.notes,l.email].join(" ").toLowerCase().includes(q)) return false;
+    return true;
+  }).sort((a,b)=>(order[a.l.status]??4)-(order[b.l.status]??4)||a.l.name.localeCompare(b.l.name));
+
+  if(!filtered.length){list.innerHTML=`<div class="empty-state">No leads match this filter.</div>`;return;}
+
+  list.innerHTML=filtered.map(({l, realIdx})=>{
+    const days = daysSince(l.lastContacted);
+    const daysLabel = days !== null ? (days === 0 ? "today" : days === 1 ? "1 day ago" : `${days} days ago`) : "";
+    const followupNum = (l.followupCount || 0) + 1;
+    const followupLabel = l.status === "emailed" && followupNum > 1 ? ` · email #${followupNum}` : "";
+
+    return `
+    <div class="company-item">
+      <div style="min-width:0;overflow:hidden;flex:1">
+        <div class="co-name">${l.name}</div>
+        <div class="co-meta">${[l.contact,l.title,l.city].filter(Boolean).join(" · ")}</div>
+        ${l.email?`<div class="co-meta" style="color:#3a3a3a;margin-top:1px">${l.email}</div>`:""}
+        ${l.lastContacted?`<div class="co-meta" style="color:#3a3a3a;margin-top:1px">✉ ${l.lastContacted}${daysLabel ? " · " + daysLabel : ""}${followupLabel}</div>`:""}
+        ${l.notes?`<div class="co-meta" style="color:#333;margin-top:2px;font-style:italic">${l.notes}</div>`:""}
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
+        <span class="status-pill ${l.status}">${lblMap[l.status]||l.status}</span>
+        <div style="display:flex;gap:4px;">
+          <button class="email-btn" onclick="openEmailModal(${realIdx})">✉ EMAIL</button>
+          <button class="edit-btn" onclick="openEdit(${realIdx})">EDIT</button>
+        </div>
+      </div>
+    </div>
+  `}).join("");
+}
+
+function exportCSV() {
+  const headers = ["Company Name","Contact","Title","Email","City","Status","Notes","Source","Added"];
+  const rows = leads.map(l => [
+    l.name, l.contact, l.title, l.email, l.city,
+    l.status, l.notes, l.source || "", l.addedAt || ""
+  ].map(v => `"${(v||"").replace(/"/g,'""')}"`));
+  const csv = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+
+  // Copy to clipboard
+  navigator.clipboard.writeText(csv).then(() => {
+    showExportModal(csv, true);
+  }).catch(() => {
+    showExportModal(csv, false);
+  });
+}
+
+function showExportModal(csv, copied) {
+  // Remove existing modal if any
+  const old = document.getElementById("csvModal");
+  if (old) old.remove();
+
+  const modal = document.createElement("div");
+  modal.id = "csvModal";
+  modal.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.88);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px;";
+  modal.innerHTML = `
+    <div style="background:#141414;border:1px solid #252525;padding:28px;width:100%;max-width:560px;max-height:80vh;display:flex;flex-direction:column;gap:16px;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.08em;color:#e8ff47;">
+        ${copied ? "✓ CSV COPIED TO CLIPBOARD" : "YOUR CSV DATA"}
+      </div>
+      <div style="font-size:11px;color:#555;letter-spacing:0.06em;line-height:1.7;">
+        ${copied
+          ? "Paste it into a new file in Notepad, TextEdit, or Google Sheets and save as <strong style='color:#f0f0f0'>leads.csv</strong>"
+          : "Copy all the text below → paste into Notepad or TextEdit → save as <strong style='color:#f0f0f0'>leads.csv</strong>"}
+      </div>
+      <textarea readonly style="background:#0d0d0d;border:1px solid #252525;color:#555;font-family:'DM Mono',monospace;font-size:10px;padding:12px;height:200px;resize:none;outline:none;width:100%;">${csv.replace(/</g,"&lt;")}</textarea>
+      <div style="display:flex;gap:8px;">
+        <button onclick="navigator.clipboard.writeText(document.querySelector('#csvModal textarea').value).then(()=>{this.textContent='✓ COPIED'})" style="flex:1;background:#e8ff47;border:none;color:#000;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.1em;padding:12px;cursor:pointer;">COPY CSV</button>
+        <button onclick="document.getElementById('csvModal').remove()" style="background:none;border:1px solid #252525;color:#555;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;padding:12px 16px;cursor:pointer;">Close</button>
+      </div>
+      <div style="font-size:10px;color:#333;letter-spacing:0.05em;">Total leads exported: ${leads.length}</div>
+    </div>
+  `;
+  modal.addEventListener("click", e => { if(e.target===modal) modal.remove(); });
+  document.body.appendChild(modal);
+}
+
+// ─── EMAIL MODAL ──────────────────────────────────────────────────────────
+let emailLeadIdx = null;
+
+async function openEmailModal(idx) {
+  emailLeadIdx = idx;
+  const l = leads[idx];
+
+  const followupNum = (l.followupCount || 0) + 1;
+  const emailLabel = followupNum === 1 ? "✉ WRITE EMAIL #1" : followupNum === 2 ? "✉ WRITE FOLLOW-UP #2" : "✉ WRITE FINAL FOLLOW-UP #3";
+  document.querySelector("#emailModal .modal-title").textContent = emailLabel;
+
+  document.getElementById("emailOutput").style.display = "none";
+  document.getElementById("emailLoading").style.display = "block";
+  document.getElementById("emailSubject").textContent = "";
+  document.getElementById("emailBody").value = "";
+  document.getElementById("copiedSubject").textContent = "";
+  document.getElementById("emailModal").classList.add("open");
+
+  document.getElementById("emailLeadInfo").innerHTML = `
+    <span>${l.name}${l.contact ? ' · ' + l.contact : ''}${l.city ? ' · ' + l.city : ''}</span>
+    ${l.email ? `<div style="margin-top:8px;display:flex;align-items:center;gap:8px;">
+      <span style="color:#f0f0f0;font-size:12px;" id="emailAddrText">${l.email}</span>
+      <button id="copyEmailAddrBtn" style="background:none;border:1px solid rgba(71,200,255,0.3);color:var(--blue);font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;padding:3px 8px;cursor:pointer;">COPY</button>
+    </div>` : `<div style="margin-top:6px;color:#333;font-size:11px;font-style:italic;">No email saved — add it via EDIT</div>`}
+  `;
+
+  // Attach copy listener after DOM is rendered
+  setTimeout(() => {
+    const copyBtn = document.getElementById("copyEmailAddrBtn");
+    const addrText = document.getElementById("emailAddrText");
+    if (copyBtn && addrText) {
+      copyBtn.addEventListener("click", () => {
+        const email = addrText.textContent.trim();
+        navigator.clipboard.writeText(email).then(() => {
+          copyBtn.textContent = "✓ COPIED";
+          copyBtn.style.color = "var(--green)";
+          copyBtn.style.borderColor = "rgba(71,255,138,0.3)";
+          setTimeout(() => {
+            copyBtn.textContent = "COPY";
+            copyBtn.style.color = "var(--blue)";
+            copyBtn.style.borderColor = "rgba(71,200,255,0.3)";
+          }, 2000);
+        }).catch(() => {
+          // Fallback: select the text
+          const range = document.createRange();
+          range.selectNode(addrText);
+          window.getSelection().removeAllRanges();
+          window.getSelection().addRange(range);
+          copyBtn.textContent = "SELECTED";
+          setTimeout(() => { copyBtn.textContent = "COPY"; }, 2000);
+        });
+      });
+    }
+  }, 50);
+
+  const trade = detectTrade(l);
+  generateEmail(l, trade);
+}
+
+function closeEmailModal() { document.getElementById("emailModal").classList.remove("open"); }
+function closeEmailModalOnOverlay(e) { if(e.target===document.getElementById("emailModal")) closeEmailModal(); }
+
+function detectTrade(l) {
+  const nameNotes = ((l.name||"")+" "+(l.notes||"")).toLowerCase();
+  if (nameNotes.includes("paint")) return "commercial painting contractor";
+  if (nameNotes.includes("roof")) return "commercial roofing contractor";
+  if (nameNotes.includes("drywall")) return "commercial drywall contractor";
+  if (nameNotes.includes("floor")) return "commercial flooring contractor";
+  if (nameNotes.includes("cabinet")) return "commercial cabinet contractor";
+  if (nameNotes.includes("steel")||nameNotes.includes("fabricat")) return "steel fabrication contractor";
+  if (nameNotes.includes("insul")) return "insulation contractor";
+  if (nameNotes.includes("sign")) return "commercial sign contractor";
+  if (nameNotes.includes("exterior")||nameNotes.includes("siding")) return "commercial exterior contractor";
+  return "commercial specialty contractor";
+}
+
+function regenEmail() {
+  const l = leads[emailLeadIdx];
+  document.getElementById("emailOutput").style.display = "none";
+  document.getElementById("emailLoading").style.display = "block";
+  generateEmail(l, detectTrade(l));
+}
+
+async function generateEmail(l, trade) {
+  const contact = l.contact ? l.contact.split(" ")[0] : "there";
+  const followupCount = l.followupCount || 0;
+
+  const isInGeorgia = l.city && /\bGA\b/i.test(l.city);
+  const caseStudy = isInGeorgia
+    ? "His case study: Built this for a painting contractor in Augusta, GA — owner went from zero financial visibility to a live dashboard showing exactly how much each job is making."
+    : "His case study: Built this for a painting contractor — owner went from zero financial visibility to a live dashboard showing exactly how much each job is making.";
+
+  let emailInstructions = "";
+
+  if (followupCount === 0) {
+    // First email
+    emailInstructions = `Write a SHORT cold email. Rules:
+- First line: SUBJECT: [subject line] (under 8 words, trade-specific, no clickbait)
+- Blank line
+- Start the body with exactly: Hi ${contact},
+- Then a blank line
+- Write 3 short paragraphs separated by blank lines: (1) the pain point, (2) what Carlos built and the case study, (3) the CTA with demo link
+- Each paragraph is 1-2 sentences MAX. No fluff. No "I hope this finds you well." No bullet points.
+- Include this link naturally in the CTA as plain text URL, no markdown formatting: https://www.tradeopslab.com/demo.html
+- Do NOT format links as [text](url) — write the URL directly in the sentence
+- Do NOT include any sign-off, signature, name, or closing — end after the last sentence
+- Sound like a real human texting a peer, not a marketer`;
+  } else if (followupCount === 1) {
+    // Second email — short bump 2 days later, link to case study instead of demo
+    emailInstructions = `Write a SHORT follow-up email (this is the 2nd touch — sent 2 days after the first email, they didn't reply). Rules:
+- First line: SUBJECT: Re: [reference the original subject topic, keep it short]
+- Blank line
+- Start the body with exactly: Hi ${contact},
+- Then a blank line
+- Write exactly 3 separate lines each separated by a blank line: (1) one sentence referencing the previous email using "a couple days ago" or "earlier this week" — NOT "last week", (2) one sentence with the case study link, (3) one question to spark a reply
+- NEVER put all sentences in one paragraph — each must be its own line with a blank line between them
+- IMPORTANT: Do NOT use the demo link. The ONLY link must be the case study as a plain text URL, no markdown: https://www.tradeopslab.com/case-study.html
+- Do NOT format links as [text](url) — write the URL directly in the sentence
+- Frame the case study line as "here's what it looked like for a painting contractor"
+- The question should be simple, e.g. "Is job costing something you're tracking manually right now?"
+- Do NOT include any sign-off, signature, name, or closing — end after the question
+- Sound casual, like a quick bump from a real person`;
+  } else {
+    // Third email — last touch, bring demo back, different pain point
+    emailInstructions = `Write a SHORT final follow-up email (this is the 3rd and last touch). Rules:
+- First line: SUBJECT: [short, curiosity-driven subject, different angle from before]
+- Blank line
+- Start the body with exactly: Hi ${contact},
+- Then a blank line
+- Write exactly 3 separate lines each separated by a blank line: (1) one sentence with a different pain point — focus on cash flow or not knowing if a job was profitable until it's too late, (2) one sentence with the demo link, (3) one sentence letting them know this is the last email, no pressure
+- NEVER put all sentences in one paragraph — each must be its own line with a blank line between them
+- Bring the demo link as plain text URL, no markdown: https://www.tradeopslab.com/demo.html
+- Do NOT format links as [text](url) — write the URL directly in the sentence
+- Do NOT include any sign-off, signature, name, or closing — end after the last sentence
+- Sound genuine, not salesy`;
+  }
+
+  const prompt = `You are writing a cold outreach email for a contractor software consultant named Carlos who runs TradeOpsLab.
+
+He is reaching out to: ${l.name}${l.city ? " based in " + l.city : ""}
+Contact first name: ${contact}
+Their trade: ${trade}
+${l.notes ? "Additional context: " + l.notes : ""}
+
+Carlos's offer: He helps specialty contractors implement JobTread + QuickBooks integrations that give real-time GP% per job, AIA invoicing, pipeline value visibility, and clean financial dashboards — without hiring a full-time CFO.
+
+${caseStudy}
+
+Demo page: https://www.tradeopslab.com/demo.html
+
+${emailInstructions}`;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 600,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || "";
+
+    const lines = text.trim().split("\n");
+    let subject = "";
+    let bodyLines = [];
+    let bodyStarted = false;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (!bodyStarted && line.toLowerCase().startsWith("subject:")) {
+        subject = line.replace(/^subject:\s*/i, "").trim();
+      } else if (subject && !bodyStarted && line.trim() === "") {
+        bodyStarted = true;
+      } else if (bodyStarted) {
+        bodyLines.push(line);
+      }
+    }
+
+    document.getElementById("emailSubject").textContent = subject || "See your job profits in real time";
+    document.getElementById("emailBody").value = bodyLines.join("\n").trim();
+    document.getElementById("emailLoading").style.display = "none";
+    document.getElementById("emailOutput").style.display = "block";
+  } catch(e) {
+    document.getElementById("emailLoading").style.display = "none";
+    document.getElementById("emailOutput").style.display = "block";
+    document.getElementById("emailBody").value = "Error generating email. Please try again.";
+  }
+}
+
+function copyToEmail(email) {
+  navigator.clipboard.writeText(email).then(() => {
+    const btn = document.getElementById("copyEmailAddrBtn");
+    if (btn) { btn.textContent = "✓ COPIED"; setTimeout(() => { btn.textContent = "COPY"; }, 2000); }
+  });
+}
+
+function copyField(id, feedbackId) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    document.getElementById(feedbackId).textContent = "✓ copied";
+    setTimeout(() => { document.getElementById(feedbackId).textContent = ""; }, 2000);
+  });
+}
+
+function copyEmailBody() {
+  const body = document.getElementById("emailBody").value;
+  navigator.clipboard.writeText(body).then(() => {
+    document.getElementById("copyBodyBtn").textContent = "✓ COPIED";
+    setTimeout(() => { document.getElementById("copyBodyBtn").textContent = "COPY EMAIL"; }, 2000);
+  });
+}
+
+async function markAsEmailed() {
+  const l = leads[emailLeadIdx];
+  l.status = "emailed";
+  l.followupCount = (l.followupCount || 0) + 1;
+  l.lastContacted = new Date().toLocaleDateString("en-US", {month:"short",day:"numeric",year:"numeric"});
+  l.addedAt = l.addedAt || l.lastContacted;
+  await save();
+  updateStats();
+  renderList();
+  closeEmailModal();
+}
+
+// Backfill lastContacted for emailed leads that don't have it
+function backfillDates() {
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+  const yesterdayStr = yesterday.toLocaleDateString("en-US", {month:"short",day:"numeric",year:"numeric"});
+  const todayStr = today.toLocaleDateString("en-US", {month:"short",day:"numeric",year:"numeric"});
+
+  let changed = false;
+  leads.forEach(l => {
+    if (l.status === "emailed") {
+      // All seeded Apollo leads already had 1 manual email sent before this tool
+      // So their followupCount floor is 1
+      if (!l.followupCount || l.followupCount < 1) {
+        l.followupCount = 1;
+        changed = true;
+      }
+      if (!l.lastContacted) {
+        l.lastContacted = l.addedAt === todayStr ? todayStr : yesterdayStr;
+        changed = true;
+      }
+    }
+  });
+  if (changed) save();
+}
+
+async function sendViaZoho() {
+  const l = leads[emailLeadIdx];
+  const subject = document.getElementById("emailSubject").textContent.trim();
+  const body = document.getElementById("emailBody").value.trim();
+  const to = l.email;
+  const sendBtn = document.getElementById("sendZohoBtn");
+  const statusDiv = document.getElementById("sendStatus");
+
+  if (!to) {
+    statusDiv.style.display = "block";
+    statusDiv.style.borderColor = "rgba(255,71,71,0.4)";
+    statusDiv.style.color = "var(--accent2)";
+    statusDiv.style.background = "rgba(255,71,71,0.05)";
+    statusDiv.textContent = "⚠ No email address saved for this lead. Add it via EDIT first.";
+    return;
+  }
+
+  if (!subject || !body) {
+    statusDiv.style.display = "block";
+    statusDiv.style.borderColor = "rgba(255,71,71,0.4)";
+    statusDiv.style.color = "var(--accent2)";
+    statusDiv.style.background = "rgba(255,71,71,0.05)";
+    statusDiv.textContent = "⚠ Generate the email first before sending.";
+    return;
+  }
+
+  // Confirm before sending
+  sendBtn.textContent = "SENDING...";
+  sendBtn.style.background = "#35e878";
+  sendBtn.disabled = true;
+  statusDiv.style.display = "none";
+
+  try {
+    const res = await fetch("https://www.tradeopslab.com/api/send-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        to,
+        subject,
+        body,
+        secret: "tol-send-2026"
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      statusDiv.style.display = "block";
+      statusDiv.style.borderColor = "rgba(71,255,138,0.4)";
+      statusDiv.style.color = "var(--green)";
+      statusDiv.style.background = "rgba(71,255,138,0.05)";
+      statusDiv.textContent = `✓ Email sent to ${to}`;
+      sendBtn.textContent = "✓ SENT";
+      sendBtn.style.background = "#252525";
+      sendBtn.style.color = "var(--green)";
+
+      // Auto mark as emailed
+      await markAsEmailed();
+    } else {
+      throw new Error(data.error || "Unknown error");
+    }
+  } catch (err) {
+    statusDiv.style.display = "block";
+    statusDiv.style.borderColor = "rgba(255,71,71,0.4)";
+    statusDiv.style.color = "var(--accent2)";
+    statusDiv.style.background = "rgba(255,71,71,0.05)";
+    statusDiv.textContent = `⚠ Failed to send: ${err.message}`;
+    sendBtn.textContent = "⚡ SEND VIA ZOHO";
+    sendBtn.style.background = "var(--green)";
+    sendBtn.style.color = "#000";
+    sendBtn.disabled = false;
+  }
+}
+
+init();
+</script>
+</body>
+</html>
